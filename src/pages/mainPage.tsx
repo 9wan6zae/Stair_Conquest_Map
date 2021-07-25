@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Animation from '../components/animation';
 import Content from '../components/content';
 import Search from '../components/search';
 import FilterBtn from '../components/filterBtn';
@@ -54,9 +55,9 @@ export default function MainPage() {
 
   return (
     <>
-      <div style={{height: '212px', background: '#1D85FF'}} />
+      <Animation />
       <Content title={"계단정보 등록"} description={"동네에 자주 가는 장소의\n계단 정보를 알려주세요"}>
-        <Search/>
+        <Search placeholder="장소, 주소 검색" type="text"/>
         <section style={{marginTop: '20px', display: 'flex', justifyContent: 'space-between'}}>
           <FilterBtn title="전체 (시+구)"></FilterBtn>
           <FilterBtn title="전체 (동)"></FilterBtn>
