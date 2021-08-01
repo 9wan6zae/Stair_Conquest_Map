@@ -1,7 +1,12 @@
 import * as React from 'react';
 import styled, {css} from 'styled-components';
+import { Link } from 'react-router-dom';
 
-const SideBarBlock = styled.div<SideBarProps>`
+type SideBarBlockProps = {
+  open: boolean
+}
+
+const SideBarBlock = styled.div<SideBarBlockProps>`
   position: fixed;
   top: 0;
   right: -250px;
@@ -23,19 +28,31 @@ const Background = styled.div`
   z-index: 999;
   width: 100%;
   height: 100%;
-  background: #000000;
+  background: #1067CD;
   opacity: 0.6;
 `
 
 type SideBarProps = {
   open: boolean
+  list: {
+    icon: string,
+    title: string,
+    to: string
+  }[]
+  setOpen(flag: boolean): void | null
 }
 
-export default function SideBar({open, children, setOpen}: any) {
+export default function SideBar({open, list, setOpen}: SideBarProps) {
   return (
     <>
       <SideBarBlock open={open}>
-        {children}
+        {list.map((v, index) => (
+            <div key={index}>
+              <img src={v.icon} alt={v.title} />
+              <Link to={v.to} key={index}>{v.title}</Link>
+            </div>
+          )
+        )}
       </SideBarBlock>
       {open && <Background onClick={() => setOpen(false)}/>}
     </>
