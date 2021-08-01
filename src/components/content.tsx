@@ -2,13 +2,22 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 const ContentBlock = styled.div`
-  max-width: 700px;
-  padding: 0 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
   padding-top: 52px;
   background: #fff;
 
-  main {
+  & > div > main {
     margin-top: 32px;
+  }
+
+  div.content__wrapper {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 20px;
+    max-width: 700px;
   }
 `
 
@@ -21,13 +30,15 @@ type ContentProp = {
 export default function Content({title, description, children}: ContentProp) {
   return (
     <ContentBlock>
-      <p className="title3">{title}</p>
-      <p className="description">{description?.split('\n').map((line, index) => {
-        return <span key={index}>{line}<br/></span>
-      })}</p>
-      <main>
-        {children}
-      </main>
+      <div className="content__wrapper">
+        <p className="title3">{title}</p>
+        <p className="description">{description?.split('\n').map((line, index) => {
+          return <span key={index}>{line}<br/></span>
+        })}</p>
+        <main>
+          {children}
+        </main>
+      </div>
     </ContentBlock>
   )
 }
