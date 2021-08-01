@@ -20,10 +20,10 @@ const SearchBlock = styled.input`
   outline: none;
 `
 
-export default function Search() {
+export default function Search({placeholder, type}: {placeholder: string, type: string}) {
   return (
     <>
-      <SearchBlock type="text" placeholder="장소, 주소 검색"/>
+      <SearchBlock type={type} placeholder={placeholder}/>
     </>
   )
 }
