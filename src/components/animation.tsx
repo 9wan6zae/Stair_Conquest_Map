@@ -15,9 +15,9 @@ const CharacterBlock = styled.section`
   @keyframes move {
     0% {
       opacity: 1;
-      left: -60px;
+      left: -120px;
     }
-    40% {
+    30% {
       left: 20px;
       opacity: 1;
     }
@@ -42,8 +42,8 @@ const CharacterBlock = styled.section`
 const ReactionBlock = styled.section`
   position: absolute;
   z-index: 998;
-  top: 108px;
-  right: 120px;
+  bottom: 180px;
+  left: 200px;
   opacity: 0;
   animation-name: fadein, fadeout__reaction;
   animation-delay: 0s, 2s;
@@ -76,10 +76,11 @@ export default function Animation() {
 
   const character = ['old', 'wheelChair', 'baby']
   const [imgUrl, setImgUrl] = useState("/assets/svg/old.svg")
-  const reaction = "/assets/svg/reaction.svg"
-  const bg = "/assets/svg/bg.svg"
   const [count, setCount] = useState(0);
   const [change, setChange] = useState(false);
+
+  const reaction = "/assets/svg/reaction.svg"
+  const bg = "/assets/svg/bg.svg"
 
   const changeImgUrl = (count: number) => {
     setImgUrl(`/assets/svg/${character[count]}.svg`)
@@ -93,10 +94,14 @@ export default function Animation() {
       if (count === 2) {
         setCount(0)
       }
-      setTimeout(() => setChange(false), 2800)
-    }, 3000)
+      setTimeout(() => setChange(false), 2300)
+    }, 2400)
     return () => {clearInterval(chracterChange)}
   })
+
+  useEffect(() => {
+    return () => setChange(false);
+  }, [])
 
   const bgBox = {
     maxWidth: '400px',
