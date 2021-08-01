@@ -1,19 +1,17 @@
 import * as React from 'react';
-import { useState, useEffect } from 'react';
-import styled, {css} from 'styled-components';
-import { ReactComponent as MenuBtn} from './svg/menu.svg'
+import styled from 'styled-components';
+import { ReactComponent as BackBtn} from './svg/backBtn.svg'
 
-import SideBar from './sideBar';
-
-const HeaderBlock = styled.div<HeaderProps>`
+const HeaderBlock = styled.div`
   position: fixed;
-  z-index: 998;
+  z-index: 999;
   background: rgba(0,0,0,0);
-  color: #fff;
+  color: #000;
   width: 100%;
   height: 56px;
   transition: 0.3s ease;
   border: none;
+  border-bottom: 2px solid #EAEAEF;
   
   display: flex;
   flex-direction: row;
@@ -21,56 +19,31 @@ const HeaderBlock = styled.div<HeaderProps>`
   justify-content: center;
 
   main {
+    position: relative;
     width: 1300px;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     margin: 0 20px;
   }
 
   img {
     color: #fff;
   }
-
-  ${props =>
-    props.change &&
-    css`
-      background: #fff;
-      color: #000;
-      border-bottom: 2px solid #EAEAEF;
-    `}
 `
 
 type HeaderProps = {
-  change: boolean
+  title: string
 }
 
-export default function AppHeader() {
-  const [change, setChange] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  const updateScoll = () => {
-    let scollPosition = (window.scrollY || document.documentElement.scrollTop)
-    setChange(scollPosition > 100)
-  }
-
-  useEffect(() => {
-    updateScoll()
-    window.addEventListener('scroll', () => {
-      updateScoll()
-    })
-  },)
-
+export default function AppHeader({title}: HeaderProps) {
   return (
     <>
-      <HeaderBlock change={change} >
+      <HeaderBlock>
         <main>
-          <p className="title4">계단 정복 지도</p>
-          <MenuBtn stroke = { change ? 'black' : 'white'} onClick={() => setOpen(true)}/>
+          <BackBtn onClick={() => window.history.back()} style={{position: 'absolute', left: '0px'}} />
+          <b className="title5">{title}</b>
         </main>
       </HeaderBlock>
-      <SideBar open={open} setOpen={setOpen}>
-        test
-      </SideBar>
     </>
   )
 }

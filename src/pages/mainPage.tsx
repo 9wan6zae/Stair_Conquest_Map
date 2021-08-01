@@ -1,4 +1,5 @@
 import * as React from 'react';
+import AppHeader from '../components/mainHeader';
 import Animation from '../components/animation';
 import Content from '../components/content';
 import Search from '../components/search';
@@ -55,6 +56,7 @@ export default function MainPage() {
 
   return (
     <>
+      <AppHeader></AppHeader>
       <Animation />
       <Content title={"계단정보 등록"} description={"동네에 자주 가는 장소의\n계단 정보를 알려주세요"}>
         <Search placeholder="장소, 주소 검색" type="text"/>
