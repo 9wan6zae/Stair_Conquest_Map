@@ -8,12 +8,10 @@ export function loginUserThunk(nickname: string, password: string): ThunkAction<
   return async dispatch => {
     const { request, success, failure } = loginUserAsync;
     dispatch(request());
-    console.log(nickname, password)
     try {
       const response = await loginAPI.login(nickname, password);
-      console.log(response)
       if (response.status === 200) {
-        // localStorage.setItem("access_token", `JWT ${response.data.Token}`);
+        localStorage.setItem("access_token", response.headers["x-ourmap-access-key"]);
         console.log('success')
         dispatch(success(true));
       }

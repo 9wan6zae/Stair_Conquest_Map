@@ -1,10 +1,5 @@
 import axios from "axios";
 
-export type response = {
-  status: number;
-  data: any;
-}
-
 const instance = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
 });
@@ -15,7 +10,7 @@ instance.interceptors.request.use((config) => {
     config["headers"] = {
       "Content-Type": "application/json",
       Accept: "application/json",
-      //Authorization: token,
+      Authorization: token,
     };
   } else {
     config["headers"] = {
