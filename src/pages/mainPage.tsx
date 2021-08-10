@@ -6,6 +6,8 @@ import Search from '../components/search';
 import FilterBtn from '../components/filterBtn';
 import TownList from '../components/townList';
 
+import { Link } from 'react-router-dom';
+
 export default function MainPage() {
   const towns = [
     {
@@ -59,7 +61,7 @@ export default function MainPage() {
       <AppHeader></AppHeader>
       <Animation />
       <Content title={"계단정보 등록"} description={"동네에 자주 가는 장소의\n계단 정보를 알려주세요"}>
-        <Search placeholder="장소, 주소 검색" type="text"/>
+        <Link to="/search" style={{textDecoration: 'none'}}><Search placeholder="장소, 주소 검색" type="text"/></Link>
         <section style={{marginTop: '20px', display: 'flex', justifyContent: 'space-between'}}>
           <FilterBtn title="전체 (시+구)"></FilterBtn>
           <FilterBtn title="전체 (동)"></FilterBtn>
