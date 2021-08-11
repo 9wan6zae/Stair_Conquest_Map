@@ -1,6 +1,8 @@
 import React from 'react';
 import './App.css';
 import './css/Font.css'
+import './css/Color.css'
+import './css/buttons.css'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import mainPage from './pages/mainPage'
 import loginPage from './pages/loginPage'
