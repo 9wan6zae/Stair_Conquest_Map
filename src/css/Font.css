@@ -42,12 +42,13 @@
   font-weight: 500;
   line-height: 120%;
   margin-bottom: 4px;
+  text-overflow: ellipsis;
 }
 
 .search-list__address {
   font-family: var(--main-font);
   font-size: 14px;
-  color: #6A6A73;
+  color: var(--gray);
   font-weight: 500;
   line-height: 200%;
 }
@@ -67,5 +68,5 @@
   font-size: 18px;
   line-height: 160%;
   letter-spacing: -0.005em;
-  color: #6A6A73;
+  color: var(--gray);
 }

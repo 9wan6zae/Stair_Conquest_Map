@@ -1,0 +1,46 @@
+.register-modal__info {
+  width: 100%;
+  background: #F2F2F5;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.register-modal__info > p {
+  text-align: center;
+}
+
+.register-modal__address {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--gray);
+}
+
+.register-modal__info__title {
+  font-weight: 500;
+  font-size: 18px;
+  color: #000;
+  line-height: 200%;
+}
+
+.register-modal__info__description {
+  font-weight: 500;
+  font-size: 16px;
+  color: #9797A6;
+}
+
+.register-modal__question {
+  width: 100%;
+  padding: 0 20px;
+  margin-top: 52px;
+  box-sizing: border-box;
+}
+
+.register-modal__question p.question__title {
+  font-weight: 500;
+  font-size: 16px;
+  color: #000;
+}
