@@ -1,0 +1,40 @@
+.register-btn {
+  border: none;
+  min-width: 100px;
+  min-height: 54px;
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.not {
+  background-color: var(--primary);
+  color: #fff;
+}
+
+.half {
+  background-color: #fff;
+  color: #1D85FF;
+  border: 2px solid #1D85FF;
+  box-sizing: border-box;
+}
+
+.full {
+  background-color: #fff;
+  border: 2px solid #EAEAEF;
+  box-sizing: border-box;
+  color: rgba(106, 106, 115, 1);
+}
+
+.next-btn {
+  min-height: 56px;
+  max-height: 56px;
+  width: 100%;
+  background-color: var(--primary);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+
+  border-radius: 20px;
+  border: none;
+}

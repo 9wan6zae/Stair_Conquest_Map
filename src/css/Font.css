@@ -35,6 +35,32 @@
   line-height: 100%;
 }
 
+.search-list__title {
+  font-family: var(--main-font);
+  font-size: 18px;
+  color: #000;
+  font-weight: 500;
+  line-height: 120%;
+  margin-bottom: 4px;
+  text-overflow: ellipsis;
+}
+
+.search-list__address {
+  font-family: var(--main-font);
+  font-size: 14px;
+  color: var(--gray);
+  font-weight: 500;
+  line-height: 200%;
+}
+
+.search-list__info {
+  font-family: var(--main-font);
+  font-size: 14px;
+  color: var(--emphasis);
+  font-weight: 500;
+  line-height: 100%;
+}
+
 .description {
   font-family: Spoqa Han Sans Neo;
   font-style: normal;
@@ -42,5 +68,5 @@
   font-size: 18px;
   line-height: 160%;
   letter-spacing: -0.005em;
-  color: #6A6A73;
+  color: var(--gray);
 }
