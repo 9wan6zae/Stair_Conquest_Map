@@ -19,6 +19,7 @@ const ItemBox = styled.section`
 
   section.info {
     margin-right: 10px;
+    max-width: 60%;
   }
 `
 
@@ -47,8 +48,8 @@ export default function SearchPage() {
         {
           place: {
             id: 'test',
-            name: '목탄장',
-            address: 'dsdsf'
+            name: '채선당 행복가마솥밥 롯데마트점',
+            address: '분당구 황새울로 340'
           },
           building: {
             id: 'ttt',
