@@ -12,6 +12,7 @@ export interface RegisterAccessibilityParams {
 }
 
 export interface RegisterAccessibilityParams_RegisterPlaceAccessibilityParams {
+  [key: string]: any
   placeId: string;
   isFirstFloor: boolean;
   hasStair: boolean;
@@ -19,6 +20,7 @@ export interface RegisterAccessibilityParams_RegisterPlaceAccessibilityParams {
 }
 
 export interface RegisterAccessibilityParams_RegisterBuildingAccessibilityParams {
+  [key: string]: any
   buildingId: string;
   hasElevator: boolean;
   hasObstacleToElevator: boolean;
