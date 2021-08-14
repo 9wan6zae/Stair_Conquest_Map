@@ -2,12 +2,13 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styled, {css} from 'styled-components';
 import { ReactComponent as MenuBtn} from './svg/menu.svg'
+import { Link } from 'react-router-dom';
 
 import SideBar from './sideBar';
 
 const HeaderBlock = styled.div<HeaderProps>`
   position: fixed;
-  z-index: 999;
+  z-index: 900;
   background: rgba(0,0,0,0);
   color: #fff;
   width: 100%;
@@ -44,9 +45,16 @@ type HeaderProps = {
   change: boolean
 }
 
-export default function MainHeader() {
+MainHeader.defaultProps = {
+  scroll: true,
+  children: null
+}
+
+export default function MainHeader({children}: {children: React.ReactChild}) {
   const [change, setChange] = useState(false);
   const [open, setOpen] = useState(false);
+  const [load, setLoad] = useState(true);
+  const [scroll, setScroll] = useState(false);
   const sideBarList = [
     {
       icon: "./assets/svg/account.svg",
@@ -76,21 +84,38 @@ export default function MainHeader() {
   }
 
   useEffect(() => {
-    updateScoll()
-    window.addEventListener('scroll', () => {
+    if (scroll && load) {
       updateScoll()
-    })
-  },)
+      window.addEventListener('scroll', () => {
+      updateScoll()
+      })
+    }
+    return () => setLoad(false)
+  }, [load, scroll])
+
+  useEffect(() => {
+    if(load) {
+      const path = window.location.pathname
+      if (path === '/') setScroll(true)
+    }
+    return () => setLoad(false)
+  }, [load])
 
   return (
     <>
-      <HeaderBlock change={change} >
+      <HeaderBlock change={ !scroll || change } >
         <main>
-          <p className="title4">계단 정복 지도</p>
-          <MenuBtn stroke = { change ? 'black' : '#1067CD'} onClick={() => setOpen(true)}/>
+          <Link to="/"><p className="title4">계단 정복 지도</p></Link>
+          <MenuBtn stroke = { !scroll || change ? 'black' : '#1067CD'} onClick={() => setOpen(true)}/>
         </main>
       </HeaderBlock>
       <SideBar open={open} setOpen={setOpen} list={sideBarList}/>
+      {children &&  (
+        <>
+          <div style={{color: 'black'}}>test</div>
+          <div>{children}</div>
+        </>
+      )}
     </>
   )
 }
