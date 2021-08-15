@@ -4,57 +4,23 @@ import Animation from '../components/animation';
 import Content from '../components/content';
 import Search from '../components/search';
 import FilterBtn from '../components/filterBtn';
-import TownList from '../components/townList';
+import VillageList from '../components/villageList';
+import * as homeAPI from '../api/home';
 
 import { Link } from 'react-router-dom';
+import { VillageRankingEntry } from '../types/Ranking';
 
 export default function MainPage() {
-  const towns = [
-    {
-      name: '분당구 이매동',
-      process: 5
-    },
-    {
-      name: '중원구 상대원동',
-      process: 4
-    },
-    {
-      name: '수정구 이런저런동',
-      process: 0.3
-    },
-    {
-      name: '분당구 이매동',
-      process: 5
-    },
-    {
-      name: '중원구 상대원동',
-      process: 4
-    },
-    {
-      name: '수정구 이런저런동',
-      process: 0.3
-    },
-    {
-      name: '분당구 이매동',
-      process: 5
-    },
-    {
-      name: '중원구 상대원동',
-      process: 4
-    },
-    {
-      name: '수정구 이런저런동',
-      process: 0.3
-    },
-    {
-      name: '분당구 이매동',
-      process: 5
-    },
-    {
-      name: '중원구 상대원동',
-      process: 4
+  const [load, setLoad] = React.useState(true);
+  const [villages, setVillage] = React.useState<VillageRankingEntry[]>();
+
+  React.useEffect(() => {
+    if (load) {
+      homeAPI.getHomeViewData().then(res => setVillage(res.data.entries))
     }
-  ]
+    
+    return () => {setLoad(false)}
+  }, [load])
 
   return (
     <>
@@ -68,7 +34,7 @@ export default function MainPage() {
         </section>
       </Content>
       <Content title={"우리동네 랭킹"} description={"계단정복지도, 우리 동네는\n얼마나 채웠을까요?"}>
-        <TownList towns={towns} />
+        { villages && <VillageList villages={villages} />}
       </Content>
     </>
   )

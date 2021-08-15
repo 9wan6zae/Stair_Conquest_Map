@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {TownType} from '../types/town'
+import { VillageRankingEntry } from '../types/Ranking';
 import styled from 'styled-components'
 
 type RankingBlockProps = {
@@ -99,42 +99,42 @@ const BgBlock = styled.div`
   justify-content: flex-end;
 `
 
-type TownListProps = {
-  towns: TownType[]
+type VillageListProps = {
+  villages: VillageRankingEntry[]
 }
 
-type TownProps = {
-  town: TownType
+type VillageProps = {
+  village: VillageRankingEntry
   index: number
 }
 
-function Town({ town, index }: TownProps) {
+function Village({ village, index }: VillageProps) {
   return (
     <>
-      {index < 10 && (<TownWrapper>
+      {village && index < 10 && (<TownWrapper>
         {index < 3 ? 
         (<BgBlock>
           <TopTownBlock>
             <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
-            <p>{town.name}</p>
-            <p className="process">{`${town.process}%`}</p>
+            <p>{village.village?.name}</p>
+            <p className="process">{`${village.progressPercentage}%`}</p>
           </TopTownBlock>
         </BgBlock>): 
         (<TownBlock>
           <RankingBlock bgColor="#EAEAEF" color="#1067CD" >{index + 1}</RankingBlock>
-          <p>{town.name}</p>
-          <p className="process">{`${town.process}%`}</p>
+          <p>{village.village?.name}</p>
+          <p className="process">{`${village.progressPercentage}%`}</p>
         </TownBlock>)}
       </TownWrapper>)}
     </>
   );
 }
 
-export default function TownList({towns}: TownListProps) {
+export default function VillageList({villages}: VillageListProps) {
   return (
     <>
-      {towns.map((town, index) => (
-        <Town town={town} index={index} key={index} />
+      {villages.map((village, index) => (
+        <Village village={village} index={index} key={index} />
       ))}
     </>
   )

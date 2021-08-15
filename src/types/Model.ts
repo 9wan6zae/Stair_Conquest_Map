@@ -63,3 +63,9 @@ export enum BuildingAccessibility_StairInfo {
   OVER_TEN = 2,
   UNRECOGNIZED = -1,
 }
+
+export interface Village {
+  id: string;
+  name: string;
+  isFavoriteVillage: boolean;
+}
