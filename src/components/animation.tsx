@@ -4,7 +4,7 @@ import styled from "styled-components"
 
 const CharacterBlock = styled.section`
   position: absolute;
-  z-index: 997;
+  z-index: 3;
   bottom: 30px;
   opacity: 0;
   animation-name: move, fadeout;
@@ -18,12 +18,12 @@ const CharacterBlock = styled.section`
       left: -120px;
     }
     30% {
-      left: 20px;
       opacity: 1;
+      left: 20px;
     }
     100% {
-      left: 20px;
       opacity: 1;
+      left: 20px;
     }
   }
 
@@ -41,7 +41,7 @@ const CharacterBlock = styled.section`
 
 const ReactionBlock = styled.section`
   position: absolute;
-  z-index: 998;
+  z-index: 3;
   bottom: 180px;
   left: 200px;
   opacity: 0;
@@ -72,6 +72,14 @@ const ReactionBlock = styled.section`
   }
 `
 
+const BgBox = styled.figure`
+  width: 100%;
+  padding-top: 96%;
+  background-image: url("/assets/svg/bg.svg");
+  background-size: contain;
+  margin: 0;
+`
+
 export default function Animation() {
 
   const character = ['old', 'wheelChair', 'baby']
@@ -80,7 +88,6 @@ export default function Animation() {
   const [change, setChange] = useState(false);
 
   const reaction = "/assets/svg/reaction.svg"
-  const bg = "/assets/svg/bg.svg"
 
   const changeImgUrl = (count: number) => {
     setImgUrl(`/assets/svg/${character[count]}.svg`)
@@ -103,19 +110,11 @@ export default function Animation() {
     return () => setChange(false);
   }, [])
 
-  const bgBox = {
-    maxWidth: '400px',
-    margin: '0 auto',
-    display: 'flex',
-    justifyContent: 'center',
-  }
 
   return (
-    <div style={{display: 'flex', justifyContent: 'center', margin: '0'}}>
-      <div style={{position: 'relative', maxWidth: '375px', width: '100%'}}>
-        <figure style = {bgBox}>
-          <img src={bg} width="100%" alt="background" />
-        </figure>
+    <div>
+      <div style={{position: 'relative', width: '100%'}}>
+        <BgBox />
         {change && (
           <>
             <CharacterBlock className="character">
