@@ -11,6 +11,7 @@ interface BtnProps {
 
 const ModalBlock = styled.div`
   width: 100%;
+  max-width: var(--maxWidth);
   height: 980px;
   position: absolute;
   top: 2%;
@@ -180,12 +181,12 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
 
   const nextAction = () => {
     setPage(2)
-    const modal = document.getElementById('modal')
+    const modal = document.getElementById('register-modal')
     modal?.scrollTo(0, 0)
   }
 
   return (
-    <div id="modal" style={{position: 'fixed', top: 0, left: 0, width: '100%', height: '100%', overflow: 'auto', zIndex: 991}}>
+    <div id="register-modal">
       <ModalBlock>
         {page === 1 && (
           <>
@@ -209,7 +210,7 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
                   </ButtonGroup>
                 </section>
               ))}
-              <footer style={{padding: '20px', boxSizing: 'border-box', position: 'absolute', bottom: '0px', width: '100%'}}>
+              <footer className="register-modal__footer">
                 <button className="next-btn" onClick={nextAction}>다음</button>
               </footer>
             </main>
@@ -236,7 +237,7 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
                   </ButtonGroup>
                 </section>
               ))}
-              <footer style={{padding: '20px', boxSizing: 'border-box', position: 'absolute', bottom: '0px', width: '100%'}}>
+              <footer >
                 <button className="next-btn" onClick={updateInfo}>등록하기</button>
               </footer>
             </main>

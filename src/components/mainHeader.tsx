@@ -12,6 +12,7 @@ const HeaderBlock = styled.div<HeaderProps>`
   background: rgba(0,0,0,0);
   color: #fff;
   width: 100%;
+  max-width: var(--maxWidth);
   height: 56px;
   transition: 0.3s ease;
   border: none;
@@ -112,7 +113,6 @@ export default function MainHeader({children}: {children: React.ReactChild}) {
       <SideBar open={open} setOpen={setOpen} list={sideBarList}/>
       {children &&  (
         <>
-          <div style={{color: 'black'}}>test</div>
           <div>{children}</div>
         </>
       )}
