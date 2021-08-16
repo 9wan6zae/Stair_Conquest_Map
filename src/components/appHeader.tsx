@@ -8,6 +8,7 @@ const HeaderBlock = styled.div`
   background: rgba(0,0,0,0);
   color: #000;
   width: 100%;
+  max-width: var(--maxWidth);
   height: 56px;
   transition: 0.3s ease;
   border: none;
