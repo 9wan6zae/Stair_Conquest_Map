@@ -1,0 +1,14 @@
+.input__search-page {
+  position: fixed;
+  top: 54px;
+  width: 100%;
+  max-width: var(--maxWidth);
+  height: 80px;
+  background: white;
+  z-index: 900;
+  padding: 4px 20px 20px 20px;
+  box-sizing: border-box;
+  border-bottom: 2px solid #EAEAEF;
+  display: flex;
+  justify-content: space-between;
+}
