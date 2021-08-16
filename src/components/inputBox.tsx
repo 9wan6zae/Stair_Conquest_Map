@@ -4,6 +4,7 @@ import { ReactComponent as ClearBtn} from './svg/clearBtn.svg'
 
 const InputBlock = styled.input`
   width: 100%;
+  max-width: var(--maxWidth);
   box-sizing: border-box;
   height: 56px;
   background: #F2F2F5;
