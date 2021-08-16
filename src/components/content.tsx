@@ -3,8 +3,6 @@ import styled from 'styled-components';
 
 const ContentBlock = styled.div`
   width: 100%;
-  display: flex;
-  justify-content: center;
   box-sizing: border-box;
   padding-top: 52px;
   background: #fff;
@@ -17,7 +15,6 @@ const ContentBlock = styled.div`
     width: 100%;
     box-sizing: border-box;
     padding: 0 20px;
-    max-width: 700px;
   }
 `
 
