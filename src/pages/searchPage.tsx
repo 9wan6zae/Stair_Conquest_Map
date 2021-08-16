@@ -133,19 +133,19 @@ export default function SearchPage() {
 
   const fullRegister = (item: Item): boolean => {
     return item.hasBuildingAccessibility && item.hasPlaceAccessibility
-  }  
+  }
 
   return (
     <>
       <MainHeader>
-        <div style={{position: 'fixed', top: '54px', width: '100%', height: '80px', background: 'white', zIndex: 900, padding: '4px 20px 20px 20px', boxSizing: 'border-box', borderBottom: '2px solid #EAEAEF', display: 'flex', justifyContent: 'space-between'}}>
+        <div className="input__search-page">
           <section style={{width: '80%'}}>
             <InputBox name="searchText" value={searchText || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" />
           </section>
           <span style={{lineHeight: '60px'}} onClick={() => searchPlaces()}>검색</span>
         </div>
       </MainHeader>
-      <div style={{paddingTop: "136px"}} />
+      <div style={{paddingTop: "154px"}} />
       {searchPlacesResult.items?.length > 0 && (
         searchPlacesResult.items.map(item => (
           <ItemBox key={item.place.id}>
