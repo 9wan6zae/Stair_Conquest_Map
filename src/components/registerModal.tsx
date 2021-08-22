@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import styled, {css} from 'styled-components';
 import { Item } from '../types/SearchPlaces';
 import * as accessibilityAPI from '../api/accessibility'
@@ -94,7 +95,7 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
       isWheelchairAccessible: true
     }
   )
-  const [building, setBuilding] = React.useState<RegisterAccessibilityParams_RegisterBuildingAccessibilityParams>(
+  const [building, setBuilding] = React.useState<RegisterAccessibilityParams_RegisterBuildingAccessibilityParams | undefined>(
     {
       buildingId: item.building.id,
       hasElevator: true,
@@ -104,16 +105,15 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
   );
 
   const updateInfo = async () => {
-    if (place && building) {
+    if (place || building) {
       const info: RegisterAccessibilityParams = {
         placeAccessibilityParams: undefined,
         buildingAccessibilityParams: undefined
       }
       info.placeAccessibilityParams = place
       info.buildingAccessibilityParams = building
-
-      const res = await accessibilityAPI.register(info)
-      console.log(res)
+      console.log(info)
+      await accessibilityAPI.register(info)
     }
   }
 
@@ -185,6 +185,11 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
     modal?.scrollTo(0, 0)
   }
 
+  const skipAction = () => {
+    nextAction()
+    setBuilding(undefined)
+  }
+
   return (
     <div id="register-modal">
       <ModalBlock>
@@ -211,7 +216,17 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
                 </section>
               ))}
               <footer className="register-modal__footer">
-                <button className="next-btn" onClick={nextAction}>다음</button>
+                {item.hasPlaceAccessibility &&
+                  <>
+                     <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
+                  </>
+                }
+                {!item.hasPlaceAccessibility &&
+                  <>
+                    <button onClick={skipAction}>건너뛰기</button>
+                    <button className="next-btn" onClick={nextAction}>다음</button>
+                  </>
+                }
               </footer>
             </main>
           </>
@@ -237,8 +252,8 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
                   </ButtonGroup>
                 </section>
               ))}
-              <footer >
-                <button className="next-btn" onClick={updateInfo}>등록하기</button>
+              <footer className="register-modal__footer">
+                <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
               </footer>
             </main>
           </>
