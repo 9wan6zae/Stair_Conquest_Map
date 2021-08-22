@@ -110,10 +110,14 @@ export default function MainHeader({children}: {children: React.ReactChild}) {
           <MenuBtn stroke = { !scroll || change ? 'black' : '#1067CD'} onClick={() => setOpen(true)}/>
         </main>
       </HeaderBlock>
+      {!children && !scroll && (
+        <div style={{paddingTop: "56px"}} />
+      )}
       <SideBar open={open} setOpen={setOpen} list={sideBarList}/>
       {children &&  (
         <>
           <div>{children}</div>
+          <div style={{paddingTop: "154px"}} />
         </>
       )}
     </>
