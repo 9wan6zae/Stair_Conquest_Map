@@ -129,8 +129,8 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
       quesiton: "이 건물 입구에 계단이 있나요?",
       attribute: "stairInfo",
       buttons: [
-        {text: "5칸 이하", value: 1},
-        {text: "10칸 이상", value: 2},
+        {text: "5칸 미만", value: 1},
+        {text: "5칸 이상", value: 2},
         {text: "없어요", value: 0}
       ]
     },

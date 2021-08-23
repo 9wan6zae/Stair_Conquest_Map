@@ -136,8 +136,8 @@ export default function AccessibilityPage() {
       title: "건물 1층까지",
       info: { 
         undefined: "계단 없음",
-        LESS_THAN_FIVE: "계단 5칸 이하",
-        OVER_TEN: "계단 10칸 이상"
+        LESS_THAN_FIVE: "계단 5칸 미만",
+        OVER_TEN: "계단 5칸 이상"
       },
       icon: {
         undefined: './assets/svg/ic_check.svg',
