@@ -1,8 +1,10 @@
 import {combineReducers} from 'redux'
 import login from "./login"
+import item from "./item"
 
 const rootReducer = combineReducers({
-  login
+  login,
+  item
 })
 
 export default rootReducer

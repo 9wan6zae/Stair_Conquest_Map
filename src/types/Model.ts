@@ -33,6 +33,7 @@ export interface Building {
 
 /** 장소의 접근성 정보. */
 export interface PlaceAccessibility {
+  [key: string]: any
   id: string;
   isFirstFloor: boolean;
   hasStair: boolean;
@@ -44,6 +45,7 @@ export interface PlaceAccessibility {
 
 /** 건물의 접근성 정보. */
 export interface BuildingAccessibility {
+  [key: string]: any
   id: string;
   hasElevator: boolean;
   hasObstacleToElevator: boolean;

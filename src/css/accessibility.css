@@ -1,0 +1,20 @@
+.accessibility__not_info {
+  font-style: normal;
+  font-size: 16px;
+  color: var(--emphasis);
+  font-weight: 500;
+}
+
+.accessibility__anonymous {
+  font-style: normal;
+  font-size: 16px;
+  color: #6A6A73;
+  font-weight: 500;
+}
+
+.accessibility__user {
+  font-style: normal;
+  font-size: 16px;
+  color: #1067CD;
+  font-weight: 500;
+}

@@ -2,11 +2,15 @@ import * as React from 'react';
 import MainHeader from '../components/mainHeader';
 import InputBox from '../components/inputBox';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import * as searchAPI from '../api/search';
 import RegisterModal from '../components/registerModal';
 import { Item, SearchPlacesParams, SearchPlacesResult } from '../types/SearchPlaces';
 import { Location } from '../types/Model';
 import styled from "styled-components"
+
+import { useDispatch } from 'react-redux';
+import { set_item } from '../modules/item';
 
 const ItemBox = styled.section`
   width: 100%;
@@ -24,6 +28,7 @@ const ItemBox = styled.section`
 `
 
 export default function SearchPage() {
+  const dispatch = useDispatch();
   const [load, setLoad] = useState(true);
   const [params, setParams] = useState<SearchPlacesParams>(
     {
@@ -73,6 +78,19 @@ export default function SearchPage() {
         },
         {
           place: {
+            id: 'test4',
+            name: '가나다',
+            address: 'dsdsf'
+          },
+          building: {
+            id: 'ttdsdfsst',
+            address: 'dsfd'
+          },
+          hasBuildingAccessibility: false,
+          hasPlaceAccessibility: true
+        },
+        {
+          place: {
             id: 'test3',
             name: '가나dddd다',
             address: 'dssdfsdfdsf'
@@ -117,6 +135,7 @@ export default function SearchPage() {
   const openModal = (item: Item) => {
     setOpen(true)
     setSelectItem(item)
+    dispatch(set_item(item));
   }
 
   const clearInfo = (name: string) => {
@@ -128,7 +147,7 @@ export default function SearchPage() {
   }
 
   const halfRegister = (item: Item): boolean => {
-    return item.hasBuildingAccessibility && !item.hasPlaceAccessibility
+    return (item.hasBuildingAccessibility && !item.hasPlaceAccessibility) || (!item.hasBuildingAccessibility && item.hasPlaceAccessibility)
   }
 
   const fullRegister = (item: Item): boolean => {
@@ -145,7 +164,6 @@ export default function SearchPage() {
           <span style={{lineHeight: '60px'}} onClick={() => searchPlaces()}>검색</span>
         </div>
       </MainHeader>
-      <div style={{paddingTop: "154px"}} />
       {searchPlacesResult.items?.length > 0 && (
         searchPlacesResult.items.map(item => (
           <ItemBox key={item.place.id}>
@@ -176,7 +194,7 @@ export default function SearchPage() {
                 <button className="register-btn half" onClick={() => openModal(item)}>정보 등록</button>
               )}
               { fullRegister(item) && (
-                <button className="register-btn full" onClick={() => openModal(item)}>정보 조회</button>
+                <Link to="/accessibility"><button className="register-btn full" onClick={() => openModal(item)}>정보 조회</button></Link>
               )}
             </section>
           </ItemBox>
