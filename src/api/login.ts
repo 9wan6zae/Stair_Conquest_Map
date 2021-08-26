@@ -1,12 +1,9 @@
 import axios from "../utils/axios";
 import { AxiosResponse } from "axios";
-import { SignUpParams } from "../types/Sign";
+import { LoginParams, SignUpParams } from "../types/Sign";
 
-export function login(nickname: string, password: string): Promise<AxiosResponse> {
-  return axios.post("/login", {
-    nickname,
-    password,
-  });
+export function login(params: LoginParams): Promise<AxiosResponse> {
+  return axios.post("/login", params);
 }
 
 export function signUp (params: SignUpParams): Promise<AxiosResponse> {
