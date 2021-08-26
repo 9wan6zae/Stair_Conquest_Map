@@ -1,34 +1,14 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import AppHeader from '../components/appHeader';
 import InputBox from '../components/inputBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../modules';
 import { loginUserThunk, loginUserAsync } from '../modules/login';
 import styled, {css} from 'styled-components';
 
-const MainBlock = styled.main`
-  position: relative;
-  width: 100%;
-  max-width: var(--maxWidth);
-  padding: 0 20px;
-  box-sizing: border-box;
-
-  .login__title_section {
-    margin-top: 36px;
-    margin-bottom: 32px;
-    text-align: center;
-  }
-
-  .login__title {
-    margin-bottom: 12px;
-  }
-
-  .login__input-box {
-    margin-bottom: 16px;
-  }
-`
+import LoginLayout from '../components/LoginLayout';
+import { LoginParams } from '../types/Sign';
 
 const InputSection = styled.section`
   margin-bottom: 16px;
@@ -57,13 +37,50 @@ const LoginBtn = styled.button<LoginBtnProps>`
   }
 `
 
+const SignUpLinkBtn = styled.button`
+  min-width: 100%;
+  min-height: 56px;
+  max-height: 56px;
+  background: #fff;
+  border: 2px solid var(--primary);
+  border-radius: 20px;
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 18px;
+`
+
+const LoginFooter = styled.footer`
+  position: absolute;
+  padding: 0 20px;
+  box-sizing: border-box;
+  width: 100%;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .footer__title {
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 100%;
+    margin-bottom: 20px;
+  }
+`
+
+const LoginLink = styled(Link)`
+  width: 100%;;
+`
+
 export default function LoginPage() {
 
   const loginSuccess = useSelector((state: RootState) => state.login.loginSuccess);
   const dispatch = useDispatch();
   const {success} = loginUserAsync
 
-  const [account, setAccount] = useState({
+  const [account, setAccount] = useState<LoginParams>({
     nickname: '',
     password: ''
   });
@@ -96,23 +113,27 @@ export default function LoginPage() {
 
   return (
     <>
-      <AppHeader title="로그인"></AppHeader>
-      <div style={{overflow: 'auto'}}>
-        <MainBlock>
-          <section className="login__title_section">
-            <p className="title4 login__title">계단정복지도</p>
-            <p className="description">로그인하고 지도를 채워주세요</p>
-          </section>
-          <InputSection>
-            <InputBox placeholder="닉네임" type="text" name="nickname" value={nickname} onChange={onChange} clearInfo={clearInfo}/>
-          </InputSection>
-          <InputSection>
-            <InputBox placeholder="비밀번호" type="password" name="password" value={password} onChange={onChange} clearInfo={clearInfo}/>
-          </InputSection>
-          <LoginBtn active={checkBtnActive(nickname, password)} onClick={() => login()}>로그인</LoginBtn>
-          <Link to="/signUp">회원가입</Link>
-        </MainBlock>
-      </div>
+      <LoginLayout
+        title="로그인"
+        description = "로그인하고 지도를 채워주세요"
+        content = {
+          <>
+            <InputSection>
+              <InputBox placeholder="닉네임" type="text" name="nickname" value={nickname} onChange={onChange} clearInfo={clearInfo}/>
+            </InputSection>
+            <InputSection>
+              <InputBox placeholder="비밀번호" type="password" name="password" value={password} onChange={onChange} clearInfo={clearInfo}/>
+            </InputSection>
+            <LoginBtn active={checkBtnActive(nickname, password)} onClick={() => login()}>로그인</LoginBtn>
+          </>
+        }
+        footer = {
+          <LoginFooter>
+            <p className="footer__title">회원이 아니신가요?</p>
+            <LoginLink to="/signUp"><SignUpLinkBtn>3초 만에 회원가입</SignUpLinkBtn></LoginLink>
+          </LoginFooter>
+        }
+      ></LoginLayout>
     </>
   )
 }
