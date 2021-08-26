@@ -158,9 +158,6 @@ export default function SignUpPage() {
             { notMatchPwd(password, temp_password) && <p style={{marginTop: '16px', fontSize: '14px', color: '#DB0B24', textAlign: 'center'}}>입력한 두 비밀번호가 불일치해요. 다시 입력해 보세요.</p>}
           </>
         }
-        footer = {
-          <></>
-        }
       ></LoginLayout>
     </>
   )

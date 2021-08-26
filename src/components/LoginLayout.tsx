@@ -28,7 +28,7 @@ type LayoutProps = {
   title: string
   description: string
   content: React.ReactElement
-  footer: React.ReactElement
+  footer?: React.ReactElement
 }
 
 export default function LoginLayout({title, description, content, footer}: LayoutProps) {
