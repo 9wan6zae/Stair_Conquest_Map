@@ -16,8 +16,8 @@ import AccessibilityPage from './pages/accessibilityPage';
 
 function App() {
   return (
-    <div className="App__wrapper">
-      <main className="App_content">
+    <div id="App__wrapper">
+      <main id="App_content">
         <BrowserRouter>
           <Switch>
             <Route exact={true} path="/" component={mainPage} />

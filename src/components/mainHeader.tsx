@@ -79,16 +79,17 @@ export default function MainHeader({children}: {children: React.ReactChild}) {
     },
   ]
 
-  const updateScoll = () => {
-    let scollPosition = (window.scrollY || document.documentElement.scrollTop)
-    setChange(scollPosition > 0)
+  const updateScoll = (content: any) => {
+    let scollPosition = (content.scrollTop || document.documentElement.scrollTop)
+    setChange(scollPosition > 30)
   }
 
   useEffect(() => {
     if (scroll && load) {
-      updateScoll()
-      window.addEventListener('scroll', () => {
-      updateScoll()
+      const content = document.getElementById("App_content")
+      updateScoll(content)
+      content?.addEventListener('scroll', () => {
+        updateScoll(content)
       })
     }
     return () => setLoad(false)
