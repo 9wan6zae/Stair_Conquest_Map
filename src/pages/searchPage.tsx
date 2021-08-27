@@ -158,10 +158,10 @@ export default function SearchPage() {
     <>
       <MainHeader>
         <div className="input__search-page">
-          <section style={{width: '80%'}}>
+          <section style={{width: '86%'}}>
             <InputBox name="searchText" value={searchText || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" />
           </section>
-          <span style={{lineHeight: '60px'}} onClick={() => searchPlaces()}>검색</span>
+          <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={() => searchPlaces()}>검색</span>
         </div>
       </MainHeader>
       {searchPlacesResult.items?.length > 0 && (
