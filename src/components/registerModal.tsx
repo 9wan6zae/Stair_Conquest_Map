@@ -13,9 +13,10 @@ interface BtnProps {
 const ModalBlock = styled.div`
   width: 100%;
   max-width: var(--maxWidth);
-  height: 980px;
-  position: absolute;
-  top: 2%;
+  height: 96%;
+  position: relative;
+  overflow: auto;
+  top: 4%;
   border-radius: 20px 20px 0 0;
   z-index: 999;
   background: white;
@@ -200,21 +201,23 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
               <p className="register-modal__address">{item.place.address}</p>
             </header>
             <main>
-              <section className="register-modal__info">
-                <img src="./assets/png/flag.png" alt="flag" />
-                <p className="register-modal__info__title">앗, 이 건물의 첫 번째 정복자세요!</p>
-                <p className="register-modal__info__description"><strong>{item.place.name}</strong>의 정보를 등록하기 전, 이 건물에 대해 알려 주시겠어요?</p>
-              </section>
-              {building && quesiton_building.map((q, i) => (
-                <section className="register-modal__question" key={i}>
-                  <p className="question__title">{q.quesiton}</p>
-                  <ButtonGroup>
-                    {q.buttons.map((b, i) => (
-                      <CustomBtn key={i} onClick={() => setBuilding({...building, [q.attribute]: b.value})} active={building[q.attribute] === b.value}>{b.text}</CustomBtn>
-                    ))}
-                  </ButtonGroup>
+              <section>
+                <section className="register-modal__info">
+                  <img src="./assets/png/flag.png" alt="flag" />
+                  <p className="register-modal__info__title">앗, 이 건물의 첫 번째 정복자세요!</p>
+                  <p className="register-modal__info__description"><strong>{item.place.name}</strong>의 정보를 등록하기 전, 이 건물에 대해 알려 주시겠어요?</p>
                 </section>
-              ))}
+                {building && quesiton_building.map((q, i) => (
+                  <section className="register-modal__question" key={i}>
+                    <p className="question__title">{q.quesiton}</p>
+                    <ButtonGroup>
+                      {q.buttons.map((b, i) => (
+                        <CustomBtn key={i} onClick={() => setBuilding({...building, [q.attribute]: b.value})} active={building[q.attribute] === b.value}>{b.text}</CustomBtn>
+                      ))}
+                    </ButtonGroup>
+                  </section>
+                ))}
+              </section>
               <footer className="register-modal__footer">
                 {item.hasPlaceAccessibility &&
                   <>
@@ -238,20 +241,22 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
               <p className="register-modal__address">{item.place.address}</p>
             </header>
             <main>
-              <section className="register-modal__info">
-                <img src="./assets/png/flag.png" alt="flag" />
-                <p className="register-modal__info__title">이 장소의 접근성 정보를 알려주세요</p>
-              </section>
-              {place && quesiton_place.map((q, i) => (
-                <section className="register-modal__question" key={i}>
-                  <p>{q.quesiton}</p>
-                  <ButtonGroup>
-                    {q.buttons.map((b, i) => (
-                      <CustomBtn key={i} onClick={() => setPlace({...place, [q.attribute]: b.value})} active={place[q.attribute] === b.value}>{b.text}</CustomBtn>
-                    ))}
-                  </ButtonGroup>
+              <section>
+                <section className="register-modal__info">
+                  <img src="./assets/png/flag.png" alt="flag" />
+                  <p className="register-modal__info__title">이 장소의 접근성 정보를 알려주세요</p>
                 </section>
-              ))}
+                {place && quesiton_place.map((q, i) => (
+                  <section className="register-modal__question" key={i}>
+                    <p>{q.quesiton}</p>
+                    <ButtonGroup>
+                      {q.buttons.map((b, i) => (
+                        <CustomBtn key={i} onClick={() => setPlace({...place, [q.attribute]: b.value})} active={place[q.attribute] === b.value}>{b.text}</CustomBtn>
+                      ))}
+                    </ButtonGroup>
+                  </section>
+                ))}
+              </section>
               <footer className="register-modal__footer">
                 <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
               </footer>
