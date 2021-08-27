@@ -270,8 +270,8 @@ export default function AccessibilityPage() {
           </div>
         </section>
         <section className="accessibility__info">
-          {accessibility?.placeAccessibility && placeAttributes?.map(att => (
-            <section className="accessibility__form">
+          {accessibility?.placeAccessibility && placeAttributes?.map((att, key) => (
+            <section key={key} className="accessibility__form">
               {accessibility.placeAccessibility && (
                 <>
                   <div className="title">
