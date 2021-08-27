@@ -5,22 +5,51 @@ import { Item } from '../types/SearchPlaces';
 import * as accessibilityAPI from '../api/accessibility'
 
 import { RegisterAccessibilityParams, RegisterAccessibilityParams_RegisterPlaceAccessibilityParams, RegisterAccessibilityParams_RegisterBuildingAccessibilityParams } from '../types/Accessibility'
+import { Background } from './sideBar';
 
 interface BtnProps {
   active: boolean
 }
 
-const ModalBlock = styled.div`
+type ModalBlockProps = {
+  open: boolean
+}
+
+const ModalWrapper = styled.div<ModalBlockProps>`
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  height: 100%;
+  transition: 0.5s ease;
+  z-index: 901;
+  ${props =>
+    props.open && 
+    css`
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      z-index: 901;
+      display: flex;
+      justify-content: center;
+    `}
+`
+
+const ModalBlock = styled.div<ModalBlockProps>`
   width: 100%;
   max-width: var(--maxWidth);
   height: 96%;
   position: relative;
   overflow: auto;
-  top: 4%;
+  top: 100%;
   border-radius: 20px 20px 0 0;
   z-index: 999;
   background: white;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.16);
+
+  transition: 0.3s ease;
 
   & > header {
     margin-bottom: 28px;
@@ -32,6 +61,12 @@ const ModalBlock = styled.div`
       margin: 0
     }
   }
+
+  ${props =>
+    props.open && 
+    css`
+      top: 4%;
+    `}
 `
 
 const ButtonGroup = styled.section`
@@ -68,7 +103,18 @@ const CustomBtn = styled.button<BtnProps>`
     `}
 `
 
-export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): void, item: Item}) {
+export default function RegisterModal({open, setOpen, item}: {open: boolean, setOpen(flag: boolean): void, item: Item}) {
+  return (
+    <ModalWrapper open={open}>
+      <ModalBlock id ="register-modal" open={open}>
+        {open && <ModalContent item={item}></ModalContent>}
+      </ModalBlock>
+      {open && <Background onClick={() => setOpen(false)}/>}
+    </ModalWrapper>
+  )
+}
+
+function ModalContent ({item}: {item: Item}) {
   const [load, setLoad] = React.useState(true)
   const [page, setPage] = React.useState(1);
 
@@ -80,7 +126,7 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
         setPage(2)
       }
     }
-    return () => setLoad(false)
+    return () => {setLoad(false)}
   }, [item.hasBuildingAccessibility, item.hasPlaceAccessibility, load])
 
   React.useEffect(() => {
@@ -192,79 +238,112 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
   }
 
   return (
-    <div id="register-modal">
-      <ModalBlock>
-        {page === 1 && (
-          <>
-            <header>
-              <h3 className="title3">{limitText(item.place.name)} 장소가 있는 건물</h3>
-              <p className="register-modal__address">{item.place.address}</p>
-            </header>
-            <main>
-              <section>
-                <section className="register-modal__info">
-                  <img src="./assets/png/flag.png" alt="flag" />
-                  <p className="register-modal__info__title">앗, 이 건물의 첫 번째 정복자세요!</p>
-                  <p className="register-modal__info__description"><strong>{item.place.name}</strong>의 정보를 등록하기 전, 이 건물에 대해 알려 주시겠어요?</p>
-                </section>
-                {building && quesiton_building.map((q, i) => (
-                  <section className="register-modal__question" key={i}>
-                    <p className="question__title">{q.quesiton}</p>
-                    <ButtonGroup>
-                      {q.buttons.map((b, i) => (
-                        <CustomBtn key={i} onClick={() => setBuilding({...building, [q.attribute]: b.value})} active={building[q.attribute] === b.value}>{b.text}</CustomBtn>
-                      ))}
-                    </ButtonGroup>
-                  </section>
-                ))}
-              </section>
-              <footer className="register-modal__footer">
+    <>
+        {page === 1 && building && (
+          <ModalContentLayout
+            header={
+              <>
+                <h3 className="title3">{limitText(item.place.name)} 장소가 있는 건물</h3>
+                <p className="register-modal__address">{item.place.address}</p>
+              </>
+            }
+            info = {
+              <>
+                <img src="./assets/png/flag.png" alt="flag" />
+                <p className="register-modal__info__title">앗, 이 건물의 첫 번째 정복자세요!</p>
+                <p className="register-modal__info__description"><strong>{item.place.name}</strong>의 정보를 등록하기 전, 이 건물에 대해 알려 주시겠어요?</p>
+              </>
+            }
+            footer = {
+              <>
                 {item.hasPlaceAccessibility &&
-                  <>
-                     <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
-                  </>
+                      <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
                 }
                 {!item.hasPlaceAccessibility &&
                   <>
-                    <button onClick={skipAction}>건너뛰기</button>
                     <button className="next-btn" onClick={nextAction}>다음</button>
+                    <p style={{textAlign: 'center', marginTop: '24px', color: '#6A6A73', fontSize: '18px', fontWeight: 500}} onClick={skipAction}>건너뛰기</p>
                   </>
                 }
-              </footer>
-            </main>
-          </>
+              </>
+            }
+            obj = {building}
+            setObj={setBuilding}
+            question={quesiton_building}
+          />
         )}
         {page === 2 && (
-          <>
-            <header>
-              <h3 className="title3">{item.place.name}</h3>
-              <p className="register-modal__address">{item.place.address}</p>
-            </header>
-            <main>
-              <section>
-                <section className="register-modal__info">
-                  <img src="./assets/png/flag.png" alt="flag" />
-                  <p className="register-modal__info__title">이 장소의 접근성 정보를 알려주세요</p>
-                </section>
-                {place && quesiton_place.map((q, i) => (
-                  <section className="register-modal__question" key={i}>
-                    <p>{q.quesiton}</p>
-                    <ButtonGroup>
-                      {q.buttons.map((b, i) => (
-                        <CustomBtn key={i} onClick={() => setPlace({...place, [q.attribute]: b.value})} active={place[q.attribute] === b.value}>{b.text}</CustomBtn>
-                      ))}
-                    </ButtonGroup>
-                  </section>
-                ))}
-              </section>
-              <footer className="register-modal__footer">
-                <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
-              </footer>
-            </main>
-          </>
+          <ModalContentLayout
+            header={
+              <>
+                <h3 className="title3">{item.place.name}</h3>
+                <p className="register-modal__address">{item.place.address}</p>
+              </>
+            }
+            info = {
+              <>
+                <img src="./assets/png/flag.png" alt="flag" />
+                <p className="register-modal__info__title">이 장소의 접근성 정보를 알려주세요</p>
+              </>
+            }
+            footer = {
+              <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
+            }
+            obj = {place}
+            setObj={setPlace}
+            question={quesiton_place}
+          />
         )}
-      </ModalBlock>
-      <section onClick={() => setOpen(false)} style={{zIndex: 900, position: 'fixed', width: '100%', height: '100%', top: 0, left: 0}} />
-    </div>
+      </>
+  )
+}
+
+type Button = {
+  text: string
+  value: number | boolean
+}
+
+type Question = {
+  quesiton: string,
+  attribute: string,
+  buttons: Button[]
+}
+
+type ModalContentLayoutProps = {
+  header: React.ReactElement
+  info: React.ReactElement
+  obj: RegisterAccessibilityParams_RegisterPlaceAccessibilityParams | RegisterAccessibilityParams_RegisterBuildingAccessibilityParams
+  question: Question[]
+  footer: React.ReactElement
+  setObj(obj: any): void
+}
+
+function ModalContentLayout({header, info, obj, question, footer, setObj}: ModalContentLayoutProps) {
+  return (
+    <>
+    <header>
+      {header}
+    </header>
+    <main>
+      <section>
+        <section className="register-modal__info">
+          {info}
+        </section>
+        {obj && question.map((q, i) => (
+              <section className="register-modal__question" key={i}>
+                <p className="question__title">{q.quesiton}</p>
+                <ButtonGroup>
+                  {q.buttons.map((b, i) => (
+                    <CustomBtn key={i} onClick={() => setObj({...obj, [q.attribute]: b.value})} active={obj[q.attribute] === b.value}>{b.text}</CustomBtn>
+                  ))}
+                </ButtonGroup>
+              </section>
+            ))}
+      </section>
+      <footer className="register-modal__footer">
+        {footer}
+      </footer>
+    </main>
+    </>
   )
 }

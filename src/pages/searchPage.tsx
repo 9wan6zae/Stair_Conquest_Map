@@ -43,7 +43,21 @@ export default function SearchPage() {
     }
   );
 
-  const [selectItem, setSelectItem] = useState<Item>();
+  const [selectItem, setSelectItem] = useState<Item>(
+    {
+      place: {
+        id: '',
+        name: '',
+        address: ''
+      },
+      building: {
+        id: '',
+        address: ''
+      },
+      hasBuildingAccessibility: false,
+      hasPlaceAccessibility: false
+    },
+  );
 
   const {searchText} = params
 
@@ -200,7 +214,7 @@ export default function SearchPage() {
           </ItemBox>
         ))
       )}
-      {open && selectItem && (<RegisterModal item={selectItem} setOpen={setOpen}></RegisterModal>)}
+      <RegisterModal open={open} item={selectItem} setOpen={setOpen}></RegisterModal>
     </>
   )
 }

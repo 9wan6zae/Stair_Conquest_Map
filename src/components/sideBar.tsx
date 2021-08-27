@@ -21,15 +21,15 @@ const SideBarBlock = styled.div<SideBarBlockProps>`
       right: 0;
     `}
 `
-const Background = styled.div`
+export const Background = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 901;
   width: 100%;
   height: 100%;
-  background: #1067CD;
-  opacity: 0.6;
+  background: rgba(16, 103, 205, 0.6);
+  backdrop-filter: blur(16px);
 `
 
 type SideBarProps = {
