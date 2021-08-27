@@ -14,54 +14,9 @@ import SearchPage from './pages/searchPage';
 import RegisterCompletePage from './pages/registerCompletePage';
 import AccessibilityPage from './pages/accessibilityPage';
 
-import styled, {css} from 'styled-components';
-
-type SideProps = {
-  width: string
-  left: boolean
-}
-
-const Side = styled.aside<SideProps>`
-  position: fixed;
-  top: 0;
-  width: ${props => props.width};
-  height: ${window.innerHeight}px;
-  background: rgb(242, 242, 245);
-  z-index: 6;
-
-  ${props => props.left && css `
-    left: 0
-  `}
-  ${props => !props.left && css `
-    right: 0
-  `}
-`
-
 function App() {
-
-  const [sideOption, setSideOption] = React.useState<SideProps>(
-    {
-      width: '',
-      left: true
-    }
-  )
-
-  const setSideWidth = () => {
-    const width = window.innerWidth > 450 ? `${(window.innerWidth - 450) / 2}px` : `0px`
-    setSideOption({...sideOption,  width })
-  }
-
-  React.useEffect(() => {
-    setSideWidth()
-    window.addEventListener('resize', () => {
-      setSideWidth()
-    })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   return (
     <div className="App__wrapper">
-      <Side left={true} width={sideOption.width} />
       <main className="App_content">
         <BrowserRouter>
           <Switch>
@@ -76,7 +31,6 @@ function App() {
           </Switch>
         </BrowserRouter>
       </main>
-      <Side left={false} width={sideOption.width} />
     </div>
   );
 }
