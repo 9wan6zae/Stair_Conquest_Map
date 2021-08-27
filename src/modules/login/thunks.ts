@@ -9,11 +9,11 @@ export function loginUserThunk(nickname: string, password: string): ThunkAction<
     const { request, success, failure } = loginUserAsync;
     dispatch(request());
     try {
-      const response = await loginAPI.login(nickname, password);
+      const response = await loginAPI.login({nickname, password});
       if (response.status === 200) {
         localStorage.setItem("access_token", response.headers["x-ourmap-access-key"]);
-        console.log('success')
         dispatch(success(true));
+        document.location.href="/"
       }
     } catch (e) {
       console.log(e)

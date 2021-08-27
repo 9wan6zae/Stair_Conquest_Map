@@ -14,7 +14,7 @@ const InputBlock = styled.input`
   align-items: center;
   padding: 0 24px;
 
-  color: #9797A6;
+  color: #000;
   font-size: 18px;
   font-weight: 500;
 
@@ -23,7 +23,10 @@ const InputBlock = styled.input`
 
   &:focus {
     border: 2px solid #D0D0D9;
-    color: #000;
+  }
+
+  &::placeholder {
+    color: #9797A6;
   }
 `
 
