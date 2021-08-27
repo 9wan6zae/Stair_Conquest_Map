@@ -82,7 +82,7 @@ const BgBox = styled.figure`
 
 export default function Animation() {
 
-  const character = ['old', 'wheelChair', 'baby']
+  const character = ['old', 'wheelchair', 'baby']
   const [imgUrl, setImgUrl] = useState("/assets/svg/old.svg")
   const [count, setCount] = useState(0);
   const [change, setChange] = useState(false);
