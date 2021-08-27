@@ -17,7 +17,7 @@ const ModalBlock = styled.div`
   position: absolute;
   top: 2%;
   border-radius: 20px 20px 0 0;
-  z-index: 99999;
+  z-index: 999;
   background: white;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.16);
 
@@ -259,7 +259,7 @@ export default function RegisterModal({setOpen, item}: {setOpen(flag: boolean): 
           </>
         )}
       </ModalBlock>
-      <section onClick={() => setOpen(false)} style={{zIndex: 9999, position: 'fixed', width: '100%', height: '100%', top: 0, left: 0}} />
+      <section onClick={() => setOpen(false)} style={{zIndex: 900, position: 'fixed', width: '100%', height: '100%', top: 0, left: 0}} />
     </div>
   )
 }
