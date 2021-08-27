@@ -113,7 +113,7 @@ export default function Animation() {
 
   return (
     <div>
-      <div style={{position: 'relative', width: '100%'}}>
+      <div style={{position: 'relative', width: '100%', overflow: 'hidden'}}>
         <BgBox />
         {change && (
           <>
