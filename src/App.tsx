@@ -17,6 +17,7 @@ import AccessibilityPage from './pages/accessibilityPage';
 function App() {
   return (
     <div id="App__wrapper">
+      <section id="App_bg" />
       <main id="App_content">
         <BrowserRouter>
           <Switch>
@@ -30,7 +31,9 @@ function App() {
             <Route component={() => <Redirect to="/" />} />
           </Switch>
         </BrowserRouter>
+        {/* <div style={{height: '100px'}} /> */}
       </main>
+      
     </div>
   );
 }
