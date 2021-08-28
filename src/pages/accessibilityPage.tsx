@@ -15,6 +15,7 @@ const TitleSection = styled.section`
 `
 
 const Division = styled.section`
+  box-sizing: border-box;
   width: 100%;
   max-width: var(--maxWidth);
   border: 2px solid #EAEAEF;
@@ -204,13 +205,16 @@ export default function AccessibilityPage() {
   ]
 
   React.useEffect(() => {
+    if (item === undefined) {
+      window.location.href = '/'
+    }
     accessibilityAPI.getAccessibility({
       placeId: `${item?.place.id}`
     }).then(res => {console.log(res.data); setAccessibility(res.data)})
   }, [item])
 
   return (
-    <div style={{background: '#F2F2F5', height: "100vh"}}>
+    <div style={{background: '#F2F2F5'}}>
       <MainHeader />
       <TitleSection>
         <p className="title3">{item?.place.name}</p>
