@@ -54,6 +54,7 @@ const LoginFooter = styled.footer`
   padding: 0 20px;
   box-sizing: border-box;
   width: 100%;
+  max-width: var(--maxWidth);
   bottom: 20px;
   display: flex;
   flex-direction: column;

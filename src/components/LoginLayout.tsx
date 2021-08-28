@@ -33,7 +33,7 @@ type LayoutProps = {
 
 export default function LoginLayout({title, description, content, footer}: LayoutProps) {
   return (
-    <>
+    <div style={{height: '100vh'}}>
       <AppHeader title={title}></AppHeader>
       <MainBlock>
         <section className="login__title_section">
@@ -43,6 +43,6 @@ export default function LoginLayout({title, description, content, footer}: Layou
         {content}
       </MainBlock>
       {footer}
-    </>
+    </div>
   )
 }
