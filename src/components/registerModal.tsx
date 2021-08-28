@@ -16,12 +16,12 @@ type ModalBlockProps = {
 }
 
 const ModalWrapper = styled.div<ModalBlockProps>`
-  position: absolute;
+  position: fixed;
   top: 100%;
   width: 100%;
   height: 100%;
-  transition: 0.5s ease;
   z-index: 901;
+  transition: 0.6s ease
   ${props =>
     props.open && 
     css`
