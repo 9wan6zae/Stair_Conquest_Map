@@ -24,7 +24,7 @@ const initState: ItemState = {
   item: undefined
 }
 
-function counter(state: ItemState = initState, action: ItemAction): ItemState {
+function item(state: ItemState = initState, action: ItemAction): ItemState {
   switch(action.type) {
     case SET:
       return {item: action.selectedItem}
@@ -35,4 +35,4 @@ function counter(state: ItemState = initState, action: ItemAction): ItemState {
   }
 }
 
-export default counter
+export default item
