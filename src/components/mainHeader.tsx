@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import styled, {css} from 'styled-components';
 import { ReactComponent as MenuBtn} from './svg/menu.svg'
-import { Link } from 'react-router-dom';
 
 import SideBar from './sideBar';
 
@@ -79,17 +78,16 @@ export default function MainHeader({children}: {children: React.ReactChild}) {
     },
   ]
 
-  const updateScoll = (content: any) => {
-    let scollPosition = (content.scrollTop || document.documentElement.scrollTop)
+  const updateScoll = () => {
+    let scollPosition = (window.scrollY || document.documentElement.scrollTop)
     setChange(scollPosition > 30)
   }
 
   useEffect(() => {
     if (scroll && load) {
-      const content = document.getElementById("App_content")
-      updateScoll(content)
-      content?.addEventListener('scroll', () => {
-        updateScoll(content)
+      updateScoll()
+      window.addEventListener('scroll', () => {
+        updateScoll()
       })
     }
     return () => setLoad(false)
@@ -107,7 +105,7 @@ export default function MainHeader({children}: {children: React.ReactChild}) {
     <>
       <HeaderBlock change={ !scroll || change } >
         <main>
-          <Link to="/"><p className="title4">계단 정복 지도</p></Link>
+          <a href="/"><p className="title4">계단 정복 지도</p></a>
           <MenuBtn stroke = { !scroll || change ? 'black' : '#1067CD'} onClick={() => setOpen(true)}/>
         </main>
       </HeaderBlock>
