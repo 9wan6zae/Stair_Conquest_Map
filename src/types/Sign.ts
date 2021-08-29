@@ -1,6 +1,9 @@
+import { StringValue } from "./Model";
+
+
 export interface SignUpParams {
   nickname: string;
-  instagramId: string | undefined;
+  instagramId: StringValue | undefined;
   password: string;
 }
 
