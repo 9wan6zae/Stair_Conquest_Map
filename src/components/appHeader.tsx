@@ -45,7 +45,6 @@ export default function AppHeader({title}: HeaderProps) {
           <b className="title5">{title}</b>
         </main>
       </HeaderBlock>
-      <div style={{height: '56px'}} />
     </>
   )
 }
