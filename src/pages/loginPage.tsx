@@ -50,12 +50,11 @@ const SignUpLinkBtn = styled.button`
 `
 
 const LoginFooter = styled.footer`
-  position: absolute;
   padding: 0 20px;
+  padding-bottom: 20px;
   box-sizing: border-box;
   width: 100%;
   max-width: var(--maxWidth);
-  bottom: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -77,9 +76,9 @@ const LoginLink = styled(Link)`
 
 export default function LoginPage() {
 
-  const loginSuccess = useSelector((state: RootState) => state.login.loginSuccess);
+  const loginError = useSelector((state: RootState) => state.login.loginError);
   const dispatch = useDispatch();
-  const {success} = loginUserAsync
+  const [alert, setAlert] = React.useState('')
 
   const [account, setAccount] = useState<LoginParams>({
     nickname: '',
@@ -87,6 +86,15 @@ export default function LoginPage() {
   });
   
   const {nickname, password} = account
+
+  React.useEffect(() => {
+    if (loginError) {
+      setAlert('아이디 혹은 비밀번호를 다시 한 번 확인해주세요.')
+      setTimeout(() => {
+        setAlert('')
+      }, 3000)
+    }
+  }, [loginError])
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -126,6 +134,7 @@ export default function LoginPage() {
               <InputBox placeholder="비밀번호" type="password" name="password" value={password} onChange={onChange} clearInfo={clearInfo}/>
             </InputSection>
             <LoginBtn active={checkBtnActive(nickname, password)} onClick={() => login()}>로그인</LoginBtn>
+            <p style={{marginTop: '16px', fontSize: '14px', color: '#DB0B24', textAlign: 'center'}}>{alert}</p>
           </>
         }
         footer = {
