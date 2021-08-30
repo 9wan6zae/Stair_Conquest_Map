@@ -4,9 +4,11 @@ import styled from 'styled-components';
 
 const MainBlock = styled.main`
   position: relative;
+  
   width: 100%;
   max-width: var(--maxWidth);
   padding: 0 20px;
+  padding-top: 56px;
   box-sizing: border-box;
 
   .login__title_section {
@@ -33,8 +35,9 @@ type LayoutProps = {
 
 export default function LoginLayout({title, description, content, footer}: LayoutProps) {
   return (
-    <div style={{height: '100vh'}}>
+    <>
       <AppHeader title={title}></AppHeader>
+      <section style={{height: '100vh', display: 'flex', flexDirection: 'column', justifyContent: 'space-between'}}>
       <MainBlock>
         <section className="login__title_section">
           <p className="title4 login__title">계단정복지도</p>
@@ -43,6 +46,7 @@ export default function LoginLayout({title, description, content, footer}: Layou
         {content}
       </MainBlock>
       {footer}
-    </div>
+      </section>
+    </>
   )
 }
