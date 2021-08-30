@@ -3,8 +3,11 @@ import * as accessibilityAPI from "../api/accessibility"
 import { useSelector } from 'react-redux';
 import { RootState } from '../modules';
 import { GetAccessibilityResult } from '../types/Accessibility';
+import { BuildingAccessibility, PlaceAccessibility } from "../types/Model";
 import MainHeader from '../components/mainHeader';
 import styled, {css} from 'styled-components';
+import { Item } from '../types/SearchPlaces';
+import RegisterModal from '../components/registerModal';
 
 const TitleSection = styled.section`
   width: 100%;
@@ -221,84 +224,111 @@ export default function AccessibilityPage() {
         <p className="description">{item?.place.address}</p>
       </TitleSection>
       <Division />
-      <AccessibilityInfo>
-        <section className="accessibility__header">
-          <img src="./assets/svg/ic_building.svg" alt="building" />
-          <div>
-            <p className="accessibility__title">건물 정보</p>
-            {accessibility?.buildingAccessibility?.registeredUserName && 
-              <p className="accessibility__description">건물 정복자 <span className="accessibility__user">{accessibility?.buildingAccessibility?.registeredUserName?.value}</span> </p>
-            }
-            {!accessibility?.buildingAccessibility?.registeredUserName && 
-              <p className="accessibility__not_info">등록된 정보가 없어요</p>
-            }
-          </div>
-        </section>
-        <section className="accessibility__info">
-          {accessibility?.buildingAccessibility && buildingAttributes?.map((att, key) => (
-            <section key={key} className="accessibility__form">
-              {accessibility.buildingAccessibility && (
-                <>
-                  <div className="title">
-                    <img src={att.icon[accessibility.buildingAccessibility[att.key]]} alt="icon" />
-                    <div>
-                      <p>{att.title}</p>
-                      <p>{att.info[accessibility.buildingAccessibility[att.key]]}</p>
-                    </div>
-                  </div>
-                  <SymbolWrapper status={att.icon[accessibility.buildingAccessibility[att.key]]}>
-                    <img src={att.symbol[accessibility.buildingAccessibility[att.key]]} alt="symbol" />
-                  </SymbolWrapper>
-                </>
-              )}
-            </section>
-          ))}
-          {!accessibility?.buildingAccessibility &&
-            <section className="accessibility__form">
-              <p>건물의 정보를 등록하고 정복해 보세요</p>
-            </section>
-          }
-        </section>
-      </AccessibilityInfo>
-      <AccessibilityInfo>
+      <AccessibilityLayout
+        type = "건물"
+        item = {item}
+        accessibility = {accessibility?.buildingAccessibility}
+        attribute = {buildingAttributes}
+      />
+      <AccessibilityLayout
+        type = "장소"
+        item = {item}
+        accessibility = {accessibility?.placeAccessibility}
+        attribute = {placeAttributes}
+      />
+    </div>
+  )
+}
+
+type Attribute = {
+  key: string,
+  title: string,
+  info: { 
+    [key: string]: string,
+    true: string,
+    undefined: string,
+    LESS_THAN_FIVE: string,
+    OVER_TEN: string
+  },
+  icon: {
+    [key: string]: string,
+    true: string,
+    undefined: string,
+    LESS_THAN_FIVE: string,
+    OVER_TEN: string
+  },
+  symbol: {
+    [key: string]: string,
+    true: string,
+    undefined: string,
+    LESS_THAN_FIVE: string,
+    OVER_TEN: string
+  }
+}
+
+type AccessibilityLayoutProps = {
+  type: string
+  item: Item | undefined
+  attribute: Attribute[],
+  accessibility: BuildingAccessibility | PlaceAccessibility | undefined
+}
+
+function AccessibilityLayout({type, item, accessibility, attribute}: AccessibilityLayoutProps) {
+  const [open, setOpen] = React.useState(false);
+  return (
+    <AccessibilityInfo>
         <section className="accessibility__header">
           <img src="./assets/svg/ic_place.svg" alt="building" />
           <div>
-            <p className="accessibility__title"><b>{item?.place.name}</b> 장소 정보</p>
-            {accessibility?.placeAccessibility?.registeredUserName && 
-              <p className="accessibility__description">장소 정복자 <span className="accessibility__user">{accessibility?.placeAccessibility?.registeredUserName?.value}</span> </p>
+            <p className="accessibility__title"><b>{item?.place.name}</b> {type} 정보</p>
+            {accessibility && 
+              <p className="accessibility__description">{type} 정복자
+                {
+                  accessibility?.registeredUserName &&
+                  <span className="accessibility__user">{accessibility?.registeredUserName?.value}</span>
+                }
+                {
+                  !accessibility?.registeredUserName &&
+                  <span className="accessibility__user" style={{color: '#6A6A73'}}>익명 비밀요원</span>
+                }
+              </p>
             }
-            {!accessibility?.placeAccessibility?.registeredUserName && 
+            {!accessibility &&
               <p className="accessibility__not_info">등록된 정보가 없어요</p>
             }
           </div>
         </section>
+        <button onClick={() =>  setOpen(!open)}>test</button>
+        {item && <RegisterModal
+          open={open}
+          setOpen={setOpen}
+          item={item}
+        />}
         <section className="accessibility__info">
-          {accessibility?.placeAccessibility && placeAttributes?.map((att, key) => (
+          {accessibility && attribute?.map((att, key) => (
             <section key={key} className="accessibility__form">
-              {accessibility.placeAccessibility && (
+              {accessibility && (
                 <>
                   <div className="title">
-                    <img src={att.icon[accessibility.placeAccessibility[att.key]]} alt="icon" />
+                    <img src={att.icon[accessibility[att.key]]} alt="icon" />
                     <div>
                       <p>{att.title}</p>
-                      <p>{att.info[accessibility.placeAccessibility[att.key]]}</p>
+                      <p>{att.info[accessibility[att.key]]}</p>
                     </div>
                   </div>
-                  <SymbolWrapper status={att.icon[accessibility.placeAccessibility[att.key]]}>
-                    <img src={att.symbol[accessibility.placeAccessibility[att.key]]} alt="symbol" />
+                  <SymbolWrapper status={att.icon[accessibility[att.key]]}>
+                    <img src={att.symbol[accessibility[att.key]]} alt="symbol" />
                   </SymbolWrapper>
                 </>
               )}
             </section>
           ))}
-          {!accessibility?.placeAccessibility &&
+          {!accessibility &&
             <section className="accessibility__form">
-              <p>장소의 정보를 등록하고 정복해 보세요</p>
+              <p>장소의 {type}를 등록하고 정복해 보세요</p>
             </section>
           }
         </section>
       </AccessibilityInfo>
-    </div>
   )
 }

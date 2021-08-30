@@ -32,6 +32,7 @@ export interface GetAccessibilityParams {
 }
 
 export interface GetAccessibilityResult {
+  [key: string]: BuildingAccessibility | PlaceAccessibility | undefined
   /** 정보가 아직 채워지지 않았으면 null */
   buildingAccessibility: BuildingAccessibility | undefined;
   /** 정보가 아직 채워지지 않았으면 null */
