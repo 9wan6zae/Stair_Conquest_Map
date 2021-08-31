@@ -138,16 +138,17 @@ function ModalContent ({item}: {item: Item}) {
     {
       placeId: item.place.id,
       isFirstFloor: true,
-      hasStair: true,
-      isWheelchairAccessible: true
+      stairInfo: 1,
+      hasSlope: true,
     }
   )
   const [building, setBuilding] = React.useState<RegisterAccessibilityParams_RegisterBuildingAccessibilityParams | undefined>(
     {
       buildingId: item.building.id,
+      entranceStairInfo: 1,
+      hasSlope: true,
       hasElevator: true,
-      hasObstacleToElevator: true,
-      stairInfo: 1
+      elevatorStairInfo: 1
     }
   );
 
@@ -174,15 +175,24 @@ function ModalContent ({item}: {item: Item}) {
   const quesiton_building = [
     {
       quesiton: "이 건물 입구에 계단이 있나요?",
-      attribute: "stairInfo",
+      attribute: "entranceStairInfo",
       buttons: [
-        {text: "5칸 미만", value: 1},
-        {text: "5칸 이상", value: 2},
+        {text: "1칸", value: 1},
+        {text: "2~5칸", value: 2},
+        {text: "6칸 이상", value: 3},
         {text: "없어요", value: 0}
       ]
     },
     {
-      quesiton: "이 건물 엘리베이터가 있나요?",
+      quesiton: "이 건물 입구에 경사로가 있나요?",
+      attribute: "hasSlope",
+      buttons: [
+        {text: "있어요", value: true},
+        {text: "없어요", value: false}
+      ]
+    },
+    {
+      quesiton: "이 건물에 엘리베이터가 있나요?",
       attribute: "hasElevator",
       buttons: [
         {text: "있어요", value: true},
@@ -191,10 +201,12 @@ function ModalContent ({item}: {item: Item}) {
     },
     {
       quesiton: "엘리베이터까지 가는 길에 계단이 있나요?",
-      attribute: "hasObstacleToElevator",
+      attribute: "elevatorStairInfo",
       buttons: [
-        {text: "있어요", value: true},
-        {text: "없어요", value: false}
+        {text: "1칸", value: 1},
+        {text: "2~5칸", value: 2},
+        {text: "6칸 이상", value: 3},
+        {text: "없어요", value: 0}
       ]
     },
   ]
@@ -210,18 +222,20 @@ function ModalContent ({item}: {item: Item}) {
     },
     {
       quesiton: "입구로 들어가는 길에 계단이 있나요?",
-      attribute: "hasStair",
+      attribute: "stairInfo",
       buttons: [
-        {text: "있어요", value: true},
-        {text: "없어요", value: false}
+        {text: "1칸", value: 1},
+        {text: "2~5칸", value: 2},
+        {text: "6칸 이상", value: 3},
+        {text: "없어요", value: 0}
       ]
     },
     {
-      quesiton: "휠체어로 이용가능한 곳인가요?",
-      attribute: "isWheelchairAccessible",
+      quesiton: "입구로 들어가는 길에 경사로가 있나요?",
+      attribute: "hasSlope",
       buttons: [
-        {text: "가능해요", value: true},
-        {text: "불가능해요", value: false}
+        {text: "있어요", value: true},
+        {text: "없어요", value: false}
       ]
     },
   ]
