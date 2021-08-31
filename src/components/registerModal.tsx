@@ -70,9 +70,10 @@ const ModalBlock = styled.div<ModalBlockProps>`
 `
 
 const ButtonGroup = styled.section`
+  position: relative;
   width: 100%;
-  height: 56px;
   display: flex;
+  flex-flow: wrap;
   justify-content: space-between;
   margin-top: 20px;
 `
@@ -81,12 +82,14 @@ const CustomBtn = styled.button<BtnProps>`
   min-width: 100px;
   width: 100%;
   height: 54px;
+  max-width: 48%;
   background: #F2F2F5;
   border-radius: 20px;
   box-sizing: border-box;
   color: #B5B5C0;
   border: none;
-  margin-right: 16px;
+
+  margin-bottom: 12px;
 
   font-size: 16px;
   font-weight: 500;
