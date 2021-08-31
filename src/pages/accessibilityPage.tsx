@@ -102,7 +102,54 @@ export default function AccessibilityPage() {
   const item = useSelector((state: RootState) => state.item.item);
   const [accessibility, setAccessibility] = React.useState<GetAccessibilityResult | undefined>()
 
+  const attributeStairInfo = {
+    undefined: "계단 없음",
+    ONE: "계단 1칸",
+    TWO_TO_FIVE: "계단 2~5칸",
+    OVER_SIX: "계단 6칸 이상"
+  }
+
+  const attributeStairIcon = {
+    undefined: './assets/svg/ic_check.svg',
+    ONE: './assets/svg/ic_check.svg',
+    TWO_TO_FIVE: './assets/svg/ic_x.svg',
+    OVER_SIX: './assets/svg/ic_x.svg'
+  }
+
+  const attributeStairSymbol = {
+    undefined: './assets/svg/accessibility/ic_stair_true.svg',
+    ONE: './assets/svg/accessibility/ic_stair_true.svg',
+    TWO_TO_FIVE: './assets/svg/accessibility/ic_stair_false.svg',
+    OVER_SIX: './assets/svg/accessibility/ic_stair_false.svg'
+  }
+
+  const attributeIcon = {
+    true: './assets/svg/ic_check.svg',
+    undefined: './assets/svg/ic_x.svg'
+  }
+
+
   const buildingAttributes: any[] = [
+    {
+      key: "entranceStairInfo",
+      title: "건물 입구에",
+      info: attributeStairInfo,
+      icon: attributeStairIcon,
+      symbol: attributeStairSymbol
+    },
+    {
+      key: "hasSlope",
+      title: "건물 입구에",
+      info: { 
+        true: "경사로 있음",
+        undefined: "경사로 없음"
+      },
+      icon: attributeIcon,
+      symbol: {
+        true: './assets/svg/accessibility/ic_slope_true.svg',
+        undefined: './assets/svg/accessibility/ic_slope_false.svg',
+      }
+    },
     {
       key: "hasElevator",
       title: "엘리베이터",
@@ -110,99 +157,56 @@ export default function AccessibilityPage() {
         true: "있음",
         undefined: "없음"
       },
-      icon: {
-        true: './assets/svg/ic_check.svg',
-        undefined: './assets/svg/ic_x.svg'
-      },
+      icon: attributeIcon,
       symbol: {
         true: './assets/svg/accessibility/ic_elevator_true.svg',
         undefined: './assets/svg/accessibility/ic_elevator_false.svg',
       }
     },
     {
-      key: "hasObstacleToElevator",
+      key: "elevatorStairInfo",
       title: "엘리베이터까지",
-      info: { 
-        true: "계단 있음",
-        undefined: "계단 없음"
-      },
-      icon: {
-        true: './assets/svg/ic_x.svg',
-        undefined: './assets/svg/ic_check.svg'
-      },
-      symbol: {
-        true: './assets/svg/accessibility/ic_stair_false.svg',
-        undefined: './assets/svg/accessibility/ic_stair_true.svg',
-      }
-    },
-    {
-      key: "stairInfo",
-      title: "건물 1층까지",
-      info: { 
-        undefined: "계단 없음",
-        LESS_THAN_FIVE: "계단 5칸 미만",
-        OVER_TEN: "계단 5칸 이상"
-      },
-      icon: {
-        undefined: './assets/svg/ic_check.svg',
-        LESS_THAN_FIVE: './assets/svg/ic_check.svg',
-        OVER_TEN: './assets/svg/ic_x.svg'
-      },
-      symbol: {
-        undefined: './assets/svg/accessibility/ic_building_true.svg',
-        LESS_THAN_FIVE: './assets/svg/accessibility/ic_building_true.svg',
-        OVER_TEN: './assets/svg/accessibility/ic_building_false.svg',
-      }
+      info: attributeStairInfo,
+      icon: attributeStairIcon,
+      symbol: attributeStairSymbol
     }
   ]
 
   const placeAttributes: any[] = [
     {
       key: "isFirstFloor",
-      title: "장소가",
+      title: "층 정보",
       info: { 
         true: "1층에 있음",
-        undefined: "1층이 아님"
+        undefined: "1층이 없음"
+      },
+      icon: attributeIcon,
+      symbol: {
+        true: './assets/svg/accessibility/ic_firstfloor_true.svg',
+        undefined: './assets/svg/accessibility/ic_firstfloor_false.svg',
+      }
+    },
+    {
+      key: "stairInfo",
+      title: "장소 입구에",
+      info: attributeStairInfo,
+      icon: attributeStairIcon,
+      symbol: attributeStairSymbol
+    },
+    {
+      key: "hasSlope",
+      title: "장소 입구에",
+      info: { 
+        true: '경사로 있음',
+        undefined: '경사로 없음'
       },
       icon: {
         true: './assets/svg/ic_check.svg',
         undefined: './assets/svg/ic_x.svg'
       },
       symbol: {
-        true: './assets/svg/accessibility/ic_elevator_true.svg',
-        undefined: './assets/svg/accessibility/ic_elevator_false.svg',
-      }
-    },
-    {
-      key: "hasStair",
-      title: "입구로 들어가는 길에",
-      info: { 
-        true: "계단 있음",
-        undefined: "계단 없음"
-      },
-      icon: {
-        true: './assets/svg/ic_x.svg',
-        undefined: './assets/svg/ic_check.svg'
-      },
-      symbol: {
-        true: './assets/svg/accessibility/ic_stair_false.svg',
-        undefined: './assets/svg/accessibility/ic_stair_true.svg',
-      }
-    },
-    {
-      key: "isWheelchairAccessible",
-      title: "휠체어를 이용할 수",
-      info: { 
-        true: '있음',
-        undefined: '없음'
-      },
-      icon: {
-        true: './assets/svg/ic_check.svg',
-        undefined: './assets/svg/ic_x.svg'
-      },
-      symbol: {
-        true: './assets/svg/accessibility/ic_building_true.svg',
-        undefined: './assets/svg/accessibility/ic_building_false.svg',
+        true: './assets/svg/accessibility/ic_slope_true.svg',
+        undefined: './assets/svg/accessibility/ic_slope_false.svg',
       }
     }
   ]
