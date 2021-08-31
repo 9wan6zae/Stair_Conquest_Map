@@ -36,8 +36,8 @@ export interface PlaceAccessibility {
   [key: string]: any
   id: string;
   isFirstFloor: boolean;
-  hasStair: boolean;
-  isWheelchairAccessible: boolean;
+  stairInfo: StairInfo;
+  hasSlope: boolean;
   placeId: string;
   /** 익명이면 null. */
   registeredUserName: StringValue | undefined;
@@ -47,9 +47,10 @@ export interface PlaceAccessibility {
 export interface BuildingAccessibility {
   [key: string]: any
   id: string;
+  entranceStairInfo: StairInfo;
+  hasSlope: boolean;
   hasElevator: boolean;
-  hasObstacleToElevator: boolean;
-  stairInfo: BuildingAccessibility_StairInfo;
+  elevatorStairInfo: StairInfo;
   buildingId: string;
   /** 익명이면 null. */
   registeredUserName: StringValue | undefined;
@@ -59,15 +60,39 @@ export interface BuildingAccessibility {
   totalUpvoteCount: number;
 }
 
-export enum BuildingAccessibility_StairInfo {
-  NONE = 0,
-  LESS_THAN_FIVE = 1,
-  OVER_TEN = 2,
-  UNRECOGNIZED = -1,
-}
-
 export interface Village {
   id: string;
   name: string;
   isFavoriteVillage: boolean;
+}
+
+export interface VillageRankingEntry {
+  village: Village | undefined;
+  /** 계단정복률 순위. */
+  progressRank: number;
+  /** 계단정복률. */
+  progressPercentage: string;
+}
+
+export interface SiGunGu {
+  id: string;
+  name: string;
+}
+
+export interface EupMyeonDong {
+  id: string;
+  name: string;
+  siGunGuId: string;
+}
+
+export interface AchievementBadge {
+  imageUrl: string;
+}
+
+export enum StairInfo {
+  NONE = 0,
+  ONE = 1,
+  TWO_TO_FIVE = 2,
+  OVER_SIX = 3,
+  UNRECOGNIZED = -1,
 }
