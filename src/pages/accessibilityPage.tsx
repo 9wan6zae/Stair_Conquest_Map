@@ -38,6 +38,7 @@ const AccessibilityInfo = styled.section`
     font-weight: normal;
     font-size: 20px;
     line-height: 100%;
+    margin-bottom: 10px;
   }
 
   .accessibility__description {
@@ -46,7 +47,7 @@ const AccessibilityInfo = styled.section`
     font-weight: 500;
     font-size: 16px;
     line-height: 100%;
-    color: #B5B5C0
+    color: #B5B5C0;
   }
 
   section.accessibility__header {
@@ -77,6 +78,21 @@ const AccessibilityInfo = styled.section`
     &:last-child {
       margin-bottom: 0px;
     }
+  }
+
+  p.att__title {
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  p.att__info {
+    font-family: Spoqa Han Sans Neo;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
   }
 `
 type SymbolWrapperProps = {
@@ -282,10 +298,14 @@ type AccessibilityLayoutProps = {
 
 function AccessibilityLayout({type, item, accessibility, attribute}: AccessibilityLayoutProps) {
   const [open, setOpen] = React.useState(false);
+  const setImgSrc = (type: string) => {
+    const uri = type === "건물" ? "building" : "place"
+    return  `./assets/svg/ic_${uri}.svg`
+  }
   return (
     <AccessibilityInfo>
         <section className="accessibility__header">
-          <img src="./assets/svg/ic_place.svg" alt="building" />
+          <img src={setImgSrc(type)} alt="type" />
           <div>
             <p className="accessibility__title"><b>{item?.place.name}</b> {type} 정보</p>
             {accessibility && 
@@ -318,8 +338,13 @@ function AccessibilityLayout({type, item, accessibility, attribute}: Accessibili
                   <div className="title">
                     <img src={att.icon[accessibility[att.key]]} alt="icon" />
                     <div>
-                      <p>{att.title}</p>
-                      <p>{att.info[accessibility[att.key]]}</p>
+                      <p className="att__title">{att.title}</p>
+                      { att.icon[accessibility[att.key]] !== './assets/svg/ic_x.svg' &&
+                        <p className="att__info">{att.info[accessibility[att.key]]}</p>
+                      }
+                      { att.icon[accessibility[att.key]] === './assets/svg/ic_x.svg' &&
+                        <p className="att__info" style={{color: "#DB0B24"}}>{att.info[accessibility[att.key]]}</p>
+                      }
                     </div>
                   </div>
                   <SymbolWrapper status={att.icon[accessibility[att.key]]}>
