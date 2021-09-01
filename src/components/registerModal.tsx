@@ -7,10 +7,6 @@ import * as accessibilityAPI from '../api/accessibility'
 import { RegisterAccessibilityParams, RegisterAccessibilityParams_RegisterPlaceAccessibilityParams, RegisterAccessibilityParams_RegisterBuildingAccessibilityParams } from '../types/Accessibility'
 import { Background } from './sideBar';
 
-interface BtnProps {
-  active: boolean
-}
-
 type ModalBlockProps = {
   open: boolean
 }
@@ -78,34 +74,6 @@ const ButtonGroup = styled.section`
   margin-top: 20px;
 `
 
-const CustomBtn = styled.button<BtnProps>`
-  min-width: 100px;
-  width: 100%;
-  height: 54px;
-  max-width: 48%;
-  background: #F2F2F5;
-  border-radius: 20px;
-  box-sizing: border-box;
-  color: #B5B5C0;
-  border: none;
-
-  margin-bottom: 12px;
-
-  font-size: 16px;
-  font-weight: 500;
-
-  &:last-child {
-    margin: 0;
-  }
-
-  ${props => props.active &&
-    css`
-      background: #fff;
-      border: 2px solid #1D85FF;
-      color: #1D85FF
-    `}
-`
-
 export default function RegisterModal({open, setOpen, item}: {open: boolean, setOpen(flag: boolean): void, item: Item}) {
   return (
     <ModalWrapper open={open}>
@@ -141,17 +109,17 @@ function ModalContent ({item}: {item: Item}) {
     {
       placeId: item.place.id,
       isFirstFloor: true,
-      stairInfo: 1,
+      stairInfo: 2,
       hasSlope: true,
     }
   )
   const [building, setBuilding] = React.useState<RegisterAccessibilityParams_RegisterBuildingAccessibilityParams | undefined>(
     {
       buildingId: item.building.id,
-      entranceStairInfo: 1,
+      entranceStairInfo: 2,
       hasSlope: true,
       hasElevator: true,
-      elevatorStairInfo: 1
+      elevatorStairInfo: 2
     }
   );
 
@@ -175,20 +143,22 @@ function ModalContent ({item}: {item: Item}) {
     } else return text
   }
 
-  const quesiton_building = [
+  const [quesiton_building, setQuestionBuilding] = React.useState([
     {
       quesiton: "이 건물 입구에 계단이 있나요?",
       attribute: "entranceStairInfo",
+      disabled: false,
       buttons: [
-        {text: "1칸", value: 1},
-        {text: "2~5칸", value: 2},
-        {text: "6칸 이상", value: 3},
-        {text: "없어요", value: 0}
+        {text: "1칸", value: 2},
+        {text: "2~5칸", value: 3},
+        {text: "6칸 이상", value: 4},
+        {text: "없어요", value: 1}
       ]
     },
     {
       quesiton: "이 건물 입구에 경사로가 있나요?",
       attribute: "hasSlope",
+      disabled: false,
       buttons: [
         {text: "있어요", value: true},
         {text: "없어요", value: false}
@@ -197,6 +167,7 @@ function ModalContent ({item}: {item: Item}) {
     {
       quesiton: "이 건물에 엘리베이터가 있나요?",
       attribute: "hasElevator",
+      disabled: false,
       buttons: [
         {text: "있어요", value: true},
         {text: "없어요", value: false}
@@ -205,19 +176,21 @@ function ModalContent ({item}: {item: Item}) {
     {
       quesiton: "엘리베이터까지 가는 길에 계단이 있나요?",
       attribute: "elevatorStairInfo",
+      disabled: false,
       buttons: [
-        {text: "1칸", value: 1},
-        {text: "2~5칸", value: 2},
-        {text: "6칸 이상", value: 3},
-        {text: "없어요", value: 0}
+        {text: "1칸", value: 2},
+        {text: "2~5칸", value: 3},
+        {text: "6칸 이상", value: 4},
+        {text: "없어요", value: 1}
       ]
     },
-  ]
+  ])
 
   const quesiton_place = [
     {
       quesiton: "1층에 있는 장소인가요?",
       attribute: "isFirstFloor",
+      disabled: false,
       buttons: [
         {text: "있어요", value: true},
         {text: "없어요", value: false}
@@ -226,16 +199,18 @@ function ModalContent ({item}: {item: Item}) {
     {
       quesiton: "입구로 들어가는 길에 계단이 있나요?",
       attribute: "stairInfo",
+      disabled: false,
       buttons: [
-        {text: "1칸", value: 1},
-        {text: "2~5칸", value: 2},
-        {text: "6칸 이상", value: 3},
-        {text: "없어요", value: 0}
+        {text: "1칸", value: 2},
+        {text: "2~5칸", value: 3},
+        {text: "6칸 이상", value: 4},
+        {text: "없어요", value: 1}
       ]
     },
     {
       quesiton: "입구로 들어가는 길에 경사로가 있나요?",
       attribute: "hasSlope",
+      disabled: false,
       buttons: [
         {text: "있어요", value: true},
         {text: "없어요", value: false}
@@ -249,10 +224,10 @@ function ModalContent ({item}: {item: Item}) {
     modal?.scrollTo(0, 0)
   }
 
-  const skipAction = () => {
-    nextAction()
-    setBuilding(undefined)
-  }
+  // const skipAction = () => {
+  //   nextAction()
+  //   setBuilding(undefined)
+  // }
 
   return (
     <>
@@ -279,13 +254,14 @@ function ModalContent ({item}: {item: Item}) {
                 {!item.hasPlaceAccessibility &&
                   <>
                     <button className="next-btn" onClick={nextAction}>다음</button>
-                    <p style={{textAlign: 'center', marginTop: '24px', color: '#6A6A73', fontSize: '18px', fontWeight: 500}} onClick={skipAction}>건너뛰기</p>
+                    {/* <p style={{textAlign: 'center', marginTop: '24px', color: '#6A6A73', fontSize: '18px', fontWeight: 500}} onClick={skipAction}>건너뛰기</p> */}
                   </>
                 }
               </>
             }
             obj = {building}
             setObj={setBuilding}
+            setQuestion={setQuestionBuilding}
             question={quesiton_building}
           />
         )}
@@ -323,6 +299,7 @@ type Button = {
 type Question = {
   quesiton: string,
   attribute: string,
+  disabled: boolean,
   buttons: Button[]
 }
 
@@ -333,9 +310,110 @@ type ModalContentLayoutProps = {
   question: Question[]
   footer: React.ReactElement
   setObj(obj: any): void
+  setQuestion(question: any): void
 }
 
-function ModalContentLayout({header, info, obj, question, footer, setObj}: ModalContentLayoutProps) {
+type ButtonActionProps = {
+  obj: RegisterAccessibilityParams_RegisterPlaceAccessibilityParams | RegisterAccessibilityParams_RegisterBuildingAccessibilityParams
+  attribute: string,
+  value: number | boolean,
+  setObj(obj: any): void,
+  setQuestion(question: any): void
+}
+
+ModalContentLayout.defaultProps = {
+  setQuestion() {}
+}
+
+type BtnProps = {
+  active: boolean
+  disabled: boolean
+}
+
+type QuesitonSectionProps = {
+  disabled: boolean
+}
+
+const QuesitonSection = styled.section<QuesitonSectionProps>`
+  width: 100%;
+  padding: 0 20px;
+  margin-top: 52px;
+  box-sizing: border-box;
+
+  p.question__title {
+    font-weight: 500;
+    font-size: 16px;
+    color: #000;
+  }
+
+  ${props => props.disabled &&
+  css`
+    p.question__title {
+      font-weight: 500;
+      font-size: 16px;
+      color: rgb(179, 179, 179);
+    }
+  `}
+`
+
+const CustomBtn = styled.button<BtnProps>`
+  min-width: 100px;
+  width: 100%;
+  height: 54px;
+  max-width: 48%;
+  background: #F2F2F5;
+  border-radius: 20px;
+  box-sizing: border-box;
+  color: #B5B5C0;
+  border: none;
+
+  margin-bottom: 12px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  &:last-child {
+    margin: 0;
+  }
+
+  ${props => props.active &&
+    css`
+      background: #fff;
+      border: 2px solid #1D85FF;
+      color: #1D85FF;
+    `}
+  ${props => props.disabled &&
+    css`
+      background: rgb(251, 251, 252);
+      border: none;
+      color: rgb(233, 233, 236);
+    `}
+`
+
+function ModalContentLayout({header, info, obj, question, footer, setObj, setQuestion}: ModalContentLayoutProps) {
+  const buttonAction = ({obj, attribute, value, setObj}: ButtonActionProps) => {
+    setObj({...obj, [attribute]: value})
+    if (attribute === 'hasElevator') {
+      if (!value) {
+        const tempParam = {...obj}
+        tempParam.hasElevator = value
+        tempParam.elevatorStairInfo = 0
+        setObj(tempParam)
+        const tempQuestion = [...question]
+        tempQuestion[3].disabled = true
+        setQuestion(tempQuestion)
+      }
+      else {
+        const tempParam = {...obj}
+        tempParam.hasElevator = value
+        tempParam.elevatorStairInfo = 2
+        setObj(tempParam)
+        const tempQuestion = [...question]
+        tempQuestion[3].disabled = false
+        setQuestion(tempQuestion)
+      }
+    }
+  }
   return (
     <>
     <header>
@@ -347,14 +425,14 @@ function ModalContentLayout({header, info, obj, question, footer, setObj}: Modal
           {info}
         </section>
         {obj && question.map((q, i) => (
-              <section className="register-modal__question" key={i}>
+              <QuesitonSection disabled={q.disabled} key={i}>
                 <p className="question__title">{q.quesiton}</p>
                 <ButtonGroup>
                   {q.buttons.map((b, i) => (
-                    <CustomBtn key={i} onClick={() => setObj({...obj, [q.attribute]: b.value})} active={obj[q.attribute] === b.value}>{b.text}</CustomBtn>
+                    <CustomBtn key={i} disabled={q.disabled} onClick={() => buttonAction({obj, attribute: q.attribute, value: b.value, setObj, setQuestion})} active={obj[q.attribute] === b.value}>{b.text}</CustomBtn>
                   ))}
                 </ButtonGroup>
-              </section>
+              </QuesitonSection>
             ))}
       </section>
       <footer className="register-modal__footer">

@@ -103,7 +103,8 @@ export default function AccessibilityPage() {
   const [accessibility, setAccessibility] = React.useState<GetAccessibilityResult | undefined>()
 
   const attributeStairInfo = {
-    undefined: "계단 없음",
+    undefined: "정보 없음",
+    NONE: "계단 없음",
     ONE: "계단 1칸",
     TWO_TO_FIVE: "계단 2~5칸",
     OVER_SIX: "계단 6칸 이상"
@@ -111,6 +112,7 @@ export default function AccessibilityPage() {
 
   const attributeStairIcon = {
     undefined: './assets/svg/ic_check.svg',
+    NONE: './assets/svg/ic_check.svg',
     ONE: './assets/svg/ic_check.svg',
     TWO_TO_FIVE: './assets/svg/ic_x.svg',
     OVER_SIX: './assets/svg/ic_x.svg'
@@ -118,6 +120,7 @@ export default function AccessibilityPage() {
 
   const attributeStairSymbol = {
     undefined: './assets/svg/accessibility/ic_stair_true.svg',
+    NONE: './assets/svg/accessibility/ic_stair_true.svg',
     ONE: './assets/svg/accessibility/ic_stair_true.svg',
     TWO_TO_FIVE: './assets/svg/accessibility/ic_stair_false.svg',
     OVER_SIX: './assets/svg/accessibility/ic_stair_false.svg'
@@ -302,7 +305,6 @@ function AccessibilityLayout({type, item, accessibility, attribute}: Accessibili
             }
           </div>
         </section>
-        <button onClick={() =>  setOpen(!open)}>test</button>
         {item && <RegisterModal
           open={open}
           setOpen={setOpen}

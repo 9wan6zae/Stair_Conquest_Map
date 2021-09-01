@@ -90,9 +90,10 @@ export interface AchievementBadge {
 }
 
 export enum StairInfo {
-  NONE = 0,
-  ONE = 1,
-  TWO_TO_FIVE = 2,
-  OVER_SIX = 3,
+  UNDEFINED = 0,
+  NONE = 1,
+  ONE = 2,
+  TWO_TO_FIVE = 3,
+  OVER_SIX = 4,
   UNRECOGNIZED = -1,
 }
