@@ -188,16 +188,14 @@ export default function SearchPage() {
                 <p className="search-list__info">등록된 정보가 없어요</p>
               )}
               { halfRegister(item) && (
-                <>
-                  <span className="search-list__info" style={{color: '#b5b5c0'}}>정보 등록률</span>
-                  <span className="search-list__info" style={{marginLeft: '6px'}}>50%</span>
-                </>
+                <p className="search-list__info">
+                {!item.hasBuildingAccessibility
+                ? <span> 건물 </span>
+                : <span>장소</span>}  
+                정보 필요</p>
               )}
               { fullRegister(item) && (
-                <>
-                  <span className="search-list__info" style={{color: '#b5b5c0'}}>정보 등록률</span>
-                  <span className="search-list__info" style={{marginLeft: '6px', color: '#6A6A73'}}>100%</span>
-                </>
+                <p className="search-list__info" style={{color: '#b5b5c0'}}>정보 등록 완료</p>
               )}
             </section>
             <section className="btn">
