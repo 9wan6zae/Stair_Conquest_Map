@@ -15,7 +15,7 @@ export function loginUserThunk(nickname: string, password: string): ThunkAction<
         document.location.href="/"
         setTimeout(() => {
           dispatch(success(true));
-        }, 0)
+        }, 100)
       }
     } catch (e) {
       console.log(e)
