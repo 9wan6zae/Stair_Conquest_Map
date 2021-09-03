@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import InputBox from '../components/inputBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../modules';
-import { loginUserThunk, loginUserAsync } from '../modules/login';
+import { loginUserThunk } from '../modules/login';
 import styled, {css} from 'styled-components';
 
 import LoginLayout from '../components/LoginLayout';
@@ -77,6 +77,7 @@ const LoginLink = styled(Link)`
 export default function LoginPage() {
 
   const loginError = useSelector((state: RootState) => state.login.loginError);
+  const loginSuccess = useSelector((state: RootState) => state.login.loginSuccess);
   const dispatch = useDispatch();
   const [alert, setAlert] = React.useState('')
 
@@ -120,9 +121,14 @@ export default function LoginPage() {
     return nickname !== '' && password !== ''
   }
 
+  const logout = () => {
+    window.localStorage.removeItem("access_token")
+    window.location.href = '/'
+  }
+
   return (
     <>
-      <LoginLayout
+      {!loginSuccess && <LoginLayout
         title="로그인"
         description = "로그인하고 지도를 채워주세요"
         content = {
@@ -143,7 +149,14 @@ export default function LoginPage() {
             <LoginLink to="/signUp"><SignUpLinkBtn>3초 만에 회원가입</SignUpLinkBtn></LoginLink>
           </LoginFooter>
         }
-      ></LoginLayout>
+      ></LoginLayout>}
+      {loginSuccess && <LoginLayout
+        title="로그아웃"
+        description = "로그아웃 하시겠습니까?"
+        content = {
+          <LoginBtn active={true} onClick={() => logout()}>로그아웃</LoginBtn>
+        }
+      ></LoginLayout>}
     </>
   )
 }
