@@ -55,28 +55,6 @@ export default function MainHeader({children}: {children: React.ReactChild}) {
   const [open, setOpen] = useState(false);
   const [load, setLoad] = useState(true);
   const [scroll, setScroll] = useState(false);
-  const sideBarList = [
-    {
-      icon: "./assets/svg/account.svg",
-      title: "회원가입 / 로그인",
-      to: "/login"
-    },
-    {
-      icon: "./assets/svg/info.svg",
-      title: "계단정복지도 소개",
-      to: "/login"
-    },
-    {
-      icon: "./assets/svg/ranking.svg",
-      title: "우리동네 랭킹",
-      to: "/login"
-    },
-    {
-      icon: "./assets/svg/info.svg",
-      title: "만든 사람들",
-      to: "/login"
-    },
-  ]
 
   const updateScoll = () => {
     let scollPosition = (window.scrollY || document.documentElement.scrollTop)
@@ -112,7 +90,7 @@ export default function MainHeader({children}: {children: React.ReactChild}) {
       {!children && !scroll && (
         <div style={{paddingTop: "56px"}} />
       )}
-      <SideBar open={open} setOpen={setOpen} list={sideBarList}/>
+      <SideBar open={open} setOpen={setOpen} />
       {children &&  (
         <>
           <div>{children}</div>
