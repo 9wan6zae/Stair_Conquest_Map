@@ -4,7 +4,7 @@ import { ReactComponent as BackBtn} from './svg/backBtn.svg'
 
 const HeaderBlock = styled.div`
   position: fixed;
-  z-index: 999;
+  z-index: 900;
   background: #fff;
   color: #000;
   width: 100%;
