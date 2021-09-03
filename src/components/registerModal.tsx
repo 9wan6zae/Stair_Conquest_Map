@@ -78,14 +78,14 @@ export default function RegisterModal({open, setOpen, item}: {open: boolean, set
   return (
     <ModalWrapper open={open}>
       <ModalBlock id ="register-modal" open={open}>
-        {open && <ModalContent item={item}></ModalContent>}
+        {open && <ModalContent item={item} setOpen = {setOpen}></ModalContent>}
       </ModalBlock>
       {open && <Background onClick={() => setOpen(false)}/>}
     </ModalWrapper>
   )
 }
 
-function ModalContent ({item}: {item: Item}) {
+function ModalContent ({item, setOpen}: {item: Item, setOpen(flag: boolean): void}) {
   const [load, setLoad] = React.useState(true)
   const [page, setPage] = React.useState(1);
 
@@ -218,6 +218,12 @@ function ModalContent ({item}: {item: Item}) {
     },
   ]
 
+  const prevAction = () => {
+    setPage(1)
+    const modal = document.getElementById('register-modal')
+    modal?.scrollTo(0, 0)
+  }
+
   const nextAction = () => {
     setPage(2)
     const modal = document.getElementById('register-modal')
@@ -252,10 +258,11 @@ function ModalContent ({item}: {item: Item}) {
                       <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
                 }
                 {!item.hasPlaceAccessibility &&
-                  <>
+                  <section className="buttons">
+                    <button className="prev-btn" onClick={() => setOpen(false)}>닫기</button>
                     <button className="next-btn" onClick={nextAction}>다음</button>
                     {/* <p style={{textAlign: 'center', marginTop: '24px', color: '#6A6A73', fontSize: '18px', fontWeight: 500}} onClick={skipAction}>건너뛰기</p> */}
-                  </>
+                  </section>
                 }
               </>
             }
@@ -280,7 +287,10 @@ function ModalContent ({item}: {item: Item}) {
               </>
             }
             footer = {
-              <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
+              <section className="buttons">
+                <button className="prev-btn" onClick={prevAction}>이전</button>
+                <Link to="/register_complete" style={{width: '100%'}}><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
+              </section>
             }
             obj = {place}
             setObj={setPlace}
