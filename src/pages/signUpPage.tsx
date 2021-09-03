@@ -4,6 +4,7 @@ import InputBox from '../components/inputBox';
 import styled, {css} from 'styled-components';
 
 import LoginLayout from '../components/LoginLayout';
+import Modal from '../components/modal';
 import { SignUpParams } from '../types/Sign';
 import * as LoginAPI from "../api/login"
 
@@ -45,6 +46,8 @@ export default function SignUpPage() {
     temp_instagramId: '',
     temp_password: ''
   })
+
+  const [open, setOpen] = React.useState(false)
   
   const {nickname, password} = signUpParams
 
@@ -85,8 +88,7 @@ export default function SignUpPage() {
       if (temp_instagramId) signUpParams.instagramId = {value: temp_instagramId}
       const res = await LoginAPI.signUp(signUpParams)
       if (res.status === 200) {
-        alert("회원가입을 완료했어요\n우리 동네의 계단을 모두 정복해 보세요!")
-        document.location.href="/login"
+        setOpen(true)
       }
   }
 
@@ -99,6 +101,11 @@ export default function SignUpPage() {
     const is_not_same = password !== temp_password
 
     return is_fill && is_not_same
+  }
+
+  const modalAction = () => {
+    setOpen(false)
+    window.location.href = '/login'
   }
 
   return (
@@ -125,6 +132,7 @@ export default function SignUpPage() {
           </>
         }
       ></LoginLayout>
+      {open && <Modal title="✅ 회원가입을 완료했어요" description="우리 동네의 계단을 모두 정복해 보세요!" setOpen={setOpen} open={open} action={modalAction} />}
     </>
   )
 }
