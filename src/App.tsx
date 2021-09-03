@@ -14,7 +14,19 @@ import SearchPage from './pages/searchPage';
 import RegisterCompletePage from './pages/registerCompletePage';
 import AccessibilityPage from './pages/accessibilityPage';
 
+import { useDispatch } from 'react-redux';
+import { loginUserAsync } from './modules/login';
+
 function App() {
+  const dispatch = useDispatch();
+  const {success} = loginUserAsync
+
+  React.useEffect(() => {
+    const token = window.localStorage.getItem('access_token')
+    if (token) {
+      dispatch(success(true))
+    }
+  }, [dispatch, success])
   return (
     <div id="App__wrapper">
       <section id="App_bg" />
