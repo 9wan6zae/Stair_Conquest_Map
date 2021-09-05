@@ -29,7 +29,7 @@ const AccessibilityInfo = styled.section`
   width: 100%;
   max-width: var(--maxWidth);
   box-sizing: border-box;
-  padding: 36px 20px 53px 20px;
+  padding: 36px 0px 53px 0px;
   background: #fff;
 
   .accessibility__title {
@@ -51,6 +51,8 @@ const AccessibilityInfo = styled.section`
   }
 
   section.accessibility__header {
+    padding: 0 20px;
+    box-sizing: border-box;
     display: flex;
     align-items: start;
     img {
@@ -64,6 +66,8 @@ const AccessibilityInfo = styled.section`
     padding-top: 60px;
   }
   section.accessibility__form {
+    padding: 0 20px;
+    box-sizing: border-box;
     display: flex;
     justify-content: space-between;
     align-items: start;
@@ -77,6 +81,23 @@ const AccessibilityInfo = styled.section`
     margin-bottom: 44px;
     &:last-child {
       margin-bottom: 0px;
+    }
+  }
+  section.accessibility__not_register {
+    margin-top: 32px;
+    width: 100%;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #F2F2F5;
+    p {
+      color: #9797A6;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 16px;
+      line-height: 160%;
     }
   }
 
@@ -147,7 +168,6 @@ export default function AccessibilityPage() {
     undefined: './assets/svg/ic_x.svg'
   }
 
-
   const buildingAttributes: any[] = [
     {
       key: "entranceStairInfo",
@@ -163,10 +183,13 @@ export default function AccessibilityPage() {
         true: "경사로 있음",
         undefined: "경사로 없음"
       },
-      icon: attributeIcon,
+      icon: {
+        true: './assets/svg/ic_check.svg',
+        undefined: './assets/svg/ic_check.svg'
+      },
       symbol: {
-        true: './assets/svg/accessibility/ic_slope_true.svg',
-        undefined: './assets/svg/accessibility/ic_slope_false.svg',
+        true: './assets/svg/accessibility/ic_slope_gray.svg',
+        undefined: './assets/svg/accessibility/ic_slope_gray.svg',
       }
     },
     {
@@ -216,18 +239,18 @@ export default function AccessibilityPage() {
       key: "hasSlope",
       title: "장소 입구에",
       info: { 
-        true: '경사로 있음',
-        undefined: '경사로 없음'
+        true: "경사로 있음",
+        undefined: "경사로 없음"
       },
       icon: {
         true: './assets/svg/ic_check.svg',
-        undefined: './assets/svg/ic_x.svg'
+        undefined: './assets/svg/ic_check.svg'
       },
       symbol: {
-        true: './assets/svg/accessibility/ic_slope_true.svg',
-        undefined: './assets/svg/accessibility/ic_slope_false.svg',
+        true: './assets/svg/accessibility/ic_slope_gray.svg',
+        undefined: './assets/svg/accessibility/ic_slope_gray.svg',
       }
-    }
+    },
   ]
 
   React.useEffect(() => {
@@ -302,8 +325,27 @@ function AccessibilityLayout({type, item, accessibility, attribute}: Accessibili
     const uri = type === "건물" ? "building" : "place"
     return  `./assets/svg/ic_${uri}.svg`
   }
+  const reulReturner = (label: string | undefined) => {
+    if (label) {
+      const strGA = 44032; //가
+      const strHI = 55203; //힣
+
+      const lastStrCode = label.charCodeAt(label.length-1);
+      let prop = true
+      let msg;
+
+      if(lastStrCode < strGA || lastStrCode > strHI) return false
+
+      if (( lastStrCode - strGA ) % 28 === 0) prop = false
+
+      msg = prop ? '을' : '를'
+
+      return msg;
+    }
+  }
   return (
-    <AccessibilityInfo>
+    <>
+      <AccessibilityInfo>
         <section className="accessibility__header">
           <img src={setImgSrc(type)} alt="type" />
           <div>
@@ -325,41 +367,47 @@ function AccessibilityLayout({type, item, accessibility, attribute}: Accessibili
             }
           </div>
         </section>
-        {item && <RegisterModal
+        {accessibility && <section className="accessibility__info">
+          {attribute?.map((att, key) => (
+            <section key={key} className="accessibility__form">
+              <>
+                <div className="title">
+                  <img src={att.icon[accessibility[att.key]]} alt="icon" />
+                  <div>
+                    <p className="att__title">{att.title}</p>
+                    { att.icon[accessibility[att.key]] !== './assets/svg/ic_x.svg' &&
+                      <p className="att__info">{att.info[accessibility[att.key]]}</p>
+                    }
+                    { att.icon[accessibility[att.key]] === './assets/svg/ic_x.svg' &&
+                      <p className="att__info" style={{color: "#DB0B24"}}>{att.info[accessibility[att.key]]}</p>
+                    }
+                  </div>
+                </div>
+                <SymbolWrapper status={att.icon[accessibility[att.key]]}>
+                  <img src={att.symbol[accessibility[att.key]]} alt="symbol" />
+                </SymbolWrapper>
+              </>
+            </section>)
+          )}
+        </section>}
+        {!accessibility &&
+          <section className="accessibility__not_register">
+            <p>{type}의 정보를 등록하고</p>
+            <p><b>{item?.place.name}</b>{reulReturner(item?.place.name)} 정복해 보세요 😆</p>
+            <button className="register-btn not" style={{marginTop: '10px'}} onClick={() => setOpen(true)}>정보 등록</button>
+          </section>
+        }
+      </AccessibilityInfo>
+      {item &&
+      <>
+        <RegisterModal
           open={open}
           setOpen={setOpen}
           item={item}
-        />}
-        <section className="accessibility__info">
-          {accessibility && attribute?.map((att, key) => (
-            <section key={key} className="accessibility__form">
-              {accessibility && (
-                <>
-                  <div className="title">
-                    <img src={att.icon[accessibility[att.key]]} alt="icon" />
-                    <div>
-                      <p className="att__title">{att.title}</p>
-                      { att.icon[accessibility[att.key]] !== './assets/svg/ic_x.svg' &&
-                        <p className="att__info">{att.info[accessibility[att.key]]}</p>
-                      }
-                      { att.icon[accessibility[att.key]] === './assets/svg/ic_x.svg' &&
-                        <p className="att__info" style={{color: "#DB0B24"}}>{att.info[accessibility[att.key]]}</p>
-                      }
-                    </div>
-                  </div>
-                  <SymbolWrapper status={att.icon[accessibility[att.key]]}>
-                    <img src={att.symbol[accessibility[att.key]]} alt="symbol" />
-                  </SymbolWrapper>
-                </>
-              )}
-            </section>
-          ))}
-          {!accessibility &&
-            <section className="accessibility__form">
-              <p>장소의 {type}를 등록하고 정복해 보세요</p>
-            </section>
-          }
-        </section>
-      </AccessibilityInfo>
+          type={type}
+        />
+        </>
+      }
+    </>
   )
 }
