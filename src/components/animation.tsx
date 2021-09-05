@@ -15,9 +15,13 @@ const CharacterBlock = styled.section`
   @keyframes move {
     0% {
       opacity: 1;
-      left: -120px;
+      left: -229px;
     }
-    30% {
+    20% {
+      opacity: 1;
+      left: -229px;
+    }
+    60% {
       opacity: 1;
       left: 20px;
     }
@@ -39,22 +43,28 @@ const CharacterBlock = styled.section`
   }
 `
 
-const ReactionBlock = styled.section`
+const TextBoxBlock = styled.section`
   position: absolute;
   z-index: 3;
-  bottom: 180px;
+  bottom: 196px;
   left: 200px;
   opacity: 0;
-  animation-name: fadein, fadeout__reaction;
+  animation-name: fadein, fadeout__textBox;
   animation-delay: 0s, 2s;
   animation-duration: 2s, 0.3s;
   animation-timing-function: ease-in, ease-in-out;
+
+  width: 110px;
+  height: 90px;
 
   @keyframes fadein {
     0% {
       opacity: 0;
     }
-    10% {
+    20% {
+      opacity: 0;
+    }
+    60% {
       opacity: 1;
     }
     100% {
@@ -62,13 +72,25 @@ const ReactionBlock = styled.section`
     }
   }
 
-  @keyframes fadeout__reaction {
+  @keyframes fadeout__textBox {
     from {
       opacity: 1;
     }
     to {
       opacity: 0;
     }
+  }
+
+  p {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 160%;
+
+    text-align: center;
+    letter-spacing: -0.005em;
+
+    color: #000000;
   }
 `
 
@@ -83,11 +105,16 @@ const BgBox = styled.figure`
 export default function Animation() {
 
   const character = ['old', 'wheelchair', 'baby']
+  const textList = [
+    ['어떻게', '지나간담?'],
+    ['아이고,', '불편해!'],
+    ['이런,', '못 가겠네!']
+  ]
   const [imgUrl, setImgUrl] = useState("/assets/svg/old.svg")
   const [count, setCount] = useState(0);
   const [change, setChange] = useState(false);
 
-  const reaction = "/assets/svg/reaction.svg"
+  const textBox = "/assets/svg/textBox.svg"
 
   const changeImgUrl = (count: number) => {
     setImgUrl(`/assets/svg/${character[count]}.svg`)
@@ -97,9 +124,11 @@ export default function Animation() {
     const chracterChange = setInterval(() => {
       setChange(true)
       changeImgUrl(count)
-      setCount(count + 1)
       if (count === 2) {
         setCount(0)
+      }
+      else {
+        setCount(count + 1)
       }
       setTimeout(() => setChange(false), 2300)
     }, 2400)
@@ -120,9 +149,12 @@ export default function Animation() {
             <CharacterBlock className="character">
               <img src={imgUrl} alt="character" />
             </CharacterBlock>
-            <ReactionBlock>
-              <img src={reaction} alt="reaction" />
-            </ReactionBlock>
+            <TextBoxBlock>
+              <section style={{width: '100%', height: '100%', backgroundImage: `url(${textBox})`, paddingTop: '16px', boxSizing: 'border-box'}}>
+                <p>{textList[count][0]}</p>
+                <p>{textList[count][1]}</p>
+              </section>
+            </TextBoxBlock>
           </>
         )}
       </div>
