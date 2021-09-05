@@ -85,7 +85,11 @@ export default function SignUpPage() {
 
   const signUp = async () => {
     if (nickname !== '' && password !== '')
-      if (temp_instagramId) signUpParams.instagramId = {value: temp_instagramId}
+      if (temp_instagramId) {
+        let instagramId = temp_instagramId
+        if(temp_instagramId[0] === '@') instagramId = temp_instagramId.substring(1)
+        signUpParams.instagramId = {value: instagramId}
+      }
       const res = await LoginAPI.signUp(signUpParams)
       if (res.status === 200) {
         setOpen(true)
