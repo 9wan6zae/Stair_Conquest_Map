@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import InputBox from '../components/inputBox';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../modules';
-import { loginUserThunk, loginUserAsync } from '../modules/login';
+import { loginUserThunk } from '../modules/login';
 import styled, {css} from 'styled-components';
 
 import LoginLayout from '../components/LoginLayout';
@@ -50,11 +50,11 @@ const SignUpLinkBtn = styled.button`
 `
 
 const LoginFooter = styled.footer`
-  position: absolute;
   padding: 0 20px;
+  padding-bottom: 20px;
   box-sizing: border-box;
   width: 100%;
-  bottom: 20px;
+  max-width: var(--maxWidth);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -76,9 +76,10 @@ const LoginLink = styled(Link)`
 
 export default function LoginPage() {
 
+  const loginError = useSelector((state: RootState) => state.login.loginError);
   const loginSuccess = useSelector((state: RootState) => state.login.loginSuccess);
   const dispatch = useDispatch();
-  const {success} = loginUserAsync
+  const [alert, setAlert] = React.useState('')
 
   const [account, setAccount] = useState<LoginParams>({
     nickname: '',
@@ -86,6 +87,15 @@ export default function LoginPage() {
   });
   
   const {nickname, password} = account
+
+  React.useEffect(() => {
+    if (loginError) {
+      setAlert('아이디 혹은 비밀번호를 다시 한 번 확인해주세요.')
+      setTimeout(() => {
+        setAlert('')
+      }, 3000)
+    }
+  }, [loginError])
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -111,9 +121,14 @@ export default function LoginPage() {
     return nickname !== '' && password !== ''
   }
 
+  const logout = () => {
+    window.localStorage.removeItem("access_token")
+    window.location.href = '/'
+  }
+
   return (
     <>
-      <LoginLayout
+      {!loginSuccess && <LoginLayout
         title="로그인"
         description = "로그인하고 지도를 채워주세요"
         content = {
@@ -125,6 +140,7 @@ export default function LoginPage() {
               <InputBox placeholder="비밀번호" type="password" name="password" value={password} onChange={onChange} clearInfo={clearInfo}/>
             </InputSection>
             <LoginBtn active={checkBtnActive(nickname, password)} onClick={() => login()}>로그인</LoginBtn>
+            <p style={{marginTop: '16px', fontSize: '14px', color: '#DB0B24', textAlign: 'center'}}>{alert}</p>
           </>
         }
         footer = {
@@ -133,7 +149,14 @@ export default function LoginPage() {
             <LoginLink to="/signUp"><SignUpLinkBtn>3초 만에 회원가입</SignUpLinkBtn></LoginLink>
           </LoginFooter>
         }
-      ></LoginLayout>
+      ></LoginLayout>}
+      {loginSuccess && <LoginLayout
+        title="로그아웃"
+        description = "로그아웃 하시겠습니까?"
+        content = {
+          <LoginBtn active={true} onClick={() => logout()}>로그아웃</LoginBtn>
+        }
+      ></LoginLayout>}
     </>
   )
 }

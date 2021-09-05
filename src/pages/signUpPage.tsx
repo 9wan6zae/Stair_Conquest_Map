@@ -1,13 +1,10 @@
 import * as React from 'react';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import InputBox from '../components/inputBox';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../modules';
-import { loginUserThunk, loginUserAsync } from '../modules/login';
 import styled, {css} from 'styled-components';
 
 import LoginLayout from '../components/LoginLayout';
+import Modal from '../components/modal';
 import { SignUpParams } from '../types/Sign';
 import * as LoginAPI from "../api/login"
 
@@ -38,37 +35,7 @@ const SignUpBtn = styled.button<LoginBtnProps>`
   }
 `
 
-const LoginFooter = styled.footer`
-  position: absolute;
-  padding: 0 20px;
-  box-sizing: border-box;
-  width: 100%;
-  bottom: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .footer__title {
-    font-family: Spoqa Han Sans Neo;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 18px;
-    line-height: 100%;
-    margin-bottom: 20px;
-  }
-`
-
-const LoginLink = styled(Link)`
-  width: 100%;;
-`
-
 export default function SignUpPage() {
-
-  const loginSuccess = useSelector((state: RootState) => state.login.loginSuccess);
-  const dispatch = useDispatch();
-  const {success} = loginUserAsync
-
   const [signUpParams, setSignUpParams] = useState<SignUpParams>({
     nickname: '',
     password: '',
@@ -79,6 +46,8 @@ export default function SignUpPage() {
     temp_instagramId: '',
     temp_password: ''
   })
+
+  const [open, setOpen] = React.useState(false)
   
   const {nickname, password} = signUpParams
 
@@ -116,11 +85,14 @@ export default function SignUpPage() {
 
   const signUp = async () => {
     if (nickname !== '' && password !== '')
-      if (temp_instagramId) signUpParams.instagramId = temp_instagramId
+      if (temp_instagramId) {
+        let instagramId = temp_instagramId
+        if(temp_instagramId[0] === '@') instagramId = temp_instagramId.substring(1)
+        signUpParams.instagramId = {value: instagramId}
+      }
       const res = await LoginAPI.signUp(signUpParams)
       if (res.status === 200) {
-        alert("회원가입을 완료했어요\n우리 동네의 계단을 모두 정복해 보세요!")
-        document.location.href="/login"
+        setOpen(true)
       }
   }
 
@@ -133,6 +105,11 @@ export default function SignUpPage() {
     const is_not_same = password !== temp_password
 
     return is_fill && is_not_same
+  }
+
+  const modalAction = () => {
+    setOpen(false)
+    window.location.href = '/login'
   }
 
   return (
@@ -159,6 +136,7 @@ export default function SignUpPage() {
           </>
         }
       ></LoginLayout>
+      {open && <Modal title="✅ 회원가입을 완료했어요" description="우리 동네의 계단을 모두 정복해 보세요!" setOpen={setOpen} open={open} action={modalAction} />}
     </>
   )
 }

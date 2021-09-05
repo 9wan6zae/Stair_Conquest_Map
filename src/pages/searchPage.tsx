@@ -43,67 +43,82 @@ export default function SearchPage() {
     }
   );
 
-  const [selectItem, setSelectItem] = useState<Item>();
+  const [selectItem, setSelectItem] = useState<Item>(
+    {
+      place: {
+        id: '',
+        name: '',
+        address: ''
+      },
+      building: {
+        id: '',
+        address: ''
+      },
+      hasBuildingAccessibility: false,
+      hasPlaceAccessibility: false
+    },
+  );
 
   const {searchText} = params
 
   const [searchPlacesResult, setSearchPlacesResult] = useState<SearchPlacesResult>(
-    {
-      items: [
-        {
-          place: {
-            id: 'test',
-            name: '채선당 행복가마솥밥 롯데마트점',
-            address: '분당구 황새울로 340'
-          },
-          building: {
-            id: 'ttt',
-            address: 'dsfd'
-          },
-          hasBuildingAccessibility: false,
-          hasPlaceAccessibility: false
-        },
-        {
-          place: {
-            id: 'test2',
-            name: '가나다',
-            address: 'dsdsf'
-          },
-          building: {
-            id: 'ttdsdft',
-            address: 'dsfd'
-          },
-          hasBuildingAccessibility: true,
-          hasPlaceAccessibility: false
-        },
-        {
-          place: {
-            id: 'test4',
-            name: '가나다',
-            address: 'dsdsf'
-          },
-          building: {
-            id: 'ttdsdfsst',
-            address: 'dsfd'
-          },
-          hasBuildingAccessibility: false,
-          hasPlaceAccessibility: true
-        },
-        {
-          place: {
-            id: 'test3',
-            name: '가나dddd다',
-            address: 'dssdfsdfdsf'
-          },
-          building: {
-            id: 'ttfsffft',
-            address: 'dsfdsfsdfdsfd'
-          },
-          hasBuildingAccessibility: true,
-          hasPlaceAccessibility: true
-        },
-      ]
-    }
+    {items: []}
+    // {
+    //   items: [
+    //     {
+    //       place: {
+    //         id: 'test',
+    //         name: '채선당 행복가마솥밥 롯데마트점',
+    //         address: '분당구 황새울로 340'
+    //       },
+    //       building: {
+    //         id: 'ttt',
+    //         address: 'dsfd'
+    //       },
+    //       hasBuildingAccessibility: false,
+    //       hasPlaceAccessibility: false
+    //     },
+    //     {
+    //       place: {
+    //         id: 'test2',
+    //         name: '가나다',
+    //         address: 'dsdsf'
+    //       },
+    //       building: {
+    //         id: 'ttdsdft',
+    //         address: 'dsfd'
+    //       },
+    //       hasBuildingAccessibility: true,
+    //       hasPlaceAccessibility: false
+    //     },
+    //     {
+    //       place: {
+    //         id: 'test4',
+    //         name: '롯데마트점',
+    //         address: 'dsdsf'
+    //       },
+    //       building: {
+    //         id: 'ttdsdfsst',
+    //         address: 'dsfd'
+    //       },
+    //       hasBuildingAccessibility: false,
+    //       hasPlaceAccessibility: true
+    //     },
+    //     {
+    //       place: {
+    //         id: 'test3',
+    //         name: '가나dddd다',
+    //         address: 'dssdfsdfdsf'
+    //       },
+    //       building: {
+    //         id: 'ttfsffft',
+    //         address: 'dsfdsfsdfdsfd'
+    //       },
+    //       hasBuildingAccessibility: true,
+    //       hasPlaceAccessibility: true
+    //     },
+    //   ]
+    // }
   );
   const [open, setOpen] = useState(false);
 
@@ -115,7 +130,7 @@ export default function SearchPage() {
   const searchPlaces = async () => {
     if (params) {
       const res = await searchAPI.searchPlaces(params)
-      console.log(res)
+      console.log(res.data)
       setSearchPlacesResult(res.data)
     }
   }
@@ -158,10 +173,10 @@ export default function SearchPage() {
     <>
       <MainHeader>
         <div className="input__search-page">
-          <section style={{width: '80%'}}>
-            <InputBox name="searchText" value={searchText || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" />
+          <section style={{width: '86%'}}>
+            <InputBox name="searchText" value={searchText || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchPlaces} />
           </section>
-          <span style={{lineHeight: '60px'}} onClick={() => searchPlaces()}>검색</span>
+          <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={() => searchPlaces()}>검색</span>
         </div>
       </MainHeader>
       {searchPlacesResult.items?.length > 0 && (
@@ -174,16 +189,14 @@ export default function SearchPage() {
                 <p className="search-list__info">등록된 정보가 없어요</p>
               )}
               { halfRegister(item) && (
-                <>
-                  <span className="search-list__info" style={{color: '#b5b5c0'}}>정보 등록률</span>
-                  <span className="search-list__info" style={{marginLeft: '6px'}}>50%</span>
-                </>
+                <p className="search-list__info">
+                {!item.hasBuildingAccessibility
+                ? <span> 건물 </span>
+                : <span>장소</span>}  
+                정보 필요</p>
               )}
               { fullRegister(item) && (
-                <>
-                  <span className="search-list__info" style={{color: '#b5b5c0'}}>정보 등록률</span>
-                  <span className="search-list__info" style={{marginLeft: '6px', color: '#6A6A73'}}>100%</span>
-                </>
+                <p className="search-list__info" style={{color: '#b5b5c0'}}>정보 등록 완료</p>
               )}
             </section>
             <section className="btn">
@@ -191,7 +204,7 @@ export default function SearchPage() {
                 <button className="register-btn not" onClick={() => openModal(item)}>정보 등록</button>
               )}
               { halfRegister(item) && (
-                <button className="register-btn half" onClick={() => openModal(item)}>정보 등록</button>
+                <Link to="/accessibility"><button className="register-btn half" onClick={() => openModal(item)}>정보 등록</button></Link>
               )}
               { fullRegister(item) && (
                 <Link to="/accessibility"><button className="register-btn full" onClick={() => openModal(item)}>정보 조회</button></Link>
@@ -200,7 +213,12 @@ export default function SearchPage() {
           </ItemBox>
         ))
       )}
-      {open && selectItem && (<RegisterModal item={selectItem} setOpen={setOpen}></RegisterModal>)}
+      {!searchPlacesResult?.items && (
+        <section style={{width: '100%', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <p style={{fontSize: '20px', color: '#B5B5C0'}}>검색 결과가 없습니다.</p>
+        </section>
+      )}
+      <RegisterModal open={open} item={selectItem} setOpen={setOpen}></RegisterModal>
     </>
   )
 }

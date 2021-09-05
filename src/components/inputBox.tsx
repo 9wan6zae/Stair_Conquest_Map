@@ -37,12 +37,24 @@ type InputBoxProps = {
   value: string,
   onChange(e: any): void | null
   clearInfo(name: string): void | null
+  onKeyAction(): void
 }
 
-export default function InputBox({placeholder, type, name, value, onChange, clearInfo}: InputBoxProps) {
+InputBox.defaultProps = {
+  onKeyAction() {}
+}
+
+export default function InputBox({placeholder, type, name, value, onChange, clearInfo, onKeyAction}: InputBoxProps) {
+
+  const onKeyPress = (e:any) => {
+    if (e.key === 'Enter') {
+      onKeyAction()
+    }
+  }
+
   return (
     <div style={{position: 'relative'}}>
-      <InputBlock type={type} placeholder={placeholder} name={name} value={value} onChange={onChange}/>
+      <InputBlock type={type} placeholder={placeholder} name={name} value={value} onChange={onChange} onKeyPress={onKeyPress}/>
       { value.length > 0 && (<ClearBtn onClick={() => clearInfo(name)} style={{position: 'absolute', right: '20px', top: '16px'}}/>)}
     </div>
   )

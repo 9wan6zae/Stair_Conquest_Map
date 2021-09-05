@@ -1,0 +1,26 @@
+<svg width="36" height="37" viewBox="0 0 36 37" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d)">
+<path d="M11 9C11 6.79086 12.7909 5 15 5H26.6667C28.8758 5 30.6667 6.79086 30.6667 9V25C30.6667 27.2091 28.8758 29 26.6667 29H15C12.7909 29 11 27.2091 11 25V9Z" fill="#67AEFF" stroke="black" stroke-width="2.66667"/>
+<rect x="22.8003" y="9" width="3.46667" height="3.46667" rx="1.33333" fill="black"/>
+<rect x="22.8003" y="21.5" width="3.46667" height="3.46667" rx="1.33333" fill="black"/>
+<rect x="17.3335" y="9" width="3.46667" height="3.46667" rx="1.33333" fill="black"/>
+<rect x="22.6665" y="14.3333" width="3.46667" height="3.46667" rx="1.33333" fill="black"/>
+<mask id="path-6-outside-1" maskUnits="userSpaceOnUse" x="4.3501" y="14" width="17" height="18" fill="black">
+<rect fill="white" x="4.3501" y="14" width="17" height="18"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.4999 23.1287L12.3267 17V20.5849H7.3501V25.3649H12.3267L12.3267 29.2573L18.4999 23.1287Z"/>
+</mask>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18.4999 23.1287L12.3267 17V20.5849H7.3501V25.3649H12.3267L12.3267 29.2573L18.4999 23.1287Z" fill="white"/>
+<path d="M12.3267 17L14.2055 15.1076C13.4413 14.3489 12.2959 14.1243 11.3018 14.5382C10.3077 14.952 9.66007 15.9232 9.66007 17H12.3267ZM18.4999 23.1287L20.3787 25.0211C20.883 24.5205 21.1666 23.8393 21.1666 23.1287C21.1666 22.4181 20.883 21.7369 20.3787 21.2363L18.4999 23.1287ZM12.3267 20.5849V23.2516C13.7995 23.2516 14.9934 22.0577 14.9934 20.5849H12.3267ZM7.3501 20.5849V17.9183C5.87734 17.9183 4.68343 19.1122 4.68343 20.5849H7.3501ZM7.3501 25.3649H4.68343C4.68343 26.8376 5.87734 28.0315 7.3501 28.0315L7.3501 25.3649ZM12.3267 25.3649H14.9934C14.9934 24.6576 14.7124 23.9794 14.2124 23.4793C13.7123 22.9792 13.034 22.6982 12.3267 22.6982V25.3649ZM12.3267 29.2573H9.66007C9.66007 30.3341 10.3077 31.3053 11.3018 31.7192C12.2959 32.133 13.4413 31.9084 14.2055 31.1498L12.3267 29.2573ZM10.448 18.8924L16.6212 25.0211L20.3787 21.2363L14.2055 15.1076L10.448 18.8924ZM14.9934 20.5849V17H9.66007V20.5849H14.9934ZM7.3501 23.2516H12.3267V17.9183H7.3501V23.2516ZM10.0168 25.3649V20.5849H4.68343V25.3649H10.0168ZM12.3267 22.6982H7.3501V28.0315H12.3267V22.6982ZM14.9934 29.2573L14.9934 25.3649H9.66007L9.66007 29.2573H14.9934ZM16.6212 21.2362L10.448 27.3649L14.2055 31.1498L20.3787 25.0211L16.6212 21.2362Z" fill="black" mask="url(#path-6-outside-1)"/>
+</g>
+<defs>
+<filter id="filter0_d" x="-2" y="-2" width="40" height="40" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feGaussianBlur stdDeviation="2"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow" result="shape"/>
+</filter>
+</defs>
+</svg>

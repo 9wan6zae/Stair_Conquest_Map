@@ -1,4 +1,4 @@
-import { BuildingAccessibility_StairInfo, BuildingAccessibility, PlaceAccessibility } from "./Model";
+import { StairInfo, BuildingAccessibility, PlaceAccessibility } from "./Model";
 
 export interface RegisterAccessibilityParams {
   /** 최초 등록 시에만 올려준다. */
@@ -15,16 +15,17 @@ export interface RegisterAccessibilityParams_RegisterPlaceAccessibilityParams {
   [key: string]: any
   placeId: string;
   isFirstFloor: boolean;
-  hasStair: boolean;
-  isWheelchairAccessible: boolean;
+  stairInfo: StairInfo;
+  hasSlope: boolean;
 }
 
 export interface RegisterAccessibilityParams_RegisterBuildingAccessibilityParams {
   [key: string]: any
   buildingId: string;
+  entranceStairInfo: StairInfo;
+  hasSlope: boolean;
   hasElevator: boolean;
-  hasObstacleToElevator: boolean;
-  stairInfo: BuildingAccessibility_StairInfo;
+  elevatorStairInfo: StairInfo;
 }
 
 export interface GetAccessibilityParams {
@@ -32,6 +33,7 @@ export interface GetAccessibilityParams {
 }
 
 export interface GetAccessibilityResult {
+  [key: string]: BuildingAccessibility | PlaceAccessibility | undefined
   /** 정보가 아직 채워지지 않았으면 null */
   buildingAccessibility: BuildingAccessibility | undefined;
   /** 정보가 아직 채워지지 않았으면 null */
