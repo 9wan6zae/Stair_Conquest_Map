@@ -33,6 +33,18 @@ const ModalWrapper = styled.div<ModalBlockProps>`
     `}
 `
 
+const ModalHeader = styled.section`
+  position: sticky;
+  height: 56px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  top: 0;
+  background: #fff;
+  z-index: 5;
+`
+
 const ModalBlock = styled.div<ModalBlockProps>`
   width: 100%;
   max-width: var(--maxWidth);
@@ -74,31 +86,29 @@ const ButtonGroup = styled.section`
   margin-top: 20px;
 `
 
-export default function RegisterModal({open, setOpen, item}: {open: boolean, setOpen(flag: boolean): void, item: Item}) {
+export default function RegisterModal({open, setOpen, item, type}: {open: boolean, setOpen(flag: boolean): void, item: Item, type?: string}) {
   return (
     <ModalWrapper open={open}>
       <ModalBlock id ="register-modal" open={open}>
-        {open && <ModalContent item={item} setOpen = {setOpen}></ModalContent>}
+        {open && 
+          <ModalContent item={item} setOpen = {setOpen} type={type}></ModalContent>
+        }
       </ModalBlock>
       {open && <Background onClick={() => setOpen(false)}/>}
     </ModalWrapper>
   )
 }
 
-function ModalContent ({item, setOpen}: {item: Item, setOpen(flag: boolean): void}) {
+function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean): void, type?: string}) {
   const [load, setLoad] = React.useState(true)
   const [page, setPage] = React.useState(1);
 
   React.useEffect(() => {
     if (load) {
-      if (!item.hasBuildingAccessibility && !item.hasPlaceAccessibility) {
-        setPage(1)
-      } else if(item.hasBuildingAccessibility) {
-        setPage(2)
-      }
+      if (type === "장소") setPage(2)
     }
     return () => {setLoad(false)}
-  }, [item.hasBuildingAccessibility, item.hasPlaceAccessibility, load])
+  }, [type, load])
 
   React.useEffect(() => {
     if (load) document.body.style.overflow = "hidden"
@@ -129,9 +139,13 @@ function ModalContent ({item, setOpen}: {item: Item, setOpen(flag: boolean): voi
         placeAccessibilityParams: undefined,
         buildingAccessibilityParams: undefined
       }
-      info.placeAccessibilityParams = place
-      info.buildingAccessibilityParams = building
-      console.log(info)
+      if (type === "건물") info.buildingAccessibilityParams = building
+      else if (type === "장소")  info.placeAccessibilityParams = place
+      else {
+        info.placeAccessibilityParams = place
+        info.buildingAccessibilityParams = building
+      }
+      setOpen(false)
       await accessibilityAPI.register(info)
     }
   }
@@ -192,8 +206,8 @@ function ModalContent ({item, setOpen}: {item: Item, setOpen(flag: boolean): voi
       attribute: "isFirstFloor",
       disabled: false,
       buttons: [
-        {text: "있어요", value: true},
-        {text: "없어요", value: false}
+        {text: "네, 1층이에요", value: true},
+        {text: "아니요", value: false}
       ]
     },
     {
@@ -238,64 +252,79 @@ function ModalContent ({item, setOpen}: {item: Item, setOpen(flag: boolean): voi
   return (
     <>
         {page === 1 && building && (
-          <ModalContentLayout
-            header={
-              <>
-                <h3 className="title3">{limitText(item.place.name)} 장소가 있는 건물</h3>
-                <p className="register-modal__address">{item.place.address}</p>
-              </>
-            }
-            info = {
-              <>
-                <img src="./assets/png/flag.png" alt="flag" />
-                <p className="register-modal__info__title">앗, 이 건물의 첫 번째 정복자세요!</p>
-                <p className="register-modal__info__description"><strong>{item.place.name}</strong>의 정보를 등록하기 전, 이 건물에 대해 알려 주시겠어요?</p>
-              </>
-            }
-            footer = {
-              <>
-                {item.hasPlaceAccessibility &&
-                      <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
-                }
-                {!item.hasPlaceAccessibility &&
-                  <section className="buttons">
-                    <button className="prev-btn" onClick={() => setOpen(false)}>닫기</button>
-                    <button className="next-btn" onClick={nextAction}>다음</button>
-                    {/* <p style={{textAlign: 'center', marginTop: '24px', color: '#6A6A73', fontSize: '18px', fontWeight: 500}} onClick={skipAction}>건너뛰기</p> */}
-                  </section>
-                }
-              </>
-            }
-            obj = {building}
-            setObj={setBuilding}
-            setQuestion={setQuestionBuilding}
-            question={quesiton_building}
-          />
+          <>
+            <ModalHeader>
+                <div onClick={() => setOpen(false)} style={{paddingLeft: '20px', boxSizing: 'border-box'}}>
+                  <img src="./assets/svg/ic_arr_left.svg" alt="back_btn" />
+                </div>
+            </ModalHeader>
+            <ModalContentLayout
+              header={
+                <>
+                  <h3 className="title3">{limitText(item.place.name)} 장소가 있는 건물</h3>
+                  <p className="register-modal__address">{item.place.address}</p>
+                </>
+              }
+              info = {
+                <>
+                  <p style={{fontSize: "80px"}}>⛳</p>
+                  <p className="register-modal__info__title">앗, 이 건물의 첫 번째 정복자세요!</p>
+                  <p className="register-modal__info__description"><strong>{item.place.name}</strong>의 정보를 등록하기 전, 이 건물에 대해 알려 주시겠어요?</p>
+                </>
+              }
+              footer = {
+                <>
+                  {type === "건물" &&
+                        <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
+                  }
+                  {type !== "건물" &&
+                    <>
+                      <button className="next-btn" onClick={nextAction}>다음</button>
+                      {/* <p style={{textAlign: 'center', marginTop: '24px', color: '#6A6A73', fontSize: '18px', fontWeight: 500}} onClick={skipAction}>건너뛰기</p> */}
+                    </>
+                  }
+                </>
+              }
+              obj = {building}
+              setObj={setBuilding}
+              setQuestion={setQuestionBuilding}
+              question={quesiton_building}
+            />
+          </>
         )}
         {page === 2 && (
-          <ModalContentLayout
-            header={
+          <>
+            <ModalHeader>
               <>
-                <h3 className="title3">{item.place.name}</h3>
-                <p className="register-modal__address">{item.place.address}</p>
+                {type !== "장소" && <div onClick={() => prevAction()} style={{paddingLeft: '20px', boxSizing: 'border-box'}}>
+                  <img src="./assets/svg/ic_arr_left.svg" alt="back_btn" />
+                </div>}
+                {type === "장소" && <div onClick={() => setOpen(false)} style={{paddingLeft: '20px', boxSizing: 'border-box'}}>
+                  <img src="./assets/svg/ic_arr_left.svg" alt="back_btn" />
+                </div>}
               </>
-            }
-            info = {
-              <>
-                <img src="./assets/png/flag.png" alt="flag" />
-                <p className="register-modal__info__title">이 장소의 접근성 정보를 알려주세요</p>
-              </>
-            }
-            footer = {
-              <section className="buttons">
-                <button className="prev-btn" onClick={prevAction}>이전</button>
+            </ModalHeader>
+            <ModalContentLayout
+              header={
+                <>
+                  <h3 className="title3">{item.place.name}</h3>
+                  <p className="register-modal__address">{item.place.address}</p>
+                </>
+              }
+              info = {
+                <>
+                  <p style={{fontSize: "80px"}}>🚥</p>
+                  <p className="register-modal__info__title">이 장소의 접근성 정보를 알려주세요 😉</p>
+                </>
+              }
+              footer = {
                 <Link to="/register_complete" style={{width: '100%'}}><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
-              </section>
-            }
-            obj = {place}
-            setObj={setPlace}
-            question={quesiton_place}
-          />
+              }
+              obj = {place}
+              setObj={setPlace}
+              question={quesiton_place}
+            />
+          </>
         )}
       </>
   )
@@ -426,29 +455,29 @@ function ModalContentLayout({header, info, obj, question, footer, setObj, setQue
   }
   return (
     <>
-    <header>
-      {header}
-    </header>
-    <main>
-      <section>
-        <section className="register-modal__info">
-          {info}
+      <header>
+        {header}
+      </header>
+      <main className="register-modal__main">
+        <section>
+          <section className="register-modal__info">
+            {info}
+          </section>
+          {obj && question.map((q, i) => (
+                <QuesitonSection disabled={q.disabled} key={i}>
+                  <p className="question__title">{q.quesiton}</p>
+                  <ButtonGroup>
+                    {q.buttons.map((b, i) => (
+                      <CustomBtn key={i} disabled={q.disabled} onClick={() => buttonAction({obj, attribute: q.attribute, value: b.value, setObj, setQuestion})} active={obj[q.attribute] === b.value}>{b.text}</CustomBtn>
+                    ))}
+                  </ButtonGroup>
+                </QuesitonSection>
+              ))}
         </section>
-        {obj && question.map((q, i) => (
-              <QuesitonSection disabled={q.disabled} key={i}>
-                <p className="question__title">{q.quesiton}</p>
-                <ButtonGroup>
-                  {q.buttons.map((b, i) => (
-                    <CustomBtn key={i} disabled={q.disabled} onClick={() => buttonAction({obj, attribute: q.attribute, value: b.value, setObj, setQuestion})} active={obj[q.attribute] === b.value}>{b.text}</CustomBtn>
-                  ))}
-                </ButtonGroup>
-              </QuesitonSection>
-            ))}
-      </section>
-      <footer className="register-modal__footer">
-        {footer}
-      </footer>
-    </main>
+        <footer className="register-modal__footer">
+          {footer}
+        </footer>
+      </main>
     </>
   )
 }
