@@ -79,31 +79,60 @@ type SideBarProps = {
 }
 
 export default function SideBar({open, setOpen}: SideBarProps) {
+  return (
+    <>
+      <SideBarBlock open={open}>
+        {open && <SideBarItems />}
+        <p className="sidebar__description">2021, Eggrock™</p>
+      </SideBarBlock>
+      {open && <Background onClick={() => setOpen(false)}/>}
+    </>
+  )
+}
+
+function SideBarItems () {
+  const [load, setLoad] = React.useState(true)
   const loginStatus = useSelector((state: RootState) => state.login.loginSuccess);
   const [list, setList] = React.useState(
     [
       {
         icon: "./assets/svg/account.svg",
         title: "회원가입 / 로그인",
-        to: "/login"
+        to: "/login",
+        link: true
       },
       {
         icon: "./assets/svg/info.svg",
         title: "계단정복지도 소개",
-        to: "/login"
+        to: "https://www.notion.so/eggnrock/8d03c66d07404ecf9f30b8cbd71dc9fd",
+        link: false
       },
-      {
-        icon: "./assets/svg/ranking.svg",
-        title: "우리동네 랭킹",
-        to: "/login"
-      },
+      // {
+      //   icon: "./assets/svg/ranking.svg",
+      //   title: "우리동네 랭킹",
+      //   to: "/login",
+      //   link: true
+      // },
       {
         icon: "./assets/svg/info.svg",
         title: "만든 사람들",
-        to: "/login"
+        to: "https://www.notion.so/eggnrock/8bc9f0c3f8334a4983088d4041050377",
+        link: false
       },
     ]
   )
+
+  const movePage = (href: string) => {
+    window.open(href, '_blank')
+  }
+
+  React.useEffect(() => {
+    if (load) document.body.style.overflow = "hidden"
+    return () => {
+      document.body.style.overflow = "auto"
+      setLoad(false)
+    }
+  }, [load])
 
   React.useEffect(() => {
     if (loginStatus) {
@@ -113,21 +142,28 @@ export default function SideBar({open, setOpen}: SideBarProps) {
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loginStatus])
+
   return (
-    <>
-      <SideBarBlock open={open}>
-        <section className="sidebar__items">
-          {list.map((v, index) => (
-              <SideBarItem key={index}>
+    <section className="sidebar__items">
+      {list.map((v, index) => (
+          <div key={index}>
+            {v.link && 
+              <Link to = {v.to}>
+                <SideBarItem>
+                  <img src={v.icon} alt={v.title} />
+                  <p>{v.title}</p>
+                </SideBarItem>
+              </Link>
+            }
+            {!v.link && 
+              <SideBarItem onClick={() => movePage(v.to)}>
                 <img src={v.icon} alt={v.title} />
-                <Link to={v.to} key={index}><p>{v.title}</p></Link>
+                <p>{v.title}</p>
               </SideBarItem>
-            )
-          )}
-        </section>
-        <p className="sidebar__description">2021, Eggrock™</p>
-      </SideBarBlock>
-      {open && <Background onClick={() => setOpen(false)}/>}
-    </>
+            }
+          </div>
+        )
+      )}
+    </section>
   )
 }
