@@ -38,3 +38,17 @@
   border-radius: 20px;
   border: none;
 }
+
+.prev-btn {
+  min-height: 56px;
+  max-height: 56px;
+  width: 42%;
+  background-color: #F2F2F5;
+  color: var(--gray);
+  font-size: 18px;
+  font-weight: 700;
+
+  border-radius: 20px;
+  border: none;
+  margin-right: 16px;
+}

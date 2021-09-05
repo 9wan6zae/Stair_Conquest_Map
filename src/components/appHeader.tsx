@@ -4,8 +4,8 @@ import { ReactComponent as BackBtn} from './svg/backBtn.svg'
 
 const HeaderBlock = styled.div`
   position: fixed;
-  z-index: 999;
-  background: rgba(0,0,0,0);
+  z-index: 900;
+  background: #fff;
   color: #000;
   width: 100%;
   max-width: var(--maxWidth);
@@ -45,7 +45,6 @@ export default function AppHeader({title}: HeaderProps) {
           <b className="title5">{title}</b>
         </main>
       </HeaderBlock>
-      <div style={{height: '56px'}} />
     </>
   )
 }

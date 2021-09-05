@@ -14,55 +14,23 @@ import SearchPage from './pages/searchPage';
 import RegisterCompletePage from './pages/registerCompletePage';
 import AccessibilityPage from './pages/accessibilityPage';
 
-import styled, {css} from 'styled-components';
-
-type SideProps = {
-  width: string
-  left: boolean
-}
-
-const Side = styled.aside<SideProps>`
-  position: fixed;
-  top: 0;
-  width: ${props => props.width};
-  height: ${window.innerHeight}px;
-  background: rgb(242, 242, 245);
-  z-index: 6;
-
-  ${props => props.left && css `
-    left: 0
-  `}
-  ${props => !props.left && css `
-    right: 0
-  `}
-`
+import { useDispatch } from 'react-redux';
+import { loginUserAsync } from './modules/login';
 
 function App() {
-
-  const [sideOption, setSideOption] = React.useState<SideProps>(
-    {
-      width: '',
-      left: true
-    }
-  )
-
-  const setSideWidth = () => {
-    const width = window.innerWidth > 450 ? `${(window.innerWidth - 450) / 2}px` : `0px`
-    setSideOption({...sideOption,  width })
-  }
+  const dispatch = useDispatch();
+  const {success} = loginUserAsync
 
   React.useEffect(() => {
-    setSideWidth()
-    window.addEventListener('resize', () => {
-      setSideWidth()
-    })
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
+    const token = window.localStorage.getItem('access_token')
+    if (token) {
+      dispatch(success(true))
+    }
+  }, [dispatch, success])
   return (
-    <div className="App__wrapper">
-      <Side left={true} width={sideOption.width} />
-      <main className="App_content">
+    <div id="App__wrapper">
+      <section id="App_bg" />
+      <main id="App_content">
         <BrowserRouter>
           <Switch>
             <Route exact={true} path="/" component={mainPage} />
@@ -75,8 +43,9 @@ function App() {
             <Route component={() => <Redirect to="/" />} />
           </Switch>
         </BrowserRouter>
+        {/* <div style={{height: '100px'}} /> */}
       </main>
-      <Side left={false} width={sideOption.width} />
+      
     </div>
   );
 }
