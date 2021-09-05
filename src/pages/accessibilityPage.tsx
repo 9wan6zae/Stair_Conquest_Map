@@ -220,7 +220,7 @@ export default function AccessibilityPage() {
       title: "층 정보",
       info: { 
         true: "1층에 있음",
-        undefined: "1층이 없음"
+        undefined: "1층에 없음"
       },
       icon: attributeIcon,
       symbol: {
