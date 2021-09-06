@@ -54,8 +54,8 @@ const TextBoxBlock = styled.section`
   animation-duration: 2s, 0.3s;
   animation-timing-function: ease-in, ease-in-out;
 
-  width: 110px;
-  height: 90px;
+  width: 105px;
+  height: 80px;
 
   @keyframes fadein {
     0% {
@@ -150,7 +150,7 @@ export default function Animation() {
               <img src={imgUrl} alt="character" />
             </CharacterBlock>
             <TextBoxBlock>
-              <section style={{width: '100%', height: '100%', backgroundImage: `url(${textBox})`, paddingTop: '16px', boxSizing: 'border-box'}}>
+              <section style={{width: '100%', height: '100%', backgroundImage: `url(${textBox})`, paddingTop: '16px', boxSizing: 'border-box', backgroundSize: 'cover'}}>
                 <p>{textList[count][0]}</p>
                 <p>{textList[count][1]}</p>
               </section>
