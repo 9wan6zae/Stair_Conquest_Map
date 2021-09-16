@@ -14,18 +14,18 @@ export interface RegisterAccessibilityParams {
 export interface RegisterAccessibilityParams_RegisterPlaceAccessibilityParams {
   [key: string]: any
   placeId: string;
-  isFirstFloor: boolean;
-  stairInfo: StairInfo;
-  hasSlope: boolean;
+  isFirstFloor: boolean | undefined;
+  stairInfo: StairInfo | undefined;
+  hasSlope: boolean | undefined;
 }
 
 export interface RegisterAccessibilityParams_RegisterBuildingAccessibilityParams {
   [key: string]: any
   buildingId: string;
-  entranceStairInfo: StairInfo;
-  hasSlope: boolean;
-  hasElevator: boolean;
-  elevatorStairInfo: StairInfo;
+  entranceStairInfo: StairInfo | undefined;
+  hasSlope: boolean | undefined;
+  hasElevator: boolean | undefined;
+  elevatorStairInfo: StairInfo | undefined;
 }
 
 export interface GetAccessibilityParams {

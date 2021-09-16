@@ -17,8 +17,7 @@ export function loginUserThunk(nickname: string, password: string): ThunkAction<
           dispatch(success(true));
         }, 100)
       }
-    } catch (e) {
-      console.log(e)
+    } catch (e: any) {
       dispatch(failure(e));
     }
   };
