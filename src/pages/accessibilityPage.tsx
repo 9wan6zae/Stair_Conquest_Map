@@ -1,5 +1,9 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
+
 import * as accessibilityAPI from "../api/accessibility"
+import * as upVoteAPI from "../api/upvote"
+
 import { useSelector } from 'react-redux';
 import { RootState } from '../modules';
 import { GetAccessibilityResult } from '../types/Accessibility';
@@ -7,7 +11,7 @@ import { BuildingAccessibility, PlaceAccessibility } from "../types/Model";
 import MainHeader from '../components/mainHeader';
 import styled, {css} from 'styled-components';
 import { Item } from '../types/SearchPlaces';
-import RegisterModal from '../components/registerModal';
+import RegisterModal, { ButtonGroup, RegisterModalBtn } from '../components/registerModal';
 
 const TitleSection = styled.section`
   width: 100%;
@@ -135,6 +139,57 @@ const SymbolWrapper = styled.div<SymbolWrapperProps>`
   )}
 `
 
+const AccessibilityFooter = styled.footer`
+  width: 100%;
+  max-width: var(--maxWidth);
+  height: 250px;
+  background: #fff;
+
+  box-sizing: border-box;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  p.footer__title {
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: 16px;
+  }
+`
+
+type BtnProps = {
+  active: boolean
+}
+
+const CustomBtn = styled.button<BtnProps>`
+  min-width: 100px;
+  width: 100%;
+  height: 54px;
+  max-width: 48%;
+  background: #fff;
+  border-radius: 20px;
+  box-sizing: border-box;
+  color: #6A6A73;
+  border: 2px solid #EAEAEF;
+
+  margin-bottom: 12px;
+
+  font-size: 16px;
+  font-weight: 500;
+
+  &:last-child {
+    margin: 0;
+  }
+
+  ${props => props.active &&
+    css`
+      background: #fff;
+      border: 2px solid #1D85FF;
+      color: #1D85FF;
+    `}
+`
+
 export default function AccessibilityPage() {
   const item = useSelector((state: RootState) => state.item.item);
   const [accessibility, setAccessibility] = React.useState<GetAccessibilityResult | undefined>()
@@ -259,8 +314,19 @@ export default function AccessibilityPage() {
     }
     accessibilityAPI.getAccessibility({
       placeId: `${item?.place.id}`
-    }).then(res => {console.log(res.data); setAccessibility(res.data)})
+    }).then(res => setAccessibility(res.data))
   }, [item])
+
+  const upVote = async () => {
+    if (!accessibility?.buildingAccessibility?.isUpvoted) {
+      if (accessibility && accessibility.buildingAccessibility?.id) {
+        await upVoteAPI.giveUpVote({buildingAccessibilityId: accessibility.buildingAccessibility.id})
+        accessibilityAPI.getAccessibility({
+          placeId: `${item?.place.id}`
+        }).then(res => setAccessibility(res.data))
+      }
+    }
+  }
 
   return (
     <div style={{background: '#F2F2F5'}}>
@@ -282,6 +348,20 @@ export default function AccessibilityPage() {
         accessibility = {accessibility?.placeAccessibility}
         attribute = {placeAttributes}
       />
+      <AccessibilityFooter>
+        <p className="footer__title">
+          이 정보가 도움이 되었나요?
+        </p>
+        {accessibility?.buildingAccessibility && <ButtonGroup>
+          <CustomBtn active={accessibility.buildingAccessibility.isUpvoted} onClick={upVote}>
+            도움이 돼요 👍
+          </CustomBtn>
+          <CustomBtn active = {false}>
+            잘못된 정보예요
+          </CustomBtn>
+        </ButtonGroup>}
+        <Link to="/" style={{marginTop: '32px'}}><RegisterModalBtn active={true}>확인</RegisterModalBtn></Link>
+      </AccessibilityFooter>
     </div>
   )
 }
