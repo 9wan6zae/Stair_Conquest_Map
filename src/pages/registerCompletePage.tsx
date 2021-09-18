@@ -24,6 +24,14 @@ const RegisterCompleteBlock = styled.div`
     text-align: center;
   }
 
+  p.register_complete__subtitle {
+    font-size: 20px;
+    color: #fff;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 8px;
+  }
+
   section.register_complete__info {
     display: flex;
     flex-direction: column;
@@ -65,11 +73,13 @@ const RegisterCompleteBlock = styled.div`
 
 export default function RegisterCompletePage() {
   const item = useSelector((state: RootState) => state.item.item);
+  const result = useSelector((state: RootState) => state.result.result);
 
   return (
     <RegisterCompleteBlock>
       <section className="register_complete__info">
         <p className="register_complete__title">계단을 정복했어요🎉!</p>
+        <p className="register_complete__subtitle">{result?.registeredUserOrder}호 정복자 {result?.buildingAccessibility?.registeredUserName?.value}</p>
         <img style={{marginTop: '56px'}} src="./assets/svg/character_astronut.svg" alt="character" />
         <section className="register_complete__description">
           <p><b>{item?.place.name}</b> 계단 정보를 등록했어요.</p>

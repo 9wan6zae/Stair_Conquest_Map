@@ -39,3 +39,10 @@ export interface GetAccessibilityResult {
   /** 정보가 아직 채워지지 않았으면 null */
   placeAccessibility: PlaceAccessibility | undefined;
 }
+
+export interface RegisterAccessibilityResult {
+  buildingAccessibility: BuildingAccessibility | undefined;
+  placeAccessibility: PlaceAccessibility | undefined;
+  /** n번째 정복자. */
+  registeredUserOrder: number;
+}

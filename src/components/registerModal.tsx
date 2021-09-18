@@ -7,6 +7,9 @@ import * as accessibilityAPI from '../api/accessibility'
 import { RegisterAccessibilityParams, RegisterAccessibilityParams_RegisterPlaceAccessibilityParams, RegisterAccessibilityParams_RegisterBuildingAccessibilityParams } from '../types/Accessibility'
 import { Background } from './sideBar';
 
+import { useDispatch } from 'react-redux';
+import { set_result } from '../modules/result';
+
 type ModalBlockProps = {
   open: boolean
 }
@@ -77,7 +80,7 @@ const ModalBlock = styled.div<ModalBlockProps>`
     `}
 `
 
-const ButtonGroup = styled.section`
+export const ButtonGroup = styled.section`
   position: relative;
   width: 100%;
   display: flex;
@@ -90,7 +93,7 @@ type RegisterModalBtnProps = {
   active: boolean
 }
 
-const RegisterModalBtn = styled.button<RegisterModalBtnProps>`
+export const RegisterModalBtn = styled.button<RegisterModalBtnProps>`
   min-height: 56px;
   max-height: 56px;
   width: 100%;
@@ -122,6 +125,8 @@ export default function RegisterModal({open, setOpen, item, type}: {open: boolea
 }
 
 function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean): void, type?: string}) {
+  const dispatch = useDispatch();
+
   const [load, setLoad] = React.useState(true)
   const [page, setPage] = React.useState(1);
 
@@ -180,7 +185,8 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
           info.buildingAccessibilityParams = building
         }
         setOpen(false)
-        await accessibilityAPI.register(info)
+        const res = await accessibilityAPI.register(info)
+        dispatch(set_result(res.data))
       }
     }
   }
