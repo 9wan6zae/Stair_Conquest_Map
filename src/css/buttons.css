@@ -52,3 +52,12 @@
   border: none;
   margin-right: 16px;
 }
+
+.text-btn {
+  width: 100%;
+  font-size: 18px;
+  font-weight: 500;
+  color: #6A6A73;
+  background: none;
+  border: none;
+}

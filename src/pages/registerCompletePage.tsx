@@ -63,7 +63,7 @@ const RegisterCompleteBlock = styled.div`
     flex-direction: column;
     justify-content: center;
     width: 100%;
-    height: 80px;
+    height: 146px;
     z-index: 2;
     background: #fff;
     padding: 0 20px;
@@ -91,7 +91,8 @@ export default function RegisterCompletePage() {
         <img width="100%" src="./assets/svg/bottom.svg" alt="bottom" />
       </section>
       <section className="register_complete__action">
-        <Link to="/accessibility"><button className="next-btn">닫기</button></Link>
+        <button className="next-btn">친구랑 같이 계단 정복하기</button>
+        <Link to="/accessibility" style={{marginTop: '24px'}}><button className="text-btn">닫기</button></Link>
       </section>
     </RegisterCompleteBlock>
   )
