@@ -356,7 +356,7 @@ export default function AccessibilityPage() {
           <CustomBtn active={accessibility.buildingAccessibility.isUpvoted} onClick={upVote}>
             도움이 돼요 👍
           </CustomBtn>
-          <CustomBtn active = {false}>
+          <CustomBtn active = {false} onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfObUfjutX8WNPPUqtDQZ30f6GCYP4FRHgjehG69sdoQci5AQ/viewform', '_blank')}>
             잘못된 정보예요
           </CustomBtn>
         </ButtonGroup>}
