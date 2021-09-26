@@ -86,6 +86,28 @@ const ButtonGroup = styled.section`
   margin-top: 20px;
 `
 
+type RegisterModalBtnProps = {
+  active: boolean
+}
+
+const RegisterModalBtn = styled.button<RegisterModalBtnProps>`
+  min-height: 56px;
+  max-height: 56px;
+  width: 100%;
+  background-color: var(--primary);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+
+  border-radius: 20px;
+  border: none;
+
+  ${props => !props.active &&
+  css `
+    opacity: 0.3
+  `}
+`
+
 export default function RegisterModal({open, setOpen, item, type}: {open: boolean, setOpen(flag: boolean): void, item: Item, type?: string}) {
   return (
     <ModalWrapper open={open}>
@@ -115,38 +137,51 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
     return () => {document.body.style.overflow = "auto"}
   }, [load])
 
+  const checkFillInfo = (obj: RegisterAccessibilityParams_RegisterBuildingAccessibilityParams | RegisterAccessibilityParams_RegisterPlaceAccessibilityParams) => {
+    let pass = true
+    for (let key in obj) {
+      if (obj[key] === undefined) {
+        pass = false
+        break
+      }
+    }
+    return pass
+  }
+
   const [place, setPlace] = React.useState<RegisterAccessibilityParams_RegisterPlaceAccessibilityParams>(
     {
       placeId: item.place.id,
-      isFirstFloor: true,
-      stairInfo: 2,
-      hasSlope: true,
+      isFirstFloor: undefined,
+      stairInfo: undefined,
+      hasSlope: undefined,
     }
   )
   const [building, setBuilding] = React.useState<RegisterAccessibilityParams_RegisterBuildingAccessibilityParams | undefined>(
     {
       buildingId: item.building.id,
-      entranceStairInfo: 2,
-      hasSlope: true,
-      hasElevator: true,
-      elevatorStairInfo: 2
+      entranceStairInfo: undefined,
+      hasSlope: undefined,
+      hasElevator: undefined,
+      elevatorStairInfo: undefined
     }
   );
 
-  const updateInfo = async () => {
-    if (place || building) {
-      const info: RegisterAccessibilityParams = {
-        placeAccessibilityParams: undefined,
-        buildingAccessibilityParams: undefined
+  const updateInfo = async (obj: RegisterAccessibilityParams_RegisterBuildingAccessibilityParams | RegisterAccessibilityParams_RegisterPlaceAccessibilityParams) => {
+    if (checkFillInfo(obj)) {
+      if (place || building) {
+        const info: RegisterAccessibilityParams = {
+          placeAccessibilityParams: undefined,
+          buildingAccessibilityParams: undefined
+        }
+        if (type === "건물") info.buildingAccessibilityParams = building
+        else if (type === "장소")  info.placeAccessibilityParams = place
+        else {
+          info.placeAccessibilityParams = place
+          info.buildingAccessibilityParams = building
+        }
+        setOpen(false)
+        await accessibilityAPI.register(info)
       }
-      if (type === "건물") info.buildingAccessibilityParams = building
-      else if (type === "장소")  info.placeAccessibilityParams = place
-      else {
-        info.placeAccessibilityParams = place
-        info.buildingAccessibilityParams = building
-      }
-      setOpen(false)
-      await accessibilityAPI.register(info)
     }
   }
 
@@ -238,10 +273,12 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
     modal?.scrollTo(0, 0)
   }
 
-  const nextAction = () => {
-    setPage(2)
-    const modal = document.getElementById('register-modal')
-    modal?.scrollTo(0, 0)
+  const nextAction = (obj: RegisterAccessibilityParams_RegisterBuildingAccessibilityParams | RegisterAccessibilityParams_RegisterPlaceAccessibilityParams) => {
+    if (checkFillInfo(obj)) {
+      setPage(2)
+      const modal = document.getElementById('register-modal')
+      modal?.scrollTo(0, 0)
+    }
   }
 
   // const skipAction = () => {
@@ -275,11 +312,11 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
               footer = {
                 <>
                   {type === "건물" &&
-                        <Link to="/register_complete"><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
+                        <Link to="/register_complete" style={{pointerEvents: checkFillInfo(place) ? 'auto' : 'none'}}><RegisterModalBtn active={checkFillInfo(building)}  onClick={() => updateInfo(building)}>등록하기</RegisterModalBtn></Link>
                   }
                   {type !== "건물" &&
                     <>
-                      <button className="next-btn" onClick={nextAction}>다음</button>
+                      <RegisterModalBtn active={checkFillInfo(building)} onClick={() => nextAction(building)}>다음</RegisterModalBtn>
                       {/* <p style={{textAlign: 'center', marginTop: '24px', color: '#6A6A73', fontSize: '18px', fontWeight: 500}} onClick={skipAction}>건너뛰기</p> */}
                     </>
                   }
@@ -318,7 +355,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
                 </>
               }
               footer = {
-                <Link to="/register_complete" style={{width: '100%'}}><button className="next-btn" onClick={updateInfo}>등록하기</button></Link>
+                <Link to="/register_complete" style={{pointerEvents: checkFillInfo(place) ? 'auto' : 'none'}}><RegisterModalBtn active={checkFillInfo(place)} onClick={() => updateInfo(place)}>등록하기</RegisterModalBtn></Link>
               }
               obj = {place}
               setObj={setPlace}
