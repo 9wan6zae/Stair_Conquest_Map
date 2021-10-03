@@ -11,6 +11,7 @@ import mainPage from './pages/mainPage'
 import loginPage from './pages/loginPage'
 import signUpPage from './pages/signUpPage'
 import SearchPage from './pages/searchPage';
+import CommentPage from './pages/commentPage';
 import RegisterCompletePage from './pages/registerCompletePage';
 import AccessibilityPage from './pages/accessibilityPage';
 
@@ -39,6 +40,7 @@ function App() {
             <Route exact={true} path="/search" component={SearchPage} />
             <Route exact={true} path="/register_complete" component={RegisterCompletePage} />
             <Route exact={true} path="/accessibility" component={AccessibilityPage} />
+            <Route exact={true} path="/comment/:type" component={CommentPage} />
             {/* Not Found */}
             <Route component={() => <Redirect to="/" />} />
           </Switch>
