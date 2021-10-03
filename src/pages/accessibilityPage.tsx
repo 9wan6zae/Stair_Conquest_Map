@@ -7,7 +7,7 @@ import * as upVoteAPI from "../api/upvote"
 import { useSelector } from 'react-redux';
 import { RootState } from '../modules';
 import { GetAccessibilityResult } from '../types/Accessibility';
-import { BuildingAccessibility, PlaceAccessibility } from "../types/Model";
+import { BuildingAccessibility, BuildingAccessibilityComment, PlaceAccessibility, PlaceAccessibilityComment } from "../types/Model";
 import MainHeader from '../components/mainHeader';
 import styled, {css} from 'styled-components';
 import { Item } from '../types/SearchPlaces';
@@ -119,6 +119,15 @@ const AccessibilityInfo = styled.section`
     font-weight: 500;
     font-size: 18px;
   }
+
+  section.accessibility__add-comment {
+    width: 100%;
+    text-align: center;
+    color: #1067CD;
+    font-weight: 500;
+    font-size: 16px;
+    margin-top: 32px;
+  }
 `
 type SymbolWrapperProps = {
   status: string
@@ -155,6 +164,7 @@ const AccessibilityFooter = styled.footer`
     font-weight: 500;
     font-size: 16px;
     margin-top: 16px;
+    margin-bottom: 20px;
   }
 `
 
@@ -188,6 +198,48 @@ const CustomBtn = styled.button<BtnProps>`
       border: 2px solid #1D85FF;
       color: #1D85FF;
     `}
+`
+
+const CommentSection = styled.section`
+  padding: 0 20px;
+  box-sizing: border-box;
+`
+
+const CommentBlock = styled.section`
+  background: #F2F2F5;
+  width: 100%;
+  border-radius: 20px;
+  padding: 20px;
+  box-sizing: border-box;
+
+  margin-bottom: 15px;
+
+  &:last-child {
+    margin-bottom: 0px;
+  }
+
+  section.comment-block__top {
+    display: flex;
+    margin-bottom: 8px;
+  }
+
+  p.nickname {
+    color: #1067CD;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  p.date {
+    margin-left: 6px;
+    color: #9797A6;
+    font-size: 16px;
+    font-weight: 500;
+  }
+  p.comment {
+    color: #3F3F45;
+    font-size: 16px;
+    font-weight: 500;
+    word-break: break-all;
+  }
 `
 
 export default function AccessibilityPage() {
@@ -340,12 +392,14 @@ export default function AccessibilityPage() {
         type = "건물"
         item = {item}
         accessibility = {accessibility?.buildingAccessibility}
+        comment = {accessibility?.buildingAccessibilityComments}
         attribute = {buildingAttributes}
       />
       <AccessibilityLayout
         type = "장소"
         item = {item}
         accessibility = {accessibility?.placeAccessibility}
+        comment = {accessibility?.placeAccessibilityComments}
         attribute = {placeAttributes}
       />
       <AccessibilityFooter>
@@ -396,10 +450,11 @@ type AccessibilityLayoutProps = {
   type: string
   item: Item | undefined
   attribute: Attribute[],
+  comment: BuildingAccessibilityComment[] | PlaceAccessibilityComment[] | undefined
   accessibility: BuildingAccessibility | PlaceAccessibility | undefined
 }
 
-function AccessibilityLayout({type, item, accessibility, attribute}: AccessibilityLayoutProps) {
+function AccessibilityLayout({type, item, accessibility, comment, attribute}: AccessibilityLayoutProps) {
   const [open, setOpen] = React.useState(false);
   const setImgSrc = (type: string) => {
     const uri = type === "건물" ? "building" : "place"
@@ -423,6 +478,18 @@ function AccessibilityLayout({type, item, accessibility, attribute}: Accessibili
       return msg;
     }
   }
+
+  const setCreatedAt = (createdAt: number | undefined) => {
+    if (createdAt) {
+      const now = new Date()
+      const date = new Date((createdAt * 1))
+      
+      const diff = Math.floor(Math.abs(now.getTime() - date.getTime()) / (1000 * 3600 * 24))
+
+      return diff === 0 ? '오늘' : `${diff}일 전`
+    }
+  }
+
   return (
     <>
       <AccessibilityInfo>
@@ -469,6 +536,21 @@ function AccessibilityLayout({type, item, accessibility, attribute}: Accessibili
               </>
             </section>)
           )}
+          <CommentSection>
+            {comment && comment.map((c, i) => (
+              <CommentBlock key={i}>
+                <section className="comment-block__top">
+                  { c.user && <p className="nickname">{c.user?.nickname}</p>}
+                  { !c.user && <p className="nickname" style={{color: '#6A6A73'}}>익명 비밀요원</p>}
+                  <p className="date">{setCreatedAt(c.createdAt?.value)}</p>
+                </section>
+                <p className="comment">{c.comment}</p>
+              </CommentBlock>
+            ))}
+          </CommentSection>
+          <section className="accessibility__add-comment">
+            <Link to={`/comment/${type === '건물' ? 'building' : 'place'}`}><img src="./assets/svg/ic_plus.svg" alt="plus" /><span> 의견 추가하기</span></Link>
+          </section>
         </section>}
         {!accessibility &&
           <section className="accessibility__not_register">
