@@ -9,6 +9,7 @@ import { Background } from './sideBar';
 
 import { useDispatch } from 'react-redux';
 import { set_result } from '../modules/result';
+import CommentTextArea from './commentTextArea';
 
 type ModalBlockProps = {
   open: boolean
@@ -322,7 +323,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
               footer = {
                 <>
                   {type === "장소" &&
-                        <Link to="/register_complete" style={{pointerEvents: checkFillInfo(place) ? 'auto' : 'none'}}><RegisterModalBtn active={checkFillInfo(place)}  onClick={() => updateInfo(place)}>등록하기</RegisterModalBtn></Link>
+                        <Link to="/accessibility" style={{pointerEvents: checkFillInfo(place) ? 'auto' : 'none'}}><RegisterModalBtn active={checkFillInfo(place)}  onClick={() => updateInfo(place)}>등록하기</RegisterModalBtn></Link>
                   }
                   {type !== "장소" &&
                     <>
@@ -488,35 +489,35 @@ const CustomBtn = styled.button<BtnProps>`
     `}
 `
 
-const CommetTextArea = styled.textarea`
-  display: block;
-  width: 100%;
-  min-height: 136px;
-  border-radius: 20px;
-  border: 2px solid #EAEAEF;
-  box-sizing: border-box;
-  padding: 16px 20px;
-  background: #F2F2F5;
-  color: #000;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 160%;
+// const CommentTextArea = styled.textarea`
+//   display: block;
+//   width: 100%;
+//   min-height: 136px;
+//   border-radius: 20px;
+//   border: 2px solid #EAEAEF;
+//   box-sizing: border-box;
+//   padding: 16px 20px;
+//   background: #F2F2F5;
+//   color: #000;
+//   font-size: 16px;
+//   font-weight: 500;
+//   line-height: 160%;
 
-  font-family: 'Spoqa Han Sans Neo', 'sans-serif';
-  resize: none;
+//   font-family: 'Spoqa Han Sans Neo', 'sans-serif';
+//   resize: none;
 
-  outline: none;
+//   outline: none;
 
-  text-overflow: scroll;
+//   text-overflow: scroll;
 
-  &:focus {
-    border: 2px solid #1D85FF !important;
-  }
+//   &:focus {
+//     border: 2px solid #1D85FF !important;
+//   }
 
-  &::placeholder {
-    color: #B5B5C0;
-  }
-`
+//   &::placeholder {
+//     color: #B5B5C0;
+//   }
+// `
 
 function ModalContentLayout({header, info, obj, question, footer, setObj, setQuestion}: ModalContentLayoutProps) {
   const buttonAction = ({obj, attribute, value, setObj}: ButtonActionProps) => {
@@ -577,11 +578,7 @@ function ModalContentLayout({header, info, obj, question, footer, setObj, setQue
           ))}
           <QuesitonSection disabled={false}>
             <p className="question__title">더 도움이 될 정보가 있다면 설명해주세요! <span style={{fontSize: '14px', color: '#9797a5'}}>(선택)</span></p>
-            <CommetTextArea
-              maxLength={100}
-              placeholder="후문에는 계단이 없어 편하게 갈 수 있습니다 (최대 100자)"
-              value={comment}
-              onChange={onChange} />
+            <CommentTextArea comment={comment} onChange={onChange} />
           </QuesitonSection>
         </section>
         <footer className="register-modal__footer">
