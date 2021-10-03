@@ -1,4 +1,4 @@
-import { StairInfo, BuildingAccessibility, PlaceAccessibility } from "./Model";
+import { StringValue, StairInfo, BuildingAccessibility, PlaceAccessibility, PlaceAccessibilityComment, BuildingAccessibilityComment } from "./Model";
 
 export interface RegisterAccessibilityParams {
   /** 최초 등록 시에만 올려준다. */
@@ -17,6 +17,7 @@ export interface RegisterAccessibilityParams_RegisterPlaceAccessibilityParams {
   isFirstFloor: boolean | undefined;
   stairInfo: StairInfo | undefined;
   hasSlope: boolean | undefined;
+  comment: StringValue | undefined;
 }
 
 export interface RegisterAccessibilityParams_RegisterBuildingAccessibilityParams {
@@ -26,6 +27,16 @@ export interface RegisterAccessibilityParams_RegisterBuildingAccessibilityParams
   hasSlope: boolean | undefined;
   hasElevator: boolean | undefined;
   elevatorStairInfo: StairInfo | undefined;
+  comment: StringValue | undefined;
+}
+
+export interface RegisterAccessibilityResult {
+  buildingAccessibility: BuildingAccessibility | undefined;
+  buildingAccessibilityComments: BuildingAccessibilityComment[];
+  placeAccessibility: PlaceAccessibility | undefined;
+  placeAccessibilityComments: PlaceAccessibilityComment[];
+  /** n번째 정복자. */
+  registeredUserOrder: number;
 }
 
 export interface GetAccessibilityParams {
@@ -33,16 +44,11 @@ export interface GetAccessibilityParams {
 }
 
 export interface GetAccessibilityResult {
-  [key: string]: BuildingAccessibility | PlaceAccessibility | undefined
+  [key: string]: any
   /** 정보가 아직 채워지지 않았으면 null */
   buildingAccessibility: BuildingAccessibility | undefined;
+  buildingAccessibilityComments: BuildingAccessibilityComment[];
   /** 정보가 아직 채워지지 않았으면 null */
   placeAccessibility: PlaceAccessibility | undefined;
-}
-
-export interface RegisterAccessibilityResult {
-  buildingAccessibility: BuildingAccessibility | undefined;
-  placeAccessibility: PlaceAccessibility | undefined;
-  /** n번째 정복자. */
-  registeredUserOrder: number;
+  placeAccessibilityComments: PlaceAccessibilityComment[];
 }
