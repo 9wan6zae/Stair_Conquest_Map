@@ -61,3 +61,16 @@
   background: none;
   border: none;
 }
+
+.border-btn {
+  min-height: 56px;
+  max-height: 56px;
+  width: 100%;
+  background-color: #fff;
+  color: #6A6A73;
+  font-size: 18px;
+  font-weight: 700;
+
+  border-radius: 20px;
+  border: 2px solid #EAEAEF;
+}

@@ -6,6 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../modules';
 
 import html2canvas from 'html2canvas'
+import BottomModal from '../components/bottomModal';
 
 const RegisterCompleteBlock = styled.div`
   position: relative;
@@ -144,34 +145,43 @@ const RegisterCompleteFooter = styled.footer`
   }
 `
 
-const ImgModal = styled.section`
-  position: absolute;
-  z-index: 6;
-  width: 100vw;
-  height: 100vh;
-
-  top: 0;
-  left: 0;
-
-  section.img__wrapper {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-    background: #fff;
-    padding: 20px;
-    box-sizing: border-box;
-    border-radius: 20px;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
-    
-    p {
-      text-align: center;
-      font-size: 18px;
-      margin-top: 10px;
-    }
-  }
+const ImgWrapper = styled.section`
+  width: 100%;
+  height: 228px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #F2F2F5;
 `
+
+// const ImgModal = styled.section`
+//   position: absolute;
+//   z-index: 6;
+//   width: 100vw;
+//   height: 100vh;
+
+//   top: 0;
+//   left: 0;
+
+//   section.img__wrapper {
+//     position: absolute;
+//     top: 50%;
+//     left: 50%;
+//     transform: translate(-50%, -50%);
+//     width: 90%;
+//     background: #fff;
+//     padding: 20px;
+//     box-sizing: border-box;
+//     border-radius: 20px;
+//     box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+    
+//     p {
+//       text-align: center;
+//       font-size: 18px;
+//       margin-top: 10px;
+//     }
+//   }
+// `
 
 export default function RegisterCompletePage() {
   const item = useSelector((state: RootState) => state.item.item);
@@ -180,25 +190,14 @@ export default function RegisterCompletePage() {
   const [open, setOpen] = React.useState(false)
 
   const onCapture = () => {
-    const filename = `${result?.registeredUserOrder}번째 정복자 ${result?.buildingAccessibility?.registeredUserName}님`
     const shareImg = document.getElementById('share')
     if (shareImg)
     html2canvas(shareImg).then(canvas => {
       setImg(canvas.toDataURL('image/png'))
       console.log(canvas.toDataURL('image/png'))
       setOpen(true)
-      // onSaveAs(canvas.toDataURL('image/png'), filename)
     })
   }
-
-  // const onSaveAs = (uri: string, filename: string) => {
-  //   const link = document.createElement('a')
-  //   document.body.appendChild(link)
-  //   link.href = uri
-  //   link.download = filename
-  //   link.click()
-  //   document.body.removeChild(link)
-  // }
 
   const setUserName = (username: string | undefined) => {
     if (username) return username
@@ -225,7 +224,7 @@ export default function RegisterCompletePage() {
             <p>사회에 기여하셨습니다. 정말 고마워요 ☺️</p>
           </section>
           <section className="register_complete__action">
-            <button onClick={onCapture} className="next-btn">친구랑 같이 계단 정복하기</button>
+            <button onClick={onCapture} className="next-btn">공유하기</button>
             <Link to="/accessibility" style={{marginTop: '24px'}}><button className="text-btn">닫기</button></Link>
           </section>
         </RegisterCompleteFooter>
@@ -243,13 +242,30 @@ export default function RegisterCompletePage() {
           </section>
         </RegisterCompleteBlock>
       </RegisterCompleteBlock>
-      {open &&
+      {/* {open &&
         <ImgModal onClick={() => setOpen(false)}>
           <section className="img__wrapper">
             <img width="100%" src={img} alt="tt"/>
             <p>이미지를 눌러서 다운로드 해주세요!</p>
           </section>
-        </ImgModal>}
+        </ImgModal>} */}
+      <BottomModal
+        open={open}
+        height={482}
+        setOpen={setOpen}
+        title="공유하기"
+        description="이미지를 길게 눌러서 저장하세요!"
+        content= {
+          <ImgWrapper>
+            <img style={{borderRadius: "20px", boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)"}} width="180px" src={img} alt="tt"/>
+          </ImgWrapper>
+        }
+        footer= {
+          <>
+            <button className="border-btn" onClick={() => setOpen(false)}>닫기</button>
+          </>
+        }
+      />
     </>
   )
 }
