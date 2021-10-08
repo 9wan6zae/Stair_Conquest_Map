@@ -31,11 +31,11 @@ const CommentTextAreaBlock = styled.textarea`
   }
 `
 
-export default function CommentTextArea ({comment, onChange}: {comment: string, onChange(e: any): void}) {
+export default function CommentTextArea ({comment, onChange, placeholder}: {comment: string, onChange(e: any): void, placeholder: string}) {
   return (
   <CommentTextAreaBlock
     maxLength={100}
-    placeholder="후문에는 계단이 없어 편하게 갈 수 있습니다 (최대 100자)"
+    placeholder={placeholder}
     value={comment}
     onChange={onChange} />
   )

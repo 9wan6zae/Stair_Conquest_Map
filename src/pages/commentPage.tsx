@@ -11,6 +11,8 @@ import { RootState } from '../modules';
 import { RegisterBuildingAccessibilityCommentParams, RegisterPlaceAccessibilityCommentParams } from '../types/Comment';
 import * as commentAPI from '../api/comment';
 
+import { place_placeholder, building_placeholder } from '../ts/placeholders';
+
 const CommentPageBlock = styled.main`
   margin-top: 108px;
   padding: 0 20px;
@@ -60,6 +62,14 @@ export default function CommentPage({match}: any) {
     }
   }
 
+  const setPlaceHolder = () => {
+    const type = match.params.type
+    const placeholder = type === "place"
+      ? place_placeholder
+      : building_placeholder
+    return placeholder
+  }
+
 
   return (
     <>
@@ -69,7 +79,7 @@ export default function CommentPage({match}: any) {
           <p className="title3">의견추가</p>
           <p className="description" style={{fontSize: '16px', marginTop: '12px'}}>더 도움이 될 정보가 있다면 설명해주세요!</p>
         </section>
-        <CommentTextArea comment={comment} onChange={onChange} />
+        <CommentTextArea comment={comment} onChange={onChange} placeholder={setPlaceHolder()}/>
         <footer>
           <Link id="link" to="/accessibility" style={{pointerEvents: checkFillInfo(comment) ? 'auto' : 'none'}} />
           <RegisterModalBtn active={checkFillInfo(comment)} onClick={() => registerComment(comment)}>등록하기</RegisterModalBtn>

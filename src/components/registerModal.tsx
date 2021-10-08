@@ -11,6 +11,8 @@ import { useDispatch } from 'react-redux';
 import { set_result } from '../modules/result';
 import CommentTextArea from './commentTextArea';
 
+import { place_placeholder, building_placeholder } from '../ts/placeholders';
+
 type ModalBlockProps = {
   open: boolean
 }
@@ -39,10 +41,12 @@ const ModalWrapper = styled.div<ModalBlockProps>`
 
 const ModalHeader = styled.section`
   position: sticky;
-  height: 56px;
+  height: 50px;
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: end;
+  padding-bottom: 4px;
+  box-sizing: border-box;
   width: 100%;
   top: 0;
   background: #fff;
@@ -65,7 +69,7 @@ const ModalBlock = styled.div<ModalBlockProps>`
 
   & > header {
     margin-bottom: 28px;
-    margin-top: 40px;
+    margin-top: 20px;
     padding: 0 20px;
     width: 100%;
     box-sizing: border-box;
@@ -317,7 +321,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
               info = {
                 <>
                   <p style={{fontSize: "80px"}}>🚥</p>
-                  <p className="register-modal__info__title">이 장소의 접근성 정보를 알려주세요 😉</p>
+                  <p className="register-modal__info__title">이 점포의 접근성 정보를 알려주세요 😉</p>
                 </>
               }
               footer = {
@@ -337,6 +341,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
               obj = {place}
               setObj={setPlace}
               question={quesiton_place}
+              placeholder={place_placeholder}
             />
           </>
         )}
@@ -353,8 +358,10 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
             <ModalContentLayout
               header={
                 <>
-                  <h3 className="title3">{limitText(item.place.name)} 장소가 있는 건물</h3>
+                  <h3 className="title3">건물 정보</h3>
+                  {/* <h3 className="title3">{limitText(item.place.name)} 장소가 있는 건물</h3> */}
                   <p className="register-modal__address">{item.place.address}</p>
+                  <p style={{fontSize: '16px', color: '#B5B5C0', fontWeight: 500}}><span style={{color: 'var(--emphasis)'}}>{limitText(item.place.name)}</span> 점포가 있는 건물</p>
                 </>
               }
               info = {
@@ -382,6 +389,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
               setObj={setBuilding}
               setQuestion={setQuestionBuilding}
               question={quesiton_building}
+              placeholder={building_placeholder}
             />
           </>
         )}
@@ -409,6 +417,7 @@ type ModalContentLayoutProps = {
   footer: React.ReactElement
   setObj(obj: any): void
   setQuestion(question: any): void
+  placeholder: string
 }
 
 type ButtonActionProps = {
@@ -489,37 +498,7 @@ const CustomBtn = styled.button<BtnProps>`
     `}
 `
 
-// const CommentTextArea = styled.textarea`
-//   display: block;
-//   width: 100%;
-//   min-height: 136px;
-//   border-radius: 20px;
-//   border: 2px solid #EAEAEF;
-//   box-sizing: border-box;
-//   padding: 16px 20px;
-//   background: #F2F2F5;
-//   color: #000;
-//   font-size: 16px;
-//   font-weight: 500;
-//   line-height: 160%;
-
-//   font-family: 'Spoqa Han Sans Neo', 'sans-serif';
-//   resize: none;
-
-//   outline: none;
-
-//   text-overflow: scroll;
-
-//   &:focus {
-//     border: 2px solid #1D85FF !important;
-//   }
-
-//   &::placeholder {
-//     color: #B5B5C0;
-//   }
-// `
-
-function ModalContentLayout({header, info, obj, question, footer, setObj, setQuestion}: ModalContentLayoutProps) {
+function ModalContentLayout({header, info, obj, question, footer, setObj, setQuestion, placeholder}: ModalContentLayoutProps) {
   const buttonAction = ({obj, attribute, value, setObj}: ButtonActionProps) => {
     setObj({...obj, [attribute]: value})
     if (attribute === 'hasElevator') {
@@ -578,7 +557,7 @@ function ModalContentLayout({header, info, obj, question, footer, setObj, setQue
           ))}
           <QuesitonSection disabled={false}>
             <p className="question__title">더 도움이 될 정보가 있다면 설명해주세요! <span style={{fontSize: '14px', color: '#9797a5'}}>(선택)</span></p>
-            <CommentTextArea comment={comment} onChange={onChange} />
+            <CommentTextArea comment={comment} onChange={onChange} placeholder={placeholder} />
           </QuesitonSection>
         </section>
         <footer className="register-modal__footer">
