@@ -43,6 +43,7 @@
   line-height: 120%;
   margin-bottom: 4px;
   text-overflow: ellipsis;
+  word-break: break-all;
 }
 
 .search-list__address {

@@ -1,3 +1,14 @@
+export interface Timestamp {
+  /** epoch millis */
+  value: number;
+}
+
+export interface User {
+  id: string;
+  nickname: string;
+  instagramId: StringValue | undefined;
+}
+
 export interface StringValue {
   value: string;
 }
@@ -96,4 +107,22 @@ export enum StairInfo {
   TWO_TO_FIVE = 3,
   OVER_SIX = 4,
   UNRECOGNIZED = -1,
+}
+
+export interface PlaceAccessibilityComment {
+  id: string;
+  placeId: string;
+  /** 익명이면 null. */
+  user: User | undefined;
+  comment: string;
+  createdAt: Timestamp | undefined;
+}
+
+export interface BuildingAccessibilityComment {
+  id: string;
+  buildingId: string;
+  /** 익명이면 null. */
+  user: User | undefined;
+  comment: string;
+  createdAt: Timestamp | undefined;
 }
