@@ -83,7 +83,7 @@ export default function MainHeader({children}: {children: React.ReactChild}) {
     <>
       <HeaderBlock change={ !scroll || change } >
         <main>
-          <a href="/"><p className="title4">계단 정복 지도</p></a>
+          <a href="/"><p className="title4">계단정복지도</p></a>
           <MenuBtn stroke = { !scroll || change ? 'black' : '#1067CD'} onClick={() => setOpen(true)}/>
         </main>
       </HeaderBlock>
