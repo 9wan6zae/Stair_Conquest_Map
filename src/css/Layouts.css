@@ -18,3 +18,8 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+.link-layout {
+  display: flex;
+  align-items: center;
+}
