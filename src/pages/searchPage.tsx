@@ -30,6 +30,7 @@ const ItemBox = styled.section`
 export default function SearchPage() {
   const dispatch = useDispatch();
   const [load, setLoad] = useState(true);
+  const [text, setText] = useState('')
   const [params, setParams] = useState<SearchPlacesParams>(
     {
       searchText: '',
@@ -59,82 +60,24 @@ export default function SearchPage() {
     },
   );
 
-  const {searchText} = params
-
   const [searchPlacesResult, setSearchPlacesResult] = useState<SearchPlacesResult>(
     {items: []}
-    // {
-    //   items: [
-    //     {
-    //       place: {
-    //         id: 'test',
-    //         name: '채선당 행복가마솥밥 롯데마트점',
-    //         address: '분당구 황새울로 340'
-    //       },
-    //       building: {
-    //         id: 'ttt',
-    //         address: 'dsfd'
-    //       },
-    //       hasBuildingAccessibility: false,
-    //       hasPlaceAccessibility: false
-    //     },
-    //     {
-    //       place: {
-    //         id: 'test2',
-    //         name: '가나다',
-    //         address: 'dsdsf'
-    //       },
-    //       building: {
-    //         id: 'ttdsdft',
-    //         address: 'dsfd'
-    //       },
-    //       hasBuildingAccessibility: true,
-    //       hasPlaceAccessibility: false
-    //     },
-    //     {
-    //       place: {
-    //         id: 'test4',
-    //         name: '롯데마트점',
-    //         address: 'dsdsf'
-    //       },
-    //       building: {
-    //         id: 'ttdsdfsst',
-    //         address: 'dsfd'
-    //       },
-    //       hasBuildingAccessibility: false,
-    //       hasPlaceAccessibility: true
-    //     },
-    //     {
-    //       place: {
-    //         id: 'test3',
-    //         name: '가나dddd다',
-    //         address: 'dssdfsdfdsf'
-    //       },
-    //       building: {
-    //         id: 'ttfsffft',
-    //         address: 'dsfdsfsdfdsfd'
-    //       },
-    //       hasBuildingAccessibility: true,
-    //       hasPlaceAccessibility: true
-    //     },
-    //   ]
-    // }
   );
   const [open, setOpen] = useState(false);
 
   const onChange = (e: any) => {
     const {value} = e.target
-    setParams({...params, searchText: value})
+    setText(value)
   }
 
   const searchPlaces = async () => {
     if (params) {
+      params.searchText = text
       const res = await searchAPI.searchPlaces(params)
       console.log(res.data)
       setSearchPlacesResult(res.data)
     }
   }
-
   useEffect(() => {
     if (load) {
       navigator.geolocation.getCurrentPosition(pos => {
@@ -145,7 +88,7 @@ export default function SearchPage() {
       })
     }
     return () => setLoad(false)
-  }, [params, load])
+  }, [load, params])
 
   const openModal = (item: Item) => {
     setOpen(true)
@@ -153,8 +96,8 @@ export default function SearchPage() {
     dispatch(set_item(item));
   }
 
-  const clearInfo = (name: string) => {
-    setParams({...params, [name]: ''})
+  const clearInfo = () => {
+    setText('')
   }
 
   const NotRegister = (item: Item): boolean => {
@@ -173,8 +116,8 @@ export default function SearchPage() {
     <>
       <MainHeader>
         <div className="input__search-page">
-          <section style={{width: '86%'}}>
-            <InputBox name="searchText" value={searchText || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchPlaces} />
+          <section style={{width: '86%'}} >
+            <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchPlaces} />
           </section>
           <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={() => searchPlaces()}>검색</span>
         </div>
@@ -214,8 +157,10 @@ export default function SearchPage() {
         ))
       )}
       {!searchPlacesResult?.items && (
-        <section style={{width: '100%', height: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-          <p style={{fontSize: '20px', color: '#B5B5C0'}}>검색 결과가 없습니다.</p>
+        <section style={{width: '100%', height: '70vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+          <img src="./assets/svg/ic_search.svg" alt="search" />
+          <p style={{fontSize: '20px', color: '#B5B5C0', marginTop: '16px'}}>검색 결과가 없습니다.</p>
+          <a target="_blank" rel="noreferrer" href="https://docs.google.com/forms/d/1LtDKXdULuXJMu19nTognnhWwCagsr4ek5w8yHkRgUXA/edit" style={{fontSize: '16px', color: '#1067CD', marginTop: '24px'}}>찾는 장소가 없으신가요? <img src="./assets/svg/arr.svg" alt="arr"/> </a>
         </section>
       )}
       <RegisterModal open={open} item={selectItem} setOpen={setOpen}></RegisterModal>
