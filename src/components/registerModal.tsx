@@ -12,6 +12,7 @@ import { set_result } from '../modules/result';
 import CommentTextArea from './commentTextArea';
 
 import { place_placeholder, building_placeholder } from '../ts/placeholders';
+import { link } from '../ts/link'
 
 type ModalBlockProps = {
   open: boolean
@@ -207,6 +208,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
   const [quesiton_building, setQuestionBuilding] = React.useState([
     {
       quesiton: "이 건물 입구에 계단이 있나요?",
+      link: "계단",
       attribute: "entranceStairInfo",
       disabled: false,
       buttons: [
@@ -218,6 +220,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
     },
     {
       quesiton: "이 건물 입구에 경사로가 있나요?",
+      link: "경사로",
       attribute: "hasSlope",
       disabled: false,
       buttons: [
@@ -259,6 +262,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
     },
     {
       quesiton: "입구로 들어가는 길에 계단이 있나요?",
+      link: "계단",
       attribute: "stairInfo",
       disabled: false,
       buttons: [
@@ -270,6 +274,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
     },
     {
       quesiton: "점포 안으로 들어갈 수 있는 경사로가 있나요?",
+      link: "경사로",
       attribute: "hasSlope",
       disabled: false,
       buttons: [
@@ -404,6 +409,7 @@ type Button = {
 
 type Question = {
   quesiton: string,
+  link?: string,
   attribute: string,
   disabled: boolean,
   buttons: Button[]
@@ -447,11 +453,14 @@ const QuesitonSection = styled.section<QuesitonSectionProps>`
   margin-top: 52px;
   box-sizing: border-box;
 
+  section.question_title_section {
+    margin-bottom: 20px;
+  }
+
   p.question__title {
     font-weight: 500;
     font-size: 16px;
     color: #000;
-    margin-bottom: 20px;
   }
 
   ${props => props.disabled &&
@@ -547,7 +556,15 @@ function ModalContentLayout({header, info, obj, question, footer, setObj, setQue
           </section>
           {obj && question.map((q, i) => (
             <QuesitonSection disabled={q.disabled} key={i}>
-              <p className="question__title">{q.quesiton}</p>
+              <section className="question_title_section">
+                <p className="question__title">{q.quesiton}</p>
+                {q.link &&
+                  <a href={link[q.link]} target="_blank" rel="noreferrer" className="link link-layout" style={{marginTop: '9px'}}>
+                    <p>{q.link} 기준 더 알아보기</p>
+                    <img src="./assets/svg/arr.svg" style={{marginLeft: '4px'}} alt="arr" />
+                  </a>
+                }
+              </section>
               <ButtonGroup>
                 {q.buttons.map((b, i) => (
                   <CustomBtn key={i} disabled={q.disabled} onClick={() => buttonAction({obj, attribute: q.attribute, value: b.value, setObj, setQuestion})} active={obj[q.attribute] === b.value}>{b.text}</CustomBtn>
@@ -556,7 +573,9 @@ function ModalContentLayout({header, info, obj, question, footer, setObj, setQue
             </QuesitonSection>
           ))}
           <QuesitonSection disabled={false}>
-            <p className="question__title">더 도움이 될 정보가 있다면 설명해주세요! <span style={{fontSize: '14px', color: '#9797a5'}}>(선택)</span></p>
+            <section className="question_title_section">
+              <p className="question__title">더 도움이 될 정보가 있다면 설명해주세요! <span style={{fontSize: '14px', color: '#9797a5'}}>(선택)</span></p>
+            </section>
             <CommentTextArea comment={comment} onChange={onChange} placeholder={placeholder} />
           </QuesitonSection>
         </section>

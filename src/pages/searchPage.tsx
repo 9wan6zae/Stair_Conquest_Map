@@ -160,7 +160,10 @@ export default function SearchPage() {
         <section style={{width: '100%', height: '70vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
           <img src="./assets/svg/ic_search.svg" alt="search" />
           <p style={{fontSize: '20px', color: '#B5B5C0', marginTop: '16px'}}>검색 결과가 없습니다.</p>
-          <a target="_blank" rel="noreferrer" href="https://docs.google.com/forms/d/1LtDKXdULuXJMu19nTognnhWwCagsr4ek5w8yHkRgUXA/edit" style={{fontSize: '16px', color: '#1067CD', marginTop: '24px'}}>찾는 장소가 없으신가요? <img src="./assets/svg/arr.svg" alt="arr"/> </a>
+          <a target="_blank" rel="noreferrer" href="https://docs.google.com/forms/d/1LtDKXdULuXJMu19nTognnhWwCagsr4ek5w8yHkRgUXA/edit" className="link link-layout" style={{fontSize: '16px', marginTop: '24px'}}>
+            <p>찾는 장소가 없으신가요?</p>
+            <img src="./assets/svg/arr.svg" style={{marginLeft: '4px'}} alt="arr"/>
+          </a>
         </section>
       )}
       <RegisterModal open={open} item={selectItem} setOpen={setOpen}></RegisterModal>
