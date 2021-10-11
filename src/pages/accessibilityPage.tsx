@@ -366,7 +366,7 @@ export default function AccessibilityPage() {
     }
     accessibilityAPI.getAccessibility({
       placeId: `${item?.place.id}`
-    }).then(res => {setAccessibility(res.data); console.log(res.data)})
+    }).then(res => setAccessibility(res.data))
   }, [item])
 
   const upVote = async () => {

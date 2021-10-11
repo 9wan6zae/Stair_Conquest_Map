@@ -74,7 +74,6 @@ export default function SearchPage() {
     if (params) {
       params.searchText = text
       const res = await searchAPI.searchPlaces(params)
-      console.log(res.data)
       setSearchPlacesResult(res.data)
     }
   }
