@@ -104,7 +104,7 @@ function SideBarItems () {
       {
         icon: "./assets/svg/info.svg",
         title: "계단정복지도 소개",
-        to: "https://www.notion.so/eggnrock/8d03c66d07404ecf9f30b8cbd71dc9fd",
+        to: "https://eggnrock.notion.site/8d03c66d07404ecf9f30b8cbd71dc9fd",
         link: false
       },
       // {
@@ -116,7 +116,7 @@ function SideBarItems () {
       {
         icon: "./assets/svg/info.svg",
         title: "만든 사람들",
-        to: "https://www.notion.so/eggnrock/8bc9f0c3f8334a4983088d4041050377",
+        to: "https://eggnrock.notion.site/8bc9f0c3f8334a4983088d4041050377",
         link: false
       },
     ]
