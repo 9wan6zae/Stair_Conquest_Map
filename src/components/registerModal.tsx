@@ -45,7 +45,7 @@ const ModalHeader = styled.section`
   height: 50px;
   display: flex;
   flex-direction: row;
-  align-items: end;
+  align-items: flex-end;
   padding-bottom: 4px;
   box-sizing: border-box;
   width: 100%;
@@ -332,7 +332,7 @@ function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean
               footer = {
                 <>
                   {type === "장소" &&
-                        <Link to="/accessibility" style={{pointerEvents: checkFillInfo(place) ? 'auto' : 'none'}}><RegisterModalBtn active={checkFillInfo(place)}  onClick={() => updateInfo(place)}>등록하기</RegisterModalBtn></Link>
+                        <Link to="/register_complete" style={{pointerEvents: checkFillInfo(place) ? 'auto' : 'none'}}><RegisterModalBtn active={checkFillInfo(place)}  onClick={() => updateInfo(place)}>등록하기</RegisterModalBtn></Link>
                   }
                   {type !== "장소" &&
                     <>
