@@ -1,15 +1,4 @@
-import { Place, Building, StringValue, Location } from "./Model";
-
-export interface SearchPlacesResult {
-  items: Item[];
-}
-
-export interface Item {
-  place:    Place;
-  building: Building;
-  hasBuildingAccessibility: boolean;
-  hasPlaceAccessibility: boolean;
-}
+import { Place, Building, StringValue, Location, Int32Value } from "./Model";
 
 export interface SearchPlacesParams {
   searchText: string;
@@ -20,4 +9,17 @@ export interface SearchPlacesParams {
   siGunGuId: StringValue | undefined;
   /** "전체"면 null. */
   eupMyeonDongId: StringValue | undefined;
+}
+
+export interface SearchPlacesResult_Item {
+  place: Place;
+  building: Building;
+  hasBuildingAccessibility: boolean;
+  hasPlaceAccessibility: boolean;
+  /** current_location이 올라왔을 경우에만 non-null. */
+  distanceMeters: Int32Value | undefined;
+}
+
+export interface SearchPlacesResult {
+  items: SearchPlacesResult_Item[];
 }

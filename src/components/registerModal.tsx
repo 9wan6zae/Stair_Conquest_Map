@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import styled, {css} from 'styled-components';
-import { Item } from '../types/SearchPlaces';
+import { SearchPlacesResult_Item } from '../types/SearchPlaces';
 import * as accessibilityAPI from '../api/accessibility'
 
 import { RegisterAccessibilityParams, RegisterAccessibilityParams_RegisterPlaceAccessibilityParams, RegisterAccessibilityParams_RegisterBuildingAccessibilityParams } from '../types/Accessibility'
@@ -116,7 +116,7 @@ export const RegisterModalBtn = styled.button<RegisterModalBtnProps>`
   `}
 `
 
-export default function RegisterModal({open, setOpen, item, type}: {open: boolean, setOpen(flag: boolean): void, item: Item, type?: string}) {
+export default function RegisterModal({open, setOpen, item, type}: {open: boolean, setOpen(flag: boolean): void, item: SearchPlacesResult_Item, type?: string}) {
   return (
     <ModalWrapper open={open}>
       <ModalBlock id ="register-modal" open={open}>
@@ -129,7 +129,7 @@ export default function RegisterModal({open, setOpen, item, type}: {open: boolea
   )
 }
 
-function ModalContent ({item, setOpen, type}: {item: Item, setOpen(flag: boolean): void, type?: string}) {
+function ModalContent ({item, setOpen, type}: {item: SearchPlacesResult_Item, setOpen(flag: boolean): void, type?: string}) {
   const dispatch = useDispatch();
 
   const [load, setLoad] = React.useState(true)

@@ -46,10 +46,18 @@
   word-break: break-all;
 }
 
-.search-list__address {
+.search-list__distance {
   font-family: var(--main-font);
   font-size: 14px;
   color: var(--gray);
+  font-weight: 500;
+  line-height: 200%;
+}
+
+.search-list__address {
+  font-family: var(--main-font);
+  font-size: 14px;
+  color: #B5B5C0;
   font-weight: 500;
   line-height: 200%;
 }
