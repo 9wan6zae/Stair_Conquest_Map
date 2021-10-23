@@ -10,7 +10,7 @@ import { GetAccessibilityResult } from '../types/Accessibility';
 import { BuildingAccessibility, BuildingAccessibilityComment, PlaceAccessibility, PlaceAccessibilityComment } from "../types/Model";
 import MainHeader from '../components/mainHeader';
 import styled, {css} from 'styled-components';
-import { Item } from '../types/SearchPlaces';
+import { SearchPlacesResult_Item } from '../types/SearchPlaces';
 import RegisterModal, { ButtonGroup, RegisterModalBtn } from '../components/registerModal';
 
 const TitleSection = styled.section`
@@ -448,7 +448,7 @@ type Attribute = {
 
 type AccessibilityLayoutProps = {
   type: string
-  item: Item | undefined
+  item: SearchPlacesResult_Item | undefined
   attribute: Attribute[],
   comment: BuildingAccessibilityComment[] | PlaceAccessibilityComment[] | undefined
   accessibility: BuildingAccessibility | PlaceAccessibility | undefined

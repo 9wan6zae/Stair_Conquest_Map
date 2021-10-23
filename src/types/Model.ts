@@ -3,6 +3,10 @@ export interface Timestamp {
   value: number;
 }
 
+export interface Int32Value {
+  value: number;
+}
+
 export interface User {
   id: string;
   nickname: string;

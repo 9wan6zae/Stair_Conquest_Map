@@ -1,9 +1,9 @@
-import { Item } from "../types/SearchPlaces"
+import { SearchPlacesResult_Item } from "../types/SearchPlaces"
 
 const SET = 'item/SET' as const
 const DELETE = 'item/DELETE' as const
 
-export const set_item = (item: Item) => ({
+export const set_item = (item: SearchPlacesResult_Item) => ({
   type: SET,
   selectedItem: item
 })
@@ -17,7 +17,7 @@ type ItemAction =
   | ReturnType<typeof delete_item>
 
 type ItemState = {
-  item: Item | undefined
+  item: SearchPlacesResult_Item | undefined
 }
 
 const initState: ItemState = {
