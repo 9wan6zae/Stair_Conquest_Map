@@ -72,9 +72,8 @@ export default function SearchPage() {
   }
 
   const searchPlaces = async () => {
-    if (load && params) {
+    if (params) {
       params.searchText = text
-      console.log(params)
       const res = await searchAPI.searchPlaces(params)
       setSearchPlacesResult(res.data)
     }
@@ -133,8 +132,12 @@ export default function SearchPage() {
           <ItemBox key={item.place.id}>
             <section className="info">
               <p className="search-list__title">{item.place.name}</p>
-              <span className="search-list__distance">{calcMeter(item.distanceMeters?.value)}</span>
-              <span style={{width: '0px', minHeight: '12px', border: '1px solid #EAEAEF', margin: '-2px 8px', display: 'inline-block'}} />
+              {load &&
+                <>
+                  <span className="search-list__distance">{calcMeter(item.distanceMeters?.value)}</span>
+                  <span style={{width: '0px', minHeight: '12px', border: '1px solid #EAEAEF', margin: '-2px 8px', display: 'inline-block'}} />
+                </>
+              }
               <span className="search-list__address">{item.place.address}</span>
               { NotRegister(item) && (
                 <p className="search-list__info">등록된 정보가 없어요</p>
