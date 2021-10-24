@@ -29,7 +29,6 @@ const ItemBox = styled.section`
 
 export default function SearchPage() {
   const dispatch = useDispatch();
-  const [load, setLoad] = useState(false);
   const [text, setText] = useState('')
   const [params, setParams] = useState<SearchPlacesParams>(
     {
@@ -80,7 +79,6 @@ export default function SearchPage() {
       const coords: Location = {lng: 0, lat: 0}
       coords.lat = pos.coords.latitude
       coords.lng = pos.coords.longitude
-      setLoad(true)
       setParams({...params, currentLocation: coords})
     })
   // eslint-disable-next-line react-hooks/exhaustive-deps
