@@ -119,6 +119,12 @@ function SideBarItems () {
         to: "https://eggnrock.notion.site/8bc9f0c3f8334a4983088d4041050377",
         link: false
       },
+      {
+        icon: "./assets/svg/account.svg",
+        title: "클럽 회원 등록",
+        to: "https://form.typeform.com/to/jSd2pdfF?typeform-source=admin.typeform.com",
+        link: false
+      },
     ]
   )
 
@@ -148,12 +154,14 @@ function SideBarItems () {
       {list.map((v, index) => (
           <div key={index}>
             {v.link && 
-              <Link to = {v.to}>
-                <SideBarItem>
-                  <img src={v.icon} alt={v.title} />
-                  <p>{v.title}</p>
-                </SideBarItem>
-              </Link>
+              <SideBarItem>
+                <Link to = {v.to}>
+                  <section style={{display: 'flex'}}>
+                    <img src={v.icon} alt={v.title} />
+                    <p>{v.title}</p>
+                  </section>
+                </Link>
+              </SideBarItem>
             }
             {!v.link && 
               <SideBarItem onClick={() => movePage(v.to)}>
