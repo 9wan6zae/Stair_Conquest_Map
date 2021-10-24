@@ -186,7 +186,7 @@ function ModalContent ({item, setOpen, type}: {item: SearchPlacesResult_Item, se
           buildingAccessibilityParams: undefined
         }
         if (type === "건물") info.buildingAccessibilityParams = building
-        else if (type === "장소")  info.placeAccessibilityParams = place
+        else if (type === "점포")  info.placeAccessibilityParams = place
         else {
           info.placeAccessibilityParams = place
           info.buildingAccessibilityParams = building
@@ -331,10 +331,10 @@ function ModalContent ({item, setOpen, type}: {item: SearchPlacesResult_Item, se
               }
               footer = {
                 <>
-                  {type === "장소" &&
+                  {type === "점포" &&
                         <Link to="/register_complete" style={{pointerEvents: checkFillInfo(place) ? 'auto' : 'none'}}><RegisterModalBtn active={checkFillInfo(place)}  onClick={() => updateInfo(place)}>등록하기</RegisterModalBtn></Link>
                   }
-                  {type !== "장소" &&
+                  {type !== "점포" &&
                     <>
                       <RegisterModalBtn active={checkFillInfo(place)} onClick={() => nextAction(place)}>다음</RegisterModalBtn>
                       {/* <p style={{textAlign: 'center', marginTop: '24px', color: '#6A6A73', fontSize: '18px', fontWeight: 500}} onClick={skipAction}>건너뛰기</p> */}

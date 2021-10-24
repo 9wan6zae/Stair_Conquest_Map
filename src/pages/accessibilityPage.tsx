@@ -337,14 +337,14 @@ export default function AccessibilityPage() {
     },
     {
       key: "stairInfo",
-      title: "장소 입구에",
+      title: "점포 입구에",
       info: attributeStairInfo,
       icon: attributeStairIcon,
       symbol: attributeStairSymbol
     },
     {
       key: "hasSlope",
-      title: "장소 입구에",
+      title: "점포 입구에",
       info: { 
         true: "경사로 있음",
         undefined: "경사로 없음"
@@ -396,7 +396,7 @@ export default function AccessibilityPage() {
         attribute = {buildingAttributes}
       />
       <AccessibilityLayout
-        type = "장소"
+        type = "점포"
         item = {item}
         accessibility = {accessibility?.placeAccessibility}
         comment = {accessibility?.placeAccessibilityComments}
@@ -460,24 +460,24 @@ function AccessibilityLayout({type, item, accessibility, comment, attribute}: Ac
     const uri = type === "건물" ? "building" : "place"
     return  `./assets/svg/ic_${uri}.svg`
   }
-  const reulReturner = (label: string | undefined) => {
-    if (label) {
-      const strGA = 44032; //가
-      const strHI = 55203; //힣
+  // const reulReturner = (label: string | undefined) => {
+  //   if (label) {
+  //     const strGA = 44032; //가
+  //     const strHI = 55203; //힣
 
-      const lastStrCode = label.charCodeAt(label.length-1);
-      let prop = true
-      let msg;
+  //     const lastStrCode = label.charCodeAt(label.length-1);
+  //     let prop = true
+  //     let msg;
 
-      if(lastStrCode < strGA || lastStrCode > strHI) return false
+  //     if(lastStrCode < strGA || lastStrCode > strHI) return false
 
-      if (( lastStrCode - strGA ) % 28 === 0) prop = false
+  //     if (( lastStrCode - strGA ) % 28 === 0) prop = false
 
-      msg = prop ? '을' : '를'
+  //     msg = prop ? '을' : '를'
 
-      return msg;
-    }
-  }
+  //     return msg;
+  //   }
+  // }
 
   const setCreatedAt = (createdAt: number | undefined) => {
     if (createdAt) {
@@ -554,8 +554,10 @@ function AccessibilityLayout({type, item, accessibility, comment, attribute}: Ac
         </section>}
         {!accessibility &&
           <section className="accessibility__not_register">
-            <p>{type}의 정보를 등록하고</p>
-            <p><b>{item?.place.name}</b>{reulReturner(item?.place.name)} 정복해 보세요 😆</p>
+            {/* <p>{type}의 정보를 등록하고</p>
+            <p><b>{item?.place.name}</b>{reulReturner(item?.place.name)} 정복해 보세요 😆</p> */}
+            <p>{type ==='점포' ? '건물' : '점포'} 정보는 채워져있네요!</p>
+            <p>{type} 정보만 채워주세요! 😆</p>
             <button className="register-btn not" style={{marginTop: '10px'}} onClick={() => setOpen(true)}>정보 등록</button>
           </section>
         }
