@@ -155,7 +155,7 @@ export default function SearchPage() {
                 <button className="register-btn not" onClick={() => openModal(item)}>정보 등록</button>
               )}
               { halfRegister(item) && (
-                <Link to="/accessibility"><button className="register-btn half" onClick={() => openModal(item)}>정보 등록</button></Link>
+                <Link to={{pathname: "/accessibility", state: {require: !item.hasBuildingAccessibility ? 'building' : 'place'}}}><button className="register-btn half" onClick={() => openModal(item)}>정보 등록</button></Link>
               )}
               { fullRegister(item) && (
                 <Link to="/accessibility"><button className="register-btn full" onClick={() => openModal(item)}>정보 조회</button></Link>

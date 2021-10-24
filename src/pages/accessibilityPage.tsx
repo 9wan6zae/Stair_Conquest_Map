@@ -242,7 +242,7 @@ const CommentBlock = styled.section`
   }
 `
 
-export default function AccessibilityPage() {
+export default function AccessibilityPage({location}: {location: any}) {
   const item = useSelector((state: RootState) => state.item.item);
   const [accessibility, setAccessibility] = React.useState<GetAccessibilityResult | undefined>()
 
@@ -366,8 +366,17 @@ export default function AccessibilityPage() {
     }
     accessibilityAPI.getAccessibility({
       placeId: `${item?.place.id}`
-    }).then(res => setAccessibility(res.data))
-  }, [item])
+    }).then(res => {
+      setAccessibility(res.data)
+      window.scrollTo(0, 0)
+      if (location.state) {
+        const section = document.getElementById(location.state.require)
+        if (section) {
+          section.scrollIntoView()
+        }
+      }
+    })
+  }, [item, location.state])
 
   const upVote = async () => {
     if (!accessibility?.buildingAccessibility?.isUpvoted) {
@@ -389,6 +398,7 @@ export default function AccessibilityPage() {
       </TitleSection>
       <Division />
       <AccessibilityLayout
+        id="building"
         type = "건물"
         item = {item}
         accessibility = {accessibility?.buildingAccessibility}
@@ -396,6 +406,7 @@ export default function AccessibilityPage() {
         attribute = {buildingAttributes}
       />
       <AccessibilityLayout
+        id="place"
         type = "점포"
         item = {item}
         accessibility = {accessibility?.placeAccessibility}
@@ -447,6 +458,7 @@ type Attribute = {
 }
 
 type AccessibilityLayoutProps = {
+  id: string
   type: string
   item: SearchPlacesResult_Item | undefined
   attribute: Attribute[],
@@ -454,7 +466,7 @@ type AccessibilityLayoutProps = {
   accessibility: BuildingAccessibility | PlaceAccessibility | undefined
 }
 
-function AccessibilityLayout({type, item, accessibility, comment, attribute}: AccessibilityLayoutProps) {
+function AccessibilityLayout({id, type, item, accessibility, comment, attribute}: AccessibilityLayoutProps) {
   const [open, setOpen] = React.useState(false);
   const setImgSrc = (type: string) => {
     const uri = type === "건물" ? "building" : "place"
@@ -492,7 +504,7 @@ function AccessibilityLayout({type, item, accessibility, comment, attribute}: Ac
 
   return (
     <>
-      <AccessibilityInfo>
+      <AccessibilityInfo id={id}>
         <section className="accessibility__header">
           <img src={setImgSrc(type)} alt="type" />
           <div>
