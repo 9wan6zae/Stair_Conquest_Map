@@ -118,7 +118,13 @@ function SideBarItems () {
         title: "만든 사람들",
         to: "https://eggnrock.notion.site/8bc9f0c3f8334a4983088d4041050377",
         link: false
-      }
+      },
+      {
+        icon: "./assets/svg/account.svg",
+        title: "클럽 회원 등록",
+        to: "https://form.typeform.com/to/jSd2pdfF?typeform-source=admin.typeform.com",
+        link: false
+      },
     ]
   )
 
