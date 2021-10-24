@@ -34,10 +34,7 @@ export default function SearchPage() {
   const [params, setParams] = useState<SearchPlacesParams>(
     {
       searchText: '',
-      currentLocation: {
-        lat: 0,
-        lng: 0
-      },
+      currentLocation: undefined,
       distanceMetersLimit: 0,
       siGunGuId: undefined,
       eupMyeonDongId: undefined
@@ -113,7 +110,13 @@ export default function SearchPage() {
 
   const calcMeter = (meter: number | undefined) => {
     if (meter) {
-      return meter > 1000 ? `${Math.round((meter/1000 + Number.EPSILON) * 100) / 100}km` : `${meter}m`
+      const modified_meter = meter > 1000 ? `${Math.round((meter/1000 + Number.EPSILON) * 100) / 100}km` : `${meter}m`
+      return (
+        <>
+          <span className="search-list__distance">{modified_meter}</span>
+          <span style={{width: '0px', minHeight: '12px', border: '1px solid #EAEAEF', margin: '-2px 8px', display: 'inline-block'}} />
+        </>
+      )
     }
   }
 
@@ -132,12 +135,9 @@ export default function SearchPage() {
           <ItemBox key={item.place.id}>
             <section className="info">
               <p className="search-list__title">{item.place.name}</p>
-              {load &&
-                <>
-                  <span className="search-list__distance">{calcMeter(item.distanceMeters?.value)}</span>
-                  <span style={{width: '0px', minHeight: '12px', border: '1px solid #EAEAEF', margin: '-2px 8px', display: 'inline-block'}} />
-                </>
-              }
+              {/* <span className="search-list__distance">{calcMeter(item.distanceMeters?.value)}</span>
+              <span style={{width: '0px', minHeight: '12px', border: '1px solid #EAEAEF', margin: '-2px 8px', display: 'inline-block'}} /> */}
+              {calcMeter(item.distanceMeters?.value)}
               <span className="search-list__address">{item.place.address}</span>
               { NotRegister(item) && (
                 <p className="search-list__info">등록된 정보가 없어요</p>
