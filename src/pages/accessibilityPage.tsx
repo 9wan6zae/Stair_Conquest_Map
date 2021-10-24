@@ -570,7 +570,7 @@ function AccessibilityLayout({id, type, item, accessibility, comment, attribute}
             <p><b>{item?.place.name}</b>{reulReturner(item?.place.name)} 정복해 보세요 😆</p> */}
             <p>{type ==='점포' ? '건물' : '점포'} 정보는 채워져있네요!</p>
             <p>{type} 정보만 채워주세요! 😆</p>
-            <button className="register-btn not" style={{marginTop: '10px'}} onClick={() => setOpen(true)}>정보 등록</button>
+            <button className="register-btn not" style={{marginTop: '10px', width: '120px'}} onClick={() => setOpen(true)}>{type} 정보 등록</button>
           </section>
         }
       </AccessibilityInfo>
