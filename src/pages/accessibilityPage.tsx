@@ -10,7 +10,7 @@ import { GetAccessibilityResult } from '../types/Accessibility';
 import { BuildingAccessibility, BuildingAccessibilityComment, PlaceAccessibility, PlaceAccessibilityComment } from "../types/Model";
 import MainHeader from '../components/mainHeader';
 import styled, {css} from 'styled-components';
-import { Item } from '../types/SearchPlaces';
+import { SearchPlacesResult_Item } from '../types/SearchPlaces';
 import RegisterModal, { ButtonGroup, RegisterModalBtn } from '../components/registerModal';
 
 const TitleSection = styled.section`
@@ -242,7 +242,7 @@ const CommentBlock = styled.section`
   }
 `
 
-export default function AccessibilityPage() {
+export default function AccessibilityPage({location}: {location: any}) {
   const item = useSelector((state: RootState) => state.item.item);
   const [accessibility, setAccessibility] = React.useState<GetAccessibilityResult | undefined>()
 
@@ -337,14 +337,14 @@ export default function AccessibilityPage() {
     },
     {
       key: "stairInfo",
-      title: "장소 입구에",
+      title: "점포 입구에",
       info: attributeStairInfo,
       icon: attributeStairIcon,
       symbol: attributeStairSymbol
     },
     {
       key: "hasSlope",
-      title: "장소 입구에",
+      title: "점포 입구에",
       info: { 
         true: "경사로 있음",
         undefined: "경사로 없음"
@@ -366,8 +366,17 @@ export default function AccessibilityPage() {
     }
     accessibilityAPI.getAccessibility({
       placeId: `${item?.place.id}`
-    }).then(res => {setAccessibility(res.data); console.log(res.data)})
-  }, [item])
+    }).then(res => {
+      setAccessibility(res.data)
+      window.scrollTo(0, 0)
+      if (location.state) {
+        const section = document.getElementById(location.state.require)
+        if (section) {
+          section.scrollIntoView()
+        }
+      }
+    })
+  }, [item, location.state])
 
   const upVote = async () => {
     if (!accessibility?.buildingAccessibility?.isUpvoted) {
@@ -389,6 +398,7 @@ export default function AccessibilityPage() {
       </TitleSection>
       <Division />
       <AccessibilityLayout
+        id="building"
         type = "건물"
         item = {item}
         accessibility = {accessibility?.buildingAccessibility}
@@ -396,7 +406,8 @@ export default function AccessibilityPage() {
         attribute = {buildingAttributes}
       />
       <AccessibilityLayout
-        type = "장소"
+        id="place"
+        type = "점포"
         item = {item}
         accessibility = {accessibility?.placeAccessibility}
         comment = {accessibility?.placeAccessibilityComments}
@@ -447,37 +458,38 @@ type Attribute = {
 }
 
 type AccessibilityLayoutProps = {
+  id: string
   type: string
-  item: Item | undefined
+  item: SearchPlacesResult_Item | undefined
   attribute: Attribute[],
   comment: BuildingAccessibilityComment[] | PlaceAccessibilityComment[] | undefined
   accessibility: BuildingAccessibility | PlaceAccessibility | undefined
 }
 
-function AccessibilityLayout({type, item, accessibility, comment, attribute}: AccessibilityLayoutProps) {
+function AccessibilityLayout({id, type, item, accessibility, comment, attribute}: AccessibilityLayoutProps) {
   const [open, setOpen] = React.useState(false);
   const setImgSrc = (type: string) => {
     const uri = type === "건물" ? "building" : "place"
     return  `./assets/svg/ic_${uri}.svg`
   }
-  const reulReturner = (label: string | undefined) => {
-    if (label) {
-      const strGA = 44032; //가
-      const strHI = 55203; //힣
+  // const reulReturner = (label: string | undefined) => {
+  //   if (label) {
+  //     const strGA = 44032; //가
+  //     const strHI = 55203; //힣
 
-      const lastStrCode = label.charCodeAt(label.length-1);
-      let prop = true
-      let msg;
+  //     const lastStrCode = label.charCodeAt(label.length-1);
+  //     let prop = true
+  //     let msg;
 
-      if(lastStrCode < strGA || lastStrCode > strHI) return false
+  //     if(lastStrCode < strGA || lastStrCode > strHI) return false
 
-      if (( lastStrCode - strGA ) % 28 === 0) prop = false
+  //     if (( lastStrCode - strGA ) % 28 === 0) prop = false
 
-      msg = prop ? '을' : '를'
+  //     msg = prop ? '을' : '를'
 
-      return msg;
-    }
-  }
+  //     return msg;
+  //   }
+  // }
 
   const setCreatedAt = (createdAt: number | undefined) => {
     if (createdAt) {
@@ -492,7 +504,7 @@ function AccessibilityLayout({type, item, accessibility, comment, attribute}: Ac
 
   return (
     <>
-      <AccessibilityInfo>
+      <AccessibilityInfo id={id}>
         <section className="accessibility__header">
           <img src={setImgSrc(type)} alt="type" />
           <div>
@@ -554,9 +566,11 @@ function AccessibilityLayout({type, item, accessibility, comment, attribute}: Ac
         </section>}
         {!accessibility &&
           <section className="accessibility__not_register">
-            <p>{type}의 정보를 등록하고</p>
-            <p><b>{item?.place.name}</b>{reulReturner(item?.place.name)} 정복해 보세요 😆</p>
-            <button className="register-btn not" style={{marginTop: '10px'}} onClick={() => setOpen(true)}>정보 등록</button>
+            {/* <p>{type}의 정보를 등록하고</p>
+            <p><b>{item?.place.name}</b>{reulReturner(item?.place.name)} 정복해 보세요 😆</p> */}
+            <p>{type ==='점포' ? '건물' : '점포'} 정보는 채워져있네요!</p>
+            <p>{type} 정보만 채워주세요! 😆</p>
+            <button className="register-btn not" style={{marginTop: '10px', width: '120px'}} onClick={() => setOpen(true)}>{type} 정보 등록</button>
           </section>
         }
       </AccessibilityInfo>

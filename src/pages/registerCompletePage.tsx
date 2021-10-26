@@ -194,7 +194,6 @@ export default function RegisterCompletePage() {
     if (shareImg)
     html2canvas(shareImg).then(canvas => {
       setImg(canvas.toDataURL('image/png'))
-      console.log(canvas.toDataURL('image/png'))
       setOpen(true)
     })
   }
