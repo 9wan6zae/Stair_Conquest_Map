@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import * as searchAPI from '../api/search';
 import RegisterModal from '../components/registerModal';
-import { Item, SearchPlacesParams, SearchPlacesResult } from '../types/SearchPlaces';
+import { SearchPlacesResult_Item, SearchPlacesParams, SearchPlacesResult } from '../types/SearchPlaces';
 import { Location } from '../types/Model';
 import styled from "styled-components"
 
@@ -29,22 +29,18 @@ const ItemBox = styled.section`
 
 export default function SearchPage() {
   const dispatch = useDispatch();
-  const [load, setLoad] = useState(true);
   const [text, setText] = useState('')
   const [params, setParams] = useState<SearchPlacesParams>(
     {
       searchText: '',
-      currentLocation: {
-        lat: 0,
-        lng: 0
-      },
+      currentLocation: undefined,
       distanceMetersLimit: 0,
       siGunGuId: undefined,
       eupMyeonDongId: undefined
     }
   );
 
-  const [selectItem, setSelectItem] = useState<Item>(
+  const [selectItem, setSelectItem] = useState<SearchPlacesResult_Item>(
     {
       place: {
         id: '',
@@ -56,7 +52,8 @@ export default function SearchPage() {
         address: ''
       },
       hasBuildingAccessibility: false,
-      hasPlaceAccessibility: false
+      hasPlaceAccessibility: false,
+      distanceMeters: undefined
     },
   );
 
@@ -78,18 +75,16 @@ export default function SearchPage() {
     }
   }
   useEffect(() => {
-    if (load) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        const coords: Location = {lng: 0, lat: 0}
-        coords.lat = pos.coords.latitude
-        coords.lng = pos.coords.longitude
-        setParams({...params, currentLocation: coords})
-      })
-    }
-    return () => setLoad(false)
-  }, [load, params])
+    navigator.geolocation.getCurrentPosition(pos => {
+      const coords: Location = {lng: 0, lat: 0}
+      coords.lat = pos.coords.latitude
+      coords.lng = pos.coords.longitude
+      setParams({...params, currentLocation: coords})
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  const openModal = (item: Item) => {
+  const openModal = (item: SearchPlacesResult_Item) => {
     setOpen(true)
     setSelectItem(item)
     dispatch(set_item(item));
@@ -99,16 +94,28 @@ export default function SearchPage() {
     setText('')
   }
 
-  const NotRegister = (item: Item): boolean => {
+  const NotRegister = (item: SearchPlacesResult_Item): boolean => {
     return !item.hasBuildingAccessibility && !item.hasPlaceAccessibility
   }
 
-  const halfRegister = (item: Item): boolean => {
+  const halfRegister = (item: SearchPlacesResult_Item): boolean => {
     return (item.hasBuildingAccessibility && !item.hasPlaceAccessibility) || (!item.hasBuildingAccessibility && item.hasPlaceAccessibility)
   }
 
-  const fullRegister = (item: Item): boolean => {
+  const fullRegister = (item: SearchPlacesResult_Item): boolean => {
     return item.hasBuildingAccessibility && item.hasPlaceAccessibility
+  }
+
+  const calcMeter = (meter: number | undefined) => {
+    if (meter) {
+      const modified_meter = meter > 1000 ? `${Math.round((meter/1000 + Number.EPSILON) * 100) / 100}km` : `${meter}m`
+      return (
+        <>
+          <span className="search-list__distance">{modified_meter}</span>
+          <span style={{width: '0px', minHeight: '12px', border: '1px solid #EAEAEF', margin: '-2px 8px', display: 'inline-block'}} />
+        </>
+      )
+    }
   }
 
   return (
@@ -126,7 +133,8 @@ export default function SearchPage() {
           <ItemBox key={item.place.id}>
             <section className="info">
               <p className="search-list__title">{item.place.name}</p>
-              <p className="search-list__address">{item.place.address}</p>
+              {calcMeter(item.distanceMeters?.value)}
+              <span className="search-list__address">{item.place.address}</span>
               { NotRegister(item) && (
                 <p className="search-list__info">등록된 정보가 없어요</p>
               )}
@@ -146,7 +154,7 @@ export default function SearchPage() {
                 <button className="register-btn not" onClick={() => openModal(item)}>정보 등록</button>
               )}
               { halfRegister(item) && (
-                <Link to="/accessibility"><button className="register-btn half" onClick={() => openModal(item)}>정보 등록</button></Link>
+                <Link to={{pathname: "/accessibility", state: {require: !item.hasBuildingAccessibility ? 'building' : 'place'}}}><button className="register-btn half" onClick={() => openModal(item)}>정보 등록</button></Link>
               )}
               { fullRegister(item) && (
                 <Link to="/accessibility"><button className="register-btn full" onClick={() => openModal(item)}>정보 조회</button></Link>
