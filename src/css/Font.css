@@ -59,10 +59,10 @@
   font-size: 14px;
   color: #B5B5C0;
   font-weight: 500;
-  line-height: 200%;
 }
 
 .search-list__info {
+  margin-top: 8px;
   font-family: var(--main-font);
   font-size: 14px;
   color: var(--emphasis);

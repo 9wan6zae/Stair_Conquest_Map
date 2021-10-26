@@ -133,8 +133,6 @@ export default function SearchPage() {
           <ItemBox key={item.place.id}>
             <section className="info">
               <p className="search-list__title">{item.place.name}</p>
-              {/* <span className="search-list__distance">{calcMeter(item.distanceMeters?.value)}</span>
-              <span style={{width: '0px', minHeight: '12px', border: '1px solid #EAEAEF', margin: '-2px 8px', display: 'inline-block'}} /> */}
               {calcMeter(item.distanceMeters?.value)}
               <span className="search-list__address">{item.place.address}</span>
               { NotRegister(item) && (
