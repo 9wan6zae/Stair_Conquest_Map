@@ -87,6 +87,24 @@ export interface VillageRankingEntry {
   progressRank: number;
   /** 계단정복률. */
   progressPercentage: string;
+  /** 동별 진행률 이미지 관련 데이터. */
+  progressImage: VillageRankingEntry_VillageProgressImage | undefined;
+}
+
+export interface VillageRankingEntry_VillageProgressImage {
+  id: string;
+  numberOfBlocks: number;
+  paths: VillageRankingEntry_VillageProgressImage_Path[];
+}
+
+export interface VillageRankingEntry_VillageProgressImage_Path {
+  type: string;
+  props: { [key: string]: string };
+}
+
+export interface VillageRankingEntry_VillageProgressImage_Path_PropsEntry {
+  key: string;
+  value: string;
 }
 
 export interface SiGunGu {

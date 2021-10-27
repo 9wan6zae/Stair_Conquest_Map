@@ -23,39 +23,39 @@ const RankingBlock = styled.div<RankingBlockProps>`
   color: ${props => props.color};
 `
 
-// const TopTownBlock = styled.div`
-//   position: relative;
-//   width: 100%;
-//   height: 56px;
-//   background: #fff;
-//   border: 2px solid #EAEAEF;
-//   box-sizing: border-box;
-//   border-radius: 20px;
-//   display: flex;
-//   flex-direction: row;
-//   align-items: center;
+const TopTownBlock = styled.div`
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background: #fff;
+  border: 2px solid #EAEAEF;
+  box-sizing: border-box;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 
-//   p {
-//     margin-left: 16px;
-//     font-size: 18px;
-//     font-weight: 500;
-//     letter-spacing: -0.005em;
-//     color: #6A6A73
-//   }
+  p {
+    margin-left: 16px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: #6A6A73
+  }
 
-//   p.process {
-//     position: absolute;
-//     right: 20px;
-//     font-style: normal;
-//     font-weight: 500;
-//     font-size: 16px;
-//     line-height: 100%;
+  p.process {
+    position: absolute;
+    right: 20px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
 
-//     text-align: right;
-//     letter-spacing: -0.005em;
-//     color: #9797A6;
-//   }
-// `
+    text-align: right;
+    letter-spacing: -0.005em;
+    color: #9797A6;
+  }
+`
 
 const TownBlock = styled.div`
   position: relative;
@@ -89,15 +89,15 @@ const TownBlock = styled.div`
   }
 `
 
-// const BgBlock = styled.div`
-//   width: 100%;
-//   height: 240px;
-//   background: #EAEAEF;
-//   border-radius: 20px;
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: flex-end;
-// `
+const BgBlock = styled.div`
+  width: 100%;
+  height: 240px;
+  background: #EAEAEF;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+`
 
 type VillageListProps = {
   villages: VillageRankingEntry[]
@@ -113,18 +113,13 @@ function Village({ village, index }: VillageProps) {
     <>
       {village && index < 10 && (<TownWrapper>
         {index < 3 ? 
-        // (<BgBlock>
-        //   <TopTownBlock>
-        //     <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
-        //     <p>{village.village?.name}</p>
-        //     <p className="process">{`${village.progressPercentage}%`}</p>
-        //   </TopTownBlock>
-        // </BgBlock>): 
-        (<TownBlock>
-          <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
-          <p>{village.village?.name}</p>
-          <p className="process">{`${village.progressPercentage}%`}</p>
-        </TownBlock>) :
+        (<BgBlock>
+          <TopTownBlock>
+            <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
+            <p>{village.village?.name}</p>
+            <p className="process">{`${village.progressPercentage}%`}</p>
+          </TopTownBlock>
+        </BgBlock>):
         (<TownBlock>
           <RankingBlock bgColor="#EAEAEF" color="#1067CD" >{index + 1}</RankingBlock>
           <p>{village.village?.name}</p>
