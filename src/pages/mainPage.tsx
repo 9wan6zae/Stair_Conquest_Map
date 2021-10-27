@@ -8,7 +8,7 @@ import VillageList from '../components/villageList';
 import * as homeAPI from '../api/home';
 
 import { Link } from 'react-router-dom';
-import { VillageRankingEntry } from '../types/Ranking';
+import { VillageRankingEntry } from '../types/Model';
 
 export default function MainPage() {
   const [load, setLoad] = React.useState(true);

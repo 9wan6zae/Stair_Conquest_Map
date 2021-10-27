@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { VillageRankingEntry } from '../types/Ranking';
+import { VillageRankingEntry, VillageRankingEntry_VillageProgressImage } from '../types/Model';
 import styled from 'styled-components'
 
 type RankingBlockProps = {
@@ -24,7 +24,9 @@ const RankingBlock = styled.div<RankingBlockProps>`
 `
 
 const TopTownBlock = styled.div`
-  position: relative;
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
   height: 56px;
   background: #fff;
@@ -90,9 +92,9 @@ const TownBlock = styled.div`
 `
 
 const BgBlock = styled.div`
+  position: relative;
   width: 100%;
-  height: 240px;
-  background: #EAEAEF;
+  background: #fff;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -108,12 +110,45 @@ type VillageProps = {
   index: number
 }
 
+function SvgRender ({img, idx}: {img: any, idx: number}) {
+  const fillColor = (idx: number) => {
+    for (let i = idx; i <= img.numberOfBlocks; i++) {
+      const color = document.getElementById(img.id + "_" + i +"")
+      if (color)
+        color.style.fill = "white"
+    }
+  }
+
+  React.useEffect(() => {
+    fillColor(idx)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+  const rendering = (img: VillageRankingEntry_VillageProgressImage) => {
+    const result = []
+    for (let i = 0; i < img.paths.length; i++) {
+      result.push(
+        React.createElement(img.paths[i].type, {...img.paths[i].props, key: i})
+      )
+    }
+    return result
+  }
+  return (
+		<svg style={{borderRadius: '20px'}} xmlns="http://www.w3.org/2000/svg" x='0px' y='0px' width="100%" height="340px" viewBox="0 0 375 340" xmlSpace="preserve">
+			<g>
+				{rendering(img)}
+			</g>
+		</svg>
+  )
+}
+
 function Village({ village, index }: VillageProps) {
   return (
     <>
       {village && index < 10 && (<TownWrapper>
         {index < 3 ? 
         (<BgBlock>
+          {village.progressImage && <SvgRender img = {village.progressImage} idx = {Math.floor(village.progressImage.numberOfBlocks * +village.progressPercentage)} />}
+          {!village.progressImage && <img style={{borderRadius: '20px'}} src={`${process.env.PUBLIC_URL}/assets/svg/오픈 예정.svg`} alt="오픈 예정" />}
           <TopTownBlock>
             <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
             <p>{village.village?.name}</p>
