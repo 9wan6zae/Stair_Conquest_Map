@@ -149,7 +149,7 @@ function Village({ village, index }: VillageProps) {
         {index < 3 ? 
         (<BgBlock>
           {village.progressImage && <SvgRender img = {village.progressImage} idx = {Math.floor(village.progressImage.numberOfBlocks * +village.progressPercentage)} />}
-          {!village.progressImage && <img height='304px' style={{borderRadius: '20px', border: '2px solid #EAEAEF'}} src={`${process.env.PUBLIC_URL}/assets/svg/오픈 예정.svg`} alt="오픈 예정" />}
+          {!village.progressImage && <img height='304px' style={{borderRadius: '20px', border: '2px solid #EAEAEF'}} src={`${process.env.PUBLIC_URL}/assets/svg/comming_soon.svg`} alt="오픈 예정" />}
           <TopTownBlock>
             <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
             <p>{village.village?.name} {rank_mark[index]}</p>
