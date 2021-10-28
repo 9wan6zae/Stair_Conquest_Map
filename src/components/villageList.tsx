@@ -98,7 +98,7 @@ const BgBlock = styled.div`
   border-radius: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
 `
 
 type VillageListProps = {
@@ -133,7 +133,7 @@ function SvgRender ({img, idx}: {img: any, idx: number}) {
     return result
   }
   return (
-		<svg style={{borderRadius: '20px', border: '2px solid #EAEAEF', boxSizing: 'border-box'}} xmlns="http://www.w3.org/2000/svg" x='0px' y='0px' width="100%" height="304px" viewBox="0 0 375 304" xmlSpace="preserve">
+		<svg style={{borderRadius: '20px', border: '2px solid #EAEAEF', boxSizing: 'border-box'}} xmlns="http://www.w3.org/2000/svg" x='0px' y='0px' width="100%" height="304px" viewBox="0 0 375 340" xmlSpace="preserve">
 			<g>
 				{rendering(img)}
 			</g>
