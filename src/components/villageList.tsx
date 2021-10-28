@@ -133,7 +133,7 @@ function SvgRender ({img, idx}: {img: any, idx: number}) {
     return result
   }
   return (
-		<svg style={{borderRadius: '20px'}} xmlns="http://www.w3.org/2000/svg" x='0px' y='0px' width="100%" height="340px" viewBox="0 0 375 340" xmlSpace="preserve">
+		<svg style={{borderRadius: '20px', border: '2px solid #EAEAEF', boxSizing: 'border-box'}} xmlns="http://www.w3.org/2000/svg" x='0px' y='0px' width="100%" height="304px" viewBox="0 0 375 304" xmlSpace="preserve">
 			<g>
 				{rendering(img)}
 			</g>
@@ -148,7 +148,7 @@ function Village({ village, index }: VillageProps) {
         {index < 3 ? 
         (<BgBlock>
           {village.progressImage && <SvgRender img = {village.progressImage} idx = {Math.floor(village.progressImage.numberOfBlocks * +village.progressPercentage)} />}
-          {!village.progressImage && <img style={{borderRadius: '20px'}} src={`${process.env.PUBLIC_URL}/assets/svg/오픈 예정.svg`} alt="오픈 예정" />}
+          {!village.progressImage && <img height='304px' style={{borderRadius: '20px', border: '2px solid #EAEAEF'}} src={`${process.env.PUBLIC_URL}/assets/svg/오픈 예정.svg`} alt="오픈 예정" />}
           <TopTownBlock>
             <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
             <p>{village.village?.name}</p>
