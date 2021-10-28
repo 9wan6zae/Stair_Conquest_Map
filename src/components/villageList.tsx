@@ -142,6 +142,7 @@ function SvgRender ({img, idx}: {img: any, idx: number}) {
 }
 
 function Village({ village, index }: VillageProps) {
+  const rank_mark = ['👑', '🌸', '☘️']
   return (
     <>
       {village && index < 10 && (<TownWrapper>
@@ -151,7 +152,7 @@ function Village({ village, index }: VillageProps) {
           {!village.progressImage && <img height='304px' style={{borderRadius: '20px', border: '2px solid #EAEAEF'}} src={`${process.env.PUBLIC_URL}/assets/svg/오픈 예정.svg`} alt="오픈 예정" />}
           <TopTownBlock>
             <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
-            <p>{village.village?.name}</p>
+            <p>{village.village?.name} {rank_mark[index]}</p>
             <p className="process">{`${village.progressPercentage}%`}</p>
           </TopTownBlock>
         </BgBlock>):
