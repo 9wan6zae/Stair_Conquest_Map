@@ -24,6 +24,7 @@ const RankingBlock = styled.div<RankingBlockProps>`
 `
 
 const TopTownBlock = styled.div`
+  z-index: 5;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -92,6 +93,8 @@ const TownBlock = styled.div`
 `
 
 const BgBlock = styled.div`
+  border: 2px solid #EAEAEF;
+  box-sizing: border-box;
   position: relative;
   width: 100%;
   background: #fff;
@@ -110,8 +113,10 @@ type VillageProps = {
   index: number
 }
 
-function SvgRender ({img, idx}: {img: any, idx: number}) {
-  const fillColor = (idx: number) => {
+function SvgRender ({img, percent}: {img: any, percent: string}) {
+  const fillColor = (percent: string) => {
+    const idx = Math.floor(img.numberOfBlocks * +percent * 0.01)
+    console.log(idx)
     for (let i = idx; i <= img.numberOfBlocks; i++) {
       const color = document.getElementById(img.id + "_" + i +"")
       if (color)
@@ -120,7 +125,7 @@ function SvgRender ({img, idx}: {img: any, idx: number}) {
   }
 
   React.useEffect(() => {
-    fillColor(idx)
+    fillColor(percent)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   const rendering = (img: VillageRankingEntry_VillageProgressImage) => {
@@ -133,7 +138,7 @@ function SvgRender ({img, idx}: {img: any, idx: number}) {
     return result
   }
   return (
-		<svg style={{borderRadius: '20px', border: '2px solid #EAEAEF', boxSizing: 'border-box'}} xmlns="http://www.w3.org/2000/svg" x='0px' y='0px' width="100%" height="304px" viewBox="0 0 375 340" xmlSpace="preserve">
+		<svg xmlns="http://www.w3.org/2000/svg" x='0px' y='0px' width="100%" height="304px" viewBox="0 0 375 340" xmlSpace="preserve">
 			<g>
 				{rendering(img)}
 			</g>
@@ -147,15 +152,20 @@ function Village({ village, index }: VillageProps) {
     <>
       {village && index < 10 && (<TownWrapper>
         {index < 3 ? 
-        (<BgBlock>
-          {village.progressImage && <SvgRender img = {village.progressImage} idx = {Math.floor(village.progressImage.numberOfBlocks * +village.progressPercentage)} />}
-          {!village.progressImage && <img height='304px' style={{borderRadius: '20px', border: '2px solid #EAEAEF'}} src={`${process.env.PUBLIC_URL}/assets/svg/comming_soon.svg`} alt="오픈 예정" />}
+        (
+        <section style={{position: 'relative'}}>
+          <BgBlock>
+            <div style={{maxWidth: '340px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden'}}>
+              {village.progressImage && <SvgRender img = {village.progressImage} percent = {village.progressPercentage} />}
+              {!village.progressImage && <img width='100%' height='304px' src={`${process.env.PUBLIC_URL}/assets/svg/comming_soon.svg`} alt="오픈 예정" />}
+            </div>
+          </BgBlock>
           <TopTownBlock>
             <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
             <p>{village.village?.name} {rank_mark[index]}</p>
             <p className="process">{`${village.progressPercentage}%`}</p>
           </TopTownBlock>
-        </BgBlock>):
+        </section>):
         (<TownBlock>
           <RankingBlock bgColor="#EAEAEF" color="#1067CD" >{index + 1}</RankingBlock>
           <p>{village.village?.name}</p>
