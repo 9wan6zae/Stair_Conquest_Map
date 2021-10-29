@@ -46,6 +46,12 @@ const TopTownBlock = styled.div`
     color: #6A6A73
   }
 
+  @media all and (max-width: 360px) {
+    p.village_name {
+      width: 140px;
+    }
+  }
+
   p.process {
     position: absolute;
     right: 20px;
@@ -76,6 +82,12 @@ const TownBlock = styled.div`
     font-weight: 500;
     letter-spacing: -0.005em;
     color: #6A6A73
+  }
+
+  @media all and (max-width: 360px) {
+    p.village_name {
+      width: 140px;
+    }
   }
 
   p.process {
@@ -162,13 +174,13 @@ function Village({ village, index }: VillageProps) {
           </BgBlock>
           <TopTownBlock>
             <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
-            <p>{village.village?.name} {rank_mark[index]}</p>
+            <p className="village_name">{village.village?.name} {rank_mark[index]}</p>
             <p className="process">{`${village.progressPercentage}%`}</p>
           </TopTownBlock>
         </section>):
         (<TownBlock>
           <RankingBlock bgColor="#EAEAEF" color="#1067CD" >{index + 1}</RankingBlock>
-          <p>{village.village?.name}</p>
+          <p className="village_name">{village.village?.name}</p>
           <p className="process">{`${village.progressPercentage}%`}</p>
         </TownBlock>)}
       </TownWrapper>)}
