@@ -128,7 +128,6 @@ type VillageProps = {
 function SvgRender ({img, percent}: {img: any, percent: string}) {
   const fillColor = (percent: string) => {
     const idx = Math.floor(img.numberOfBlocks * +percent * 0.01)
-    console.log(idx)
     for (let i = idx; i <= img.numberOfBlocks; i++) {
       const color = document.getElementById(img.id + "_" + i +"")
       if (color)
