@@ -20,10 +20,10 @@ const SearchBlock = styled.input`
   outline: none;
 `
 
-export default function Search({placeholder, type}: {placeholder: string, type: string}) {
+export default function Search({placeholder, type, readonly}: {placeholder: string, type: string, readonly: boolean}) {
   return (
     <>
-      <SearchBlock type={type} placeholder={placeholder}/>
+      <SearchBlock readOnly={readonly} type={type} placeholder={placeholder}/>
     </>
   )
 }
