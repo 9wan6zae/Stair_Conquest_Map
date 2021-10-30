@@ -9,6 +9,8 @@ import { SearchPlacesResult_Item, SearchPlacesParams, SearchPlacesResult } from 
 import { Location } from '../types/Model';
 import styled from "styled-components"
 
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 import { useDispatch } from 'react-redux';
 import { set_item } from '../modules/item';
 
@@ -28,6 +30,7 @@ const ItemBox = styled.section`
 `
 
 export default function SearchPage() {
+  const login_success = useSelector((state: RootState) => state.login.loginSuccess);
   const dispatch = useDispatch();
   const [text, setText] = useState('')
   const [params, setParams] = useState<SearchPlacesParams>(
@@ -118,11 +121,18 @@ export default function SearchPage() {
     }
   }
 
+  const checkLogin = () => {
+    const notmember = window.sessionStorage.getItem('notmember')
+    if (!(login_success || notmember)) {
+      window.location.href = '/login'
+    }
+  }
+
   return (
     <>
       <MainHeader>
         <div className="input__search-page">
-          <section style={{width: '86%'}} >
+          <section style={{width: '86%'}} onClick={checkLogin} >
             <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchPlaces} />
           </section>
           <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={() => searchPlaces()}>검색</span>
