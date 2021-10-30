@@ -7,10 +7,12 @@ import Search from '../components/search';
 import VillageList from '../components/villageList';
 import * as homeAPI from '../api/home';
 
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 import { VillageRankingEntry } from '../types/Ranking';
 
 export default function MainPage() {
+  const login_success = useSelector((state: RootState) => state.login.loginSuccess);
   const [load, setLoad] = React.useState(true);
   const [villages, setVillage] = React.useState<VillageRankingEntry[]>();
 
@@ -22,12 +24,22 @@ export default function MainPage() {
     return () => {setLoad(false)}
   }, [load])
 
+  const checkLogin = () => {
+    const notmember = window.sessionStorage.getItem('notmember')
+    if (login_success || notmember) {
+      window.location.href = '/search'
+    }
+    else {
+      window.location.href= '/login'
+    }
+  }
+
   return (
     <>
       <AppHeader></AppHeader>
       <Animation />
       <Content title={"계단정보 등록"} description={"동네에 자주 가는 장소의\n계단 정보를 알려주세요"}>
-        <Link to="/search" style={{textDecoration: 'none'}}><Search placeholder="장소, 주소 검색" type="text"/></Link>
+        <div onClick={checkLogin}><Search placeholder="장소, 주소 검색" type="text" readonly/></div>
         {/* <section style={{marginTop: '20px', display: 'flex', justifyContent: 'space-between'}}>
           <FilterBtn title="전체 (시+구)"></FilterBtn>
           <FilterBtn title="전체 (동)"></FilterBtn>
