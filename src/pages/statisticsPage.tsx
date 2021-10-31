@@ -43,17 +43,20 @@ const DetailInfo = styled.section`
   width: 100%;
   background: #fff;
   border-radius: 20px 20px 0px 0px;
-  padding: 36px 0px 20px 0px;
+  padding: 26px 0px 20px 0px;
   box-sizing: border-box;
   
   section.conquestInfo {
     padding: 0 20px;
 
     section.rateSection {
+      box-sizing: border-box;
+      padding-top: 14px;
       display: flex;
       justify-content: space-between;
       position: sticky;
-      top: 70px;
+      background: #fff;
+      top: 56px;
       p.rateTitle {
         font-weight: 500;
         font-size: 20px;
@@ -150,7 +153,7 @@ export default function StatisticsPage({match}: {match: any}) {
         <StatisticsBlock>
           <section className="titleSection">
             <section>
-              <Link to="/ranking"><p className="link">계단정복 랭킹</p></Link>
+              <Link to="/ranking"><p className="link">계단정복 랭킹 <img src={`${process.env.PUBLIC_URL}/assets/svg/arr.svg`} alt="arr" /></p></Link>
               <p style={{marginTop: '8px'}} className="title3">{statistics.villageRankingEntry?.village?.name}</p>
               <p className="rankingInfo">현재 {statistics.villageRankingEntry?.progressRank}위</p>
             </section>
