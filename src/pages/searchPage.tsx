@@ -6,9 +6,10 @@ import { Link } from 'react-router-dom';
 import * as searchAPI from '../api/search';
 import RegisterModal from '../components/registerModal';
 import { SearchPlacesResult_Item, SearchPlacesParams, SearchPlacesResult } from '../types/SearchPlaces';
-import { Location } from '../types/Model';
 import styled from "styled-components"
 
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 import { useDispatch } from 'react-redux';
 import { set_item } from '../modules/item';
 
@@ -27,18 +28,17 @@ const ItemBox = styled.section`
   }
 `
 
-export default function SearchPage() {
+export default function SearchPage({location}: {location: any}) {
+  const login_success = useSelector((state: RootState) => state.login.loginSuccess);
   const dispatch = useDispatch();
   const [text, setText] = useState('')
-  const [params, setParams] = useState<SearchPlacesParams>(
-    {
-      searchText: '',
-      currentLocation: undefined,
-      distanceMetersLimit: 0,
-      siGunGuId: undefined,
-      eupMyeonDongId: undefined
-    }
-  );
+  const params: SearchPlacesParams = {
+    searchText: '',
+    currentLocation: undefined,
+    distanceMetersLimit: 0,
+    siGunGuId: undefined,
+    eupMyeonDongId: undefined
+  }
 
   const [selectItem, setSelectItem] = useState<SearchPlacesResult_Item>(
     {
@@ -67,25 +67,35 @@ export default function SearchPage() {
     setText(value)
   }
 
-  const searchPlaces = async () => {
+  const searchPlaces = async (searchText: string, lat: number, lng: number) => {
     if (params) {
-      params.searchText = text
+      params.searchText = decodeURI(searchText)
+      params.currentLocation = {
+        lat: +lat,
+        lng: +lng
+      }
       const res = await searchAPI.searchPlaces(params)
       setSearchPlacesResult(res.data)
     }
   }
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(pos => {
-      const coords: Location = {lng: 0, lat: 0}
-      coords.lat = pos.coords.latitude
-      coords.lng = pos.coords.longitude
-      setParams({...params, currentLocation: coords})
-    })
+    let lat = window.sessionStorage.getItem('lat')
+    let lng = window.sessionStorage.getItem('lng')
+    if (!(lat && lng)) {
+      navigator.geolocation.getCurrentPosition(pos => {
+        lat = pos.coords.latitude + ""
+        lng = pos.coords.longitude + ""
+        window.sessionStorage.setItem('lat', lat)
+        window.sessionStorage.setItem('lng', lng)
+      })
+    }
+    if(location.search.split('=')[1] && lat && lng) {
+      searchPlaces(location.search.split('=')[1], +lat, +lng)
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const openModal = (item: SearchPlacesResult_Item) => {
-    setOpen(true)
+  const setItem = (item: SearchPlacesResult_Item) => {
     setSelectItem(item)
     dispatch(set_item(item));
   }
@@ -118,15 +128,28 @@ export default function SearchPage() {
     }
   }
 
+  const checkLogin = (item: SearchPlacesResult_Item) => {
+    const notmember = window.sessionStorage.getItem('notmember')
+    if (!(login_success || notmember)) {
+      window.location.href = '/login'
+    }
+    else {
+      setOpen(true)
+      setItem(item)
+    }
+  }
+
   return (
     <>
       <MainHeader>
-        <div className="input__search-page">
-          <section style={{width: '86%'}} >
-            <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchPlaces} />
-          </section>
-          <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={() => searchPlaces()}>검색</span>
-        </div>
+        <form>
+          <div className="input__search-page">
+            <section style={{width: '86%'}}>
+                <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" /> 
+            </section>
+            <button style={{fontSize: 'inherit', background: 'none', border: 'none', outline: 'none', lineHeight: '60px', color: '#3491FF', fontWeight: 500}} type="submit">검색</button>
+          </div>
+        </form>
       </MainHeader>
       {searchPlacesResult.items?.length > 0 && (
         searchPlacesResult.items.map(item => (
@@ -151,13 +174,13 @@ export default function SearchPage() {
             </section>
             <section className="btn">
               { NotRegister(item) && (
-                <button className="register-btn not" onClick={() => openModal(item)}>정보 등록</button>
+                <button className="register-btn not" onClick={() => checkLogin(item)}>정보 등록</button>
               )}
               { halfRegister(item) && (
-                <Link to={{pathname: "/accessibility", state: {require: !item.hasBuildingAccessibility ? 'building' : 'place'}}}><button className="register-btn half" onClick={() => openModal(item)}>정보 등록</button></Link>
+                <Link to={{pathname: "/accessibility", state: {require: !item.hasBuildingAccessibility ? 'building' : 'place'}}}><button className="register-btn half" onClick={() => setItem(item)}>정보 등록</button></Link>
               )}
               { fullRegister(item) && (
-                <Link to="/accessibility"><button className="register-btn full" onClick={() => openModal(item)}>정보 조회</button></Link>
+                <Link to="/accessibility"><button className="register-btn full" onClick={() => setItem(item)}>정보 조회</button></Link>
               )}
             </section>
           </ItemBox>
