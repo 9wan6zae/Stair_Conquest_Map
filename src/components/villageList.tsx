@@ -10,7 +10,7 @@ type RankingBlockProps = {
   color: string
 }
 
-const TownWrapper = styled.section`
+export const TownWrapper = styled.section`
   margin: 24px 0;
 
   p {
@@ -28,7 +28,7 @@ const TownWrapper = styled.section`
   }
 `
 
-const RankingBlock = styled.div<RankingBlockProps>`
+export const RankingBlock = styled.div<RankingBlockProps>`
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -40,7 +40,7 @@ const RankingBlock = styled.div<RankingBlockProps>`
   color: ${props => props.color};
 `
 
-const TopTownBlock = styled.div`
+export const TopTownBlock = styled.div`
   z-index: 5;
   position: absolute;
   bottom: 0;
@@ -93,7 +93,7 @@ const TownBlock = styled.div`
   }
 `
 
-const BgBlock = styled.div`
+export const BgBlock = styled.div`
   border: 2px solid #EAEAEF;
   box-sizing: border-box;
   position: relative;
@@ -110,7 +110,7 @@ type VillageProps = {
   index: number
 }
 
-function SvgRender ({img, percent}: {img: any, percent: string}) {
+export function SvgRender ({img, percent}: {img: any, percent: string}) {
   const fillColor = (percent: string) => {
     const idx = Math.floor(img.numberOfBlocks * +percent * 0.01)
     for (let i = idx; i <= img.numberOfBlocks; i++) {
@@ -161,7 +161,7 @@ function Village({ village, index }: VillageProps) {
                   <TopTownBlock>
                     <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
                     <p className="village_name">{village.village?.name} {rank_mark[index]}</p>
-                    <p className="process">{`${village.progressPercentage}%`}</p>
+                    {village.progressPercentage && <p className="process">{`${village.progressPercentage}%`}</p>}
                   </TopTownBlock>
                 </section>
               </>
@@ -170,7 +170,7 @@ function Village({ village, index }: VillageProps) {
               <TownBlock>
                 <RankingBlock bgColor="#EAEAEF" color="#1067CD" >{index + 1}</RankingBlock>
                 <p className="village_name">{village.village?.name}</p>
-                <p className="process">{`${village.progressPercentage}%`}</p>
+                {village.progressPercentage && <p className="process">{`${village.progressPercentage}%`}</p>}
               </TownBlock>
             </>
           }
