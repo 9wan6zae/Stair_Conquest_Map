@@ -32,6 +32,7 @@ export default function SearchPage({location}: {location: any}) {
   const login_success = useSelector((state: RootState) => state.login.loginSuccess);
   const dispatch = useDispatch();
   const [text, setText] = useState('')
+  const [meter_load, setMeterLoad] = React.useState(false)
   const params: SearchPlacesParams = {
     searchText: '',
     currentLocation: undefined,
@@ -96,6 +97,7 @@ export default function SearchPage({location}: {location: any}) {
       })
     }
     if(location.search.split('=')[1] && lat && lng) {
+      if (lat !== '0' && lng !== '0') setMeterLoad(true)
       searchPlaces(location.search.split('=')[1], +lat, +lng)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -162,7 +164,7 @@ export default function SearchPage({location}: {location: any}) {
           <ItemBox key={item.place.id}>
             <section className="info">
               <p className="search-list__title">{item.place.name}</p>
-              {calcMeter(item.distanceMeters?.value)}
+              {meter_load && calcMeter(item.distanceMeters?.value)}
               <span className="search-list__address">{item.place.address}</span>
               { NotRegister(item) && (
                 <p className="search-list__info">등록된 정보가 없어요</p>
