@@ -79,9 +79,15 @@ export default function SearchPage({location}: {location: any}) {
     }
   }
   useEffect(() => {
-    let lat = window.sessionStorage.getItem('lat')
-    let lng = window.sessionStorage.getItem('lng')
-    if (!(lat && lng)) {
+    let lat = '0'
+    let lng = '0'
+    const session_lat = window.sessionStorage.getItem('lat')
+    const session_lng = window.sessionStorage.getItem('lng')
+    if (session_lat && session_lng) {
+      lat = session_lat
+      lng = session_lng
+    }
+    if ((lat === '0' && lng === '0')) {
       navigator.geolocation.getCurrentPosition(pos => {
         lat = pos.coords.latitude + ""
         lng = pos.coords.longitude + ""
