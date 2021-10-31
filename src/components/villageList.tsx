@@ -2,6 +2,9 @@ import * as React from 'react';
 import { VillageRankingEntry, VillageRankingEntry_VillageProgressImage } from '../types/Model';
 import styled from 'styled-components'
 
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
+
 type RankingBlockProps = {
   bgColor: string
   color: string
@@ -9,6 +12,20 @@ type RankingBlockProps = {
 
 const TownWrapper = styled.section`
   margin: 24px 0;
+
+  p {
+    margin-left: 16px;
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    color: #6A6A73
+  }
+
+  @media all and (max-width: 360px) {
+    p.village_name {
+      width: 140px;
+    }
+  }
 `
 
 const RankingBlock = styled.div<RankingBlockProps>`
@@ -38,20 +55,6 @@ const TopTownBlock = styled.div`
   flex-direction: row;
   align-items: center;
 
-  p {
-    margin-left: 16px;
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: -0.005em;
-    color: #6A6A73
-  }
-
-  @media all and (max-width: 360px) {
-    p.village_name {
-      width: 140px;
-    }
-  }
-
   p.process {
     position: absolute;
     right: 20px;
@@ -75,20 +78,6 @@ const TownBlock = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
-
-  p {
-    margin-left: 16px;
-    font-size: 18px;
-    font-weight: 500;
-    letter-spacing: -0.005em;
-    color: #6A6A73
-  }
-
-  @media all and (max-width: 360px) {
-    p.village_name {
-      width: 140px;
-    }
-  }
 
   p.process {
     position: absolute;
@@ -115,10 +104,6 @@ const BgBlock = styled.div`
   flex-direction: column;
   justify-content: flex-start;
 `
-
-type VillageListProps = {
-  villages: VillageRankingEntry[]
-}
 
 type VillageProps = {
   village: VillageRankingEntry
@@ -161,33 +146,43 @@ function Village({ village, index }: VillageProps) {
   const rank_mark = ['👑', '🌸', '☘️']
   return (
     <>
-      {village && index < 10 && (<TownWrapper>
-        {index < 3 ? 
-        (
-        <section style={{position: 'relative'}}>
-          <BgBlock>
-            <div style={{maxWidth: '340px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden'}}>
-              {village.progressImage && <SvgRender img = {village.progressImage} percent = {village.progressPercentage} />}
-              {!village.progressImage && <img width='100%' height='304px' src={`${process.env.PUBLIC_URL}/assets/svg/comming_soon.svg`} alt="오픈 예정" />}
-            </div>
-          </BgBlock>
-          <TopTownBlock>
-            <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
-            <p className="village_name">{village.village?.name} {rank_mark[index]}</p>
-            <p className="process">{`${village.progressPercentage}%`}</p>
-          </TopTownBlock>
-        </section>):
-        (<TownBlock>
-          <RankingBlock bgColor="#EAEAEF" color="#1067CD" >{index + 1}</RankingBlock>
-          <p className="village_name">{village.village?.name}</p>
-          <p className="process">{`${village.progressPercentage}%`}</p>
-        </TownBlock>)}
-      </TownWrapper>)}
+      {village && index < 10 && 
+        <>
+          <TownWrapper>
+            {index < 3 ? 
+              <>
+                <section style={{position: 'relative'}}>
+                  <BgBlock>
+                    <div style={{maxWidth: '340px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden'}}>
+                      {village.progressImage && <SvgRender img = {village.progressImage} percent = {village.progressPercentage} />}
+                      {!village.progressImage && <img width='100%' height='304px' src={`${process.env.PUBLIC_URL}/assets/svg/comming_soon.svg`} alt="오픈 예정" />}
+                    </div>
+                  </BgBlock>
+                  <TopTownBlock>
+                    <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
+                    <p className="village_name">{village.village?.name} {rank_mark[index]}</p>
+                    <p className="process">{`${village.progressPercentage}%`}</p>
+                  </TopTownBlock>
+                </section>
+              </>
+            :
+            <>
+              <TownBlock>
+                <RankingBlock bgColor="#EAEAEF" color="#1067CD" >{index + 1}</RankingBlock>
+                <p className="village_name">{village.village?.name}</p>
+                <p className="process">{`${village.progressPercentage}%`}</p>
+              </TownBlock>
+            </>
+          }
+        </TownWrapper>
+      </>
+      }
     </>
   );
 }
 
-export default function VillageList({villages}: VillageListProps) {
+export default function VillageList() {
+  const villages = useSelector((state: RootState) => state.village.villages);
   return (
     <>
       {villages.map((village, index) => (

@@ -18,6 +18,8 @@ import AccessibilityPage from './pages/accessibilityPage';
 import { useDispatch } from 'react-redux';
 import { loginUserAsync } from './modules/login';
 
+import { villageThunk } from './modules/village';
+
 function App() {
   const dispatch = useDispatch();
   const {success} = loginUserAsync
@@ -27,6 +29,7 @@ function App() {
     if (token) {
       dispatch(success(true))
     }
+    dispatch(villageThunk())
   }, [dispatch, success])
   return (
     <div id="App__wrapper">
