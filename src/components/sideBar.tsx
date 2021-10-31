@@ -107,12 +107,12 @@ function SideBarItems () {
         to: "https://eggnrock.notion.site/8d03c66d07404ecf9f30b8cbd71dc9fd",
         link: false
       },
-      // {
-      //   icon: "./assets/svg/ranking.svg",
-      //   title: "우리동네 랭킹",
-      //   to: "/login",
-      //   link: true
-      // },
+      {
+        icon: "./assets/svg/ranking.svg",
+        title: "우리동네 랭킹",
+        to: "/ranking",
+        link: true
+      },
       {
         icon: "./assets/svg/info.svg",
         title: "만든 사람들",
