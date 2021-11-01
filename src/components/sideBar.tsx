@@ -96,31 +96,31 @@ function SideBarItems () {
   const [list, setList] = React.useState(
     [
       {
-        icon: "./assets/svg/account.svg",
+        icon: `${process.env.PUBLIC_URL}/assets/svg/account.svg`,
         title: "회원가입 / 로그인",
         to: "/login",
         link: true
       },
       {
-        icon: "./assets/svg/info.svg",
+        icon: `${process.env.PUBLIC_URL}/assets/svg/info.svg`,
         title: "계단정복지도 소개",
         to: "https://eggnrock.notion.site/8d03c66d07404ecf9f30b8cbd71dc9fd",
         link: false
       },
       {
-        icon: "./assets/svg/ranking.svg",
+        icon: `${process.env.PUBLIC_URL}/assets/svg/ranking.svg`,
         title: "우리동네 랭킹",
         to: "/ranking",
         link: true
       },
       {
-        icon: "./assets/svg/info.svg",
+        icon: `${process.env.PUBLIC_URL}/assets/svg/info.svg`,
         title: "만든 사람들",
         to: "https://eggnrock.notion.site/8bc9f0c3f8334a4983088d4041050377",
         link: false
       },
       {
-        icon: "./assets/svg/account.svg",
+        icon: `${process.env.PUBLIC_URL}/assets/svg/account.svg`,
         title: "클럽 회원 등록",
         to: "https://form.typeform.com/to/jSd2pdfF?typeform-source=admin.typeform.com",
         link: false
