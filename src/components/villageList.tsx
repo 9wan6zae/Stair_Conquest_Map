@@ -103,6 +103,7 @@ export const BgBlock = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  align-items: center;
 `
 
 type VillageProps = {
@@ -134,7 +135,7 @@ export function SvgRender ({img, percent}: {img: VillageRankingEntry_VillageProg
     return result
   }
   return (
-		<svg xmlns="http://www.w3.org/2000/svg" x='0px' y='0px' width="100%" height="304px" viewBox="0 0 375 340" xmlSpace="preserve">
+		<svg xmlns="http://www.w3.org/2000/svg" x='0px' y='0px' width="100%" height="100%" viewBox="0 0 375 340" xmlSpace="preserve">
 			<g>
 				{rendering(img)}
 			</g>
@@ -143,25 +144,12 @@ export function SvgRender ({img, percent}: {img: VillageRankingEntry_VillageProg
 }
 
 function Village({ village, index }: VillageProps) {
-  const rank_mark = ['👑', '🌸', '☘️']
   return (
     <>
       {village && index < 10 && 
         <TownWrapper>
           {index < 3 ? 
-            <section style={{position: 'relative'}}>
-              <BgBlock>
-                <div style={{maxWidth: '340px', margin: '0 auto', borderRadius: '20px', overflow: 'hidden'}}>
-                  {village.progressImage && <SvgRender img = {village.progressImage} percent = {village.progressPercentage} />}
-                  {!village.progressImage && <img width='100%' height='304px' src={`${process.env.PUBLIC_URL}/assets/svg/comming_soon.svg`} alt="오픈 예정" />}
-                </div>
-              </BgBlock>
-              <TopTownBlock>
-                <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
-                <p className="village_name">{village.village?.name} {rank_mark[index]}</p>
-                {village.progressPercentage && <p className="process">{`${village.progressPercentage}%`}</p>}
-              </TopTownBlock>
-            </section>
+            <ImageBlock village={village} index={index} />
             :
             <TownBlock>
               <RankingBlock bgColor="#EAEAEF" color="#1067CD" >{index + 1}</RankingBlock>
@@ -173,6 +161,25 @@ function Village({ village, index }: VillageProps) {
       }
     </>
   );
+}
+
+export function ImageBlock({village, index}: {village: VillageRankingEntry, index: number}) {
+  const rank_mark = ['👑', '🌸', '☘️']
+  return (
+    <section style={{position: 'relative'}}>
+      <BgBlock>
+        <div style={{minWidth: '100%', borderRadius: '20px', overflow: 'hidden'}}>
+          {village.progressImage && <SvgRender img = {village.progressImage} percent = {village.progressPercentage} />}
+          {!village.progressImage && <img width='100%' src={`${process.env.PUBLIC_URL}/assets/svg/comming_soon.svg`} alt="오픈 예정" />}
+        </div>
+      </BgBlock>
+      <TopTownBlock>
+        <RankingBlock bgColor="#67AEFF" color="#fff" >{index + 1}</RankingBlock>
+        <p className="village_name">{village.village?.name} {rank_mark[index]}</p>
+        {village.progressPercentage && <p className="process">{`${village.progressPercentage}%`}</p>}
+      </TopTownBlock>
+    </section>
+  )
 }
 
 export default function VillageList() {
