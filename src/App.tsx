@@ -14,9 +14,13 @@ import SearchPage from './pages/searchPage';
 import CommentPage from './pages/commentPage';
 import RegisterCompletePage from './pages/registerCompletePage';
 import AccessibilityPage from './pages/accessibilityPage';
+import RankingPage from './pages/rankginPage';
+import StatisticsPage from './pages/statisticsPage';
 
 import { useDispatch } from 'react-redux';
 import { loginUserAsync } from './modules/login';
+
+import { villageThunk } from './modules/village';
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +31,7 @@ function App() {
     if (token) {
       dispatch(success(true))
     }
+    dispatch(villageThunk())
   }, [dispatch, success])
   return (
     <div id="App__wrapper">
@@ -41,6 +46,8 @@ function App() {
             <Route exact={true} path="/register_complete" component={RegisterCompletePage} />
             <Route exact={true} path="/accessibility" component={AccessibilityPage} />
             <Route exact={true} path="/comment/:type" component={CommentPage} />
+            <Route exact={true} path="/ranking" component={RankingPage} />
+            <Route exact={true} path="/ranking/:id" component={StatisticsPage} />
             {/* Not Found */}
             <Route component={() => <Redirect to="/" />} />
           </Switch>

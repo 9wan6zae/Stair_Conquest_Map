@@ -62,17 +62,11 @@ export default function MainHeader({children}: {children: React.ReactChild}) {
   }
 
   useEffect(() => {
-    if (scroll && load) {
+    if (load) {
       updateScoll()
       window.addEventListener('scroll', () => {
         updateScoll()
       })
-    }
-    return () => setLoad(false)
-  }, [load, scroll])
-
-  useEffect(() => {
-    if(load) {
       const path = window.location.pathname
       if (path === '/') setScroll(true)
     }
