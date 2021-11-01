@@ -79,6 +79,12 @@ type SideBarProps = {
 }
 
 export default function SideBar({open, setOpen}: SideBarProps) {
+  React.useEffect(() => {
+    return () => {
+      setOpen(false)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return (
     <>
       <SideBarBlock open={open}>
