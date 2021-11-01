@@ -11,6 +11,11 @@ const RankingBlock = styled.main`
 `
 
 export default function RankingPage() {
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+    window.sessionStorage.removeItem('lat')
+    window.sessionStorage.removeItem('lng')
+  }, [])
   return (
     <>
       <MainHeader />
