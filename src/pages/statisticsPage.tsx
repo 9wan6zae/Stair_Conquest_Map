@@ -15,6 +15,7 @@ const StatisticsBlock = styled.main`
   section.titleSection {
     margin-top: 52px;
     width: 100%;
+    max-width: var(--maxWidth);
     position: fixed;
     section {
       padding: 0 20px;
@@ -39,11 +40,12 @@ const DetailInfo = styled.section`
   z-index: 10;
   position: absolute;
   box-shadow: 0px -4px 12px rgba(0, 0, 0, 0.15);
-  top: 464px;
+  top: 480px;
   width: 100%;
+  max-width: var(--maxWidth);
   background: #fff;
   border-radius: 20px 20px 0px 0px;
-  padding: 26px 0px 20px 0px;
+  padding: 36px 0px 20px 0px;
   box-sizing: border-box;
   
   section.conquestInfo {
@@ -51,12 +53,10 @@ const DetailInfo = styled.section`
 
     section.rateSection {
       box-sizing: border-box;
-      padding-top: 14px;
       display: flex;
       justify-content: space-between;
-      position: sticky;
+      position: relative;
       background: #fff;
-      top: 56px;
       p.rateTitle {
         font-weight: 500;
         font-size: 20px;
