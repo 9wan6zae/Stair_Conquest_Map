@@ -419,7 +419,7 @@ export default function AccessibilityPage({location}: {location: any}) {
         </p>
         {accessibility?.buildingAccessibility && <ButtonGroup>
           <CustomBtn active={accessibility.buildingAccessibility.isUpvoted} onClick={upVote}>
-            {accessibility.buildingAccessibility.totalUpvoteCount > 2 ? '도움이 돼요' : '정확한 정보예요'} 👍
+            {accessibility.buildingAccessibility.totalUpvoteCount > 2 ? '도움이 돼요' : '정확한 정보예요'}
           </CustomBtn>
           <CustomBtn active = {false} onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfObUfjutX8WNPPUqtDQZ30f6GCYP4FRHgjehG69sdoQci5AQ/viewform', '_blank')}>
             잘못된 정보예요
@@ -467,6 +467,8 @@ type AccessibilityLayoutProps = {
 }
 
 function AccessibilityLayout({id, type, item, accessibility, comment, attribute}: AccessibilityLayoutProps) {
+  const login_success = useSelector((state: RootState) => state.login.loginSuccess);
+  const notmember = window.sessionStorage.getItem('notmember')
   const [open, setOpen] = React.useState(false);
   const setImgSrc = (type: string) => {
     const uri = type === "건물" ? "building" : "place"
@@ -570,7 +572,8 @@ function AccessibilityLayout({id, type, item, accessibility, comment, attribute}
             <p><b>{item?.place.name}</b>{reulReturner(item?.place.name)} 정복해 보세요 😆</p> */}
             <p>{type ==='점포' ? '건물' : '점포'} 정보는 채워져있네요!</p>
             <p>{type} 정보만 채워주세요! 😆</p>
-            <button className="register-btn not" style={{marginTop: '10px', width: '120px'}} onClick={() => setOpen(true)}>{type} 정보 등록</button>
+            {(login_success || notmember) && <button className="register-btn not" style={{marginTop: '10px', width: '140px'}} onClick={() => setOpen(true)}>{type} 정보 등록</button>}
+            {!(login_success || notmember) && <Link to="/login"><button className="register-btn not" style={{marginTop: '10px', width: '140px'}}>{type} 정보 등록</button></Link>}
           </section>
         }
       </AccessibilityInfo>

@@ -68,6 +68,13 @@ const LoginFooter = styled.footer`
     line-height: 100%;
     margin-bottom: 20px;
   }
+
+  .not-member-btn {
+    margin-top: 24px;
+    font-weight: 500;
+    font-size: 16px;
+    color: #6A6A73;
+  }
 `
 
 const LoginLink = styled(Link)`
@@ -126,11 +133,16 @@ export default function LoginPage() {
     window.location.href = '/'
   }
 
+  const continueNotMember = () => {
+    window.sessionStorage.setItem('notmember', 'true')
+    window.history.back()
+  }
+
   return (
     <>
       {!loginSuccess && <LoginLayout
         title="로그인"
-        description = "로그인하고 지도를 채워주세요"
+        description = "내 이름으로 지도를 채워 보세요!"
         content = {
           <>
             <InputSection>
@@ -147,6 +159,7 @@ export default function LoginPage() {
           <LoginFooter>
             <p className="footer__title">회원이 아니신가요?</p>
             <LoginLink to="/signUp"><SignUpLinkBtn>3초 만에 회원가입</SignUpLinkBtn></LoginLink>
+            <p onClick={continueNotMember} className="not-member-btn">비회원으로 계속</p>
           </LoginFooter>
         }
       ></LoginLayout>}

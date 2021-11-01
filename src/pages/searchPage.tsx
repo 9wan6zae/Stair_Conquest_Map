@@ -6,11 +6,14 @@ import { Link } from 'react-router-dom';
 import * as searchAPI from '../api/search';
 import RegisterModal from '../components/registerModal';
 import { SearchPlacesResult_Item, SearchPlacesParams, SearchPlacesResult } from '../types/SearchPlaces';
-import { Location } from '../types/Model';
 import styled from "styled-components"
 
+import { useSelector } from 'react-redux';
+import { RootState } from '../modules';
 import { useDispatch } from 'react-redux';
 import { set_item } from '../modules/item';
+
+import {createBrowserHistory} from 'history'
 
 const ItemBox = styled.section`
   width: 100%;
@@ -27,10 +30,12 @@ const ItemBox = styled.section`
   }
 `
 
-export default function SearchPage() {
+export default function SearchPage({location}: {location: any}) {
+  const login_success = useSelector((state: RootState) => state.login.loginSuccess);
   const dispatch = useDispatch();
   const [text, setText] = useState('')
-  const [params, setParams] = useState<SearchPlacesParams>(
+  const [load, setLoad] = useState(true)
+  const [params, setParams] = React.useState<SearchPlacesParams>(
     {
       searchText: '',
       currentLocation: undefined,
@@ -38,7 +43,7 @@ export default function SearchPage() {
       siGunGuId: undefined,
       eupMyeonDongId: undefined
     }
-  );
+  )
 
   const [selectItem, setSelectItem] = useState<SearchPlacesResult_Item>(
     {
@@ -67,27 +72,58 @@ export default function SearchPage() {
     setText(value)
   }
 
-  const searchPlaces = async () => {
+  const searchAction = async () => {
+    let history = createBrowserHistory()
+    history.replace(`/search?searchText=${text}`)
+    searchPlaces(text)
+  }
+
+  const searchPlaces = async (searchText: string, lat?: number, lng?: number) => {
     if (params) {
-      params.searchText = text
+      params.searchText = searchText
+      if (lat && lng) {
+        params.currentLocation = {lat: lat, lng: lng}
+      }
       const res = await searchAPI.searchPlaces(params)
       setSearchPlacesResult(res.data)
     }
   }
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(pos => {
-      const coords: Location = {lng: 0, lat: 0}
-      coords.lat = pos.coords.latitude
-      coords.lng = pos.coords.longitude
-      setParams({...params, currentLocation: coords})
-    })
+    if (load) {
+      let lat = undefined
+      let lng = undefined
+      const session_lat = window.sessionStorage.getItem('lat')
+      const session_lng = window.sessionStorage.getItem('lng')
+      if (!(session_lat && session_lng)) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          lat = pos.coords.latitude
+          lng = pos.coords.longitude
+          setParams({...params, currentLocation: {lat, lng}})
+        })
+      }
+      else {
+        lat = +session_lat
+        lng = +session_lng
+        window.sessionStorage.removeItem('lat')
+        window.sessionStorage.removeItem('lng')
+      }
+      if(location.search.split('=')[1]) {
+        const searh_text = decodeURI(location.search.split('=')[1])
+        searchPlaces(searh_text, lat, lng)
+        setText(searh_text)
+      }
+    }
+    return () => {setLoad(false)}
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  const openModal = (item: SearchPlacesResult_Item) => {
-    setOpen(true)
+  const setItem = (item: SearchPlacesResult_Item) => {
     setSelectItem(item)
     dispatch(set_item(item));
+    if (params && params.currentLocation) {
+      window.sessionStorage.setItem('lat', params.currentLocation.lat + '')
+      window.sessionStorage.setItem('lng', params.currentLocation.lng + '')
+    }
   }
 
   const clearInfo = () => {
@@ -118,15 +154,26 @@ export default function SearchPage() {
     }
   }
 
+  const checkLogin = (item: SearchPlacesResult_Item) => {
+    const notmember = window.sessionStorage.getItem('notmember')
+    if (!(login_success || notmember)) {
+      window.location.href = '/login'
+    }
+    else {
+      setOpen(true)
+      setItem(item)
+    }
+  }
+
   return (
     <>
       <MainHeader>
-        <div className="input__search-page">
-          <section style={{width: '86%'}} >
-            <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchPlaces} />
-          </section>
-          <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={() => searchPlaces()}>검색</span>
-        </div>
+          <div className="input__search-page">
+            <section style={{width: '86%'}}>
+                <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchAction} /> 
+            </section>
+            <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={searchAction}>검색</span>
+          </div>
       </MainHeader>
       {searchPlacesResult.items?.length > 0 && (
         searchPlacesResult.items.map(item => (
@@ -151,13 +198,13 @@ export default function SearchPage() {
             </section>
             <section className="btn">
               { NotRegister(item) && (
-                <button className="register-btn not" onClick={() => openModal(item)}>정보 등록</button>
+                <button className="register-btn not" onClick={() => checkLogin(item)}>정보 등록</button>
               )}
               { halfRegister(item) && (
-                <Link to={{pathname: "/accessibility", state: {require: !item.hasBuildingAccessibility ? 'building' : 'place'}}}><button className="register-btn half" onClick={() => openModal(item)}>정보 등록</button></Link>
+                <Link to={{pathname: "/accessibility", state: {require: !item.hasBuildingAccessibility ? 'building' : 'place'}}}><button className="register-btn half" onClick={() => setItem(item)}>정보 등록</button></Link>
               )}
               { fullRegister(item) && (
-                <Link to="/accessibility"><button className="register-btn full" onClick={() => openModal(item)}>정보 조회</button></Link>
+                <Link to="/accessibility"><button className="register-btn full" onClick={() => setItem(item)}>정보 조회</button></Link>
               )}
             </section>
           </ItemBox>
