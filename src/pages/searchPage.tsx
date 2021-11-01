@@ -80,7 +80,6 @@ export default function SearchPage({location}: {location: any}) {
 
   const searchPlaces = async (searchText: string, lat?: number, lng?: number) => {
     if (params) {
-      console.log(params)
       params.searchText = searchText
       if (lat && lng) {
         params.currentLocation = {lat: lat, lng: lng}
