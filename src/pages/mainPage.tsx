@@ -8,6 +8,9 @@ import VillageList from '../components/villageList';
 import { Link } from 'react-router-dom';
 
 export default function MainPage() {
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <>
       <AppHeader></AppHeader>
