@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom';
 export default function MainPage() {
   React.useEffect(() => {
     window.scrollTo(0, 0)
+    window.sessionStorage.removeItem('lat')
+    window.sessionStorage.removeItem('lng')
   }, [])
   return (
     <>
