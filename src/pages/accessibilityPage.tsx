@@ -419,7 +419,7 @@ export default function AccessibilityPage({location}: {location: any}) {
         </p>
         {accessibility?.buildingAccessibility && <ButtonGroup>
           <CustomBtn active={accessibility.buildingAccessibility.isUpvoted} onClick={upVote}>
-            {accessibility.buildingAccessibility.totalUpvoteCount > 2 ? '도움이 돼요' : '정확한 정보예요'} 👍
+            {accessibility.buildingAccessibility.totalUpvoteCount > 2 ? '도움이 돼요' : '정확한 정보예요'}
           </CustomBtn>
           <CustomBtn active = {false} onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfObUfjutX8WNPPUqtDQZ30f6GCYP4FRHgjehG69sdoQci5AQ/viewform', '_blank')}>
             잘못된 정보예요
