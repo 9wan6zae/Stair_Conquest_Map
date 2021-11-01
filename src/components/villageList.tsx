@@ -125,7 +125,7 @@ type VillageProps = {
   index: number
 }
 
-function SvgRender ({img, percent}: {img: any, percent: string}) {
+function SvgRender ({img, percent}: {img: VillageRankingEntry_VillageProgressImage, percent: string}) {
   const fillColor = (percent: string) => {
     const idx = Math.floor(img.numberOfBlocks * +percent * 0.01)
     for (let i = idx; i <= img.numberOfBlocks; i++) {
