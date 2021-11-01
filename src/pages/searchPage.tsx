@@ -13,6 +13,8 @@ import { RootState } from '../modules';
 import { useDispatch } from 'react-redux';
 import { set_item } from '../modules/item';
 
+import {createBrowserHistory} from 'history'
+
 const ItemBox = styled.section`
   width: 100%;
   padding: 0 20px;
@@ -32,14 +34,16 @@ export default function SearchPage({location}: {location: any}) {
   const login_success = useSelector((state: RootState) => state.login.loginSuccess);
   const dispatch = useDispatch();
   const [text, setText] = useState('')
-  const [meter_load, setMeterLoad] = React.useState(false)
-  const params: SearchPlacesParams = {
-    searchText: '',
-    currentLocation: undefined,
-    distanceMetersLimit: 0,
-    siGunGuId: undefined,
-    eupMyeonDongId: undefined
-  }
+  const [load, setLoad] = useState(true)
+  const [params, setParams] = React.useState<SearchPlacesParams>(
+    {
+      searchText: '',
+      currentLocation: undefined,
+      distanceMetersLimit: 0,
+      siGunGuId: undefined,
+      eupMyeonDongId: undefined
+    }
+  )
 
   const [selectItem, setSelectItem] = useState<SearchPlacesResult_Item>(
     {
@@ -68,44 +72,59 @@ export default function SearchPage({location}: {location: any}) {
     setText(value)
   }
 
-  const searchPlaces = async (searchText: string, lat: number, lng: number) => {
+  const searchAction = async () => {
+    let history = createBrowserHistory()
+    history.replace(`/search?searchText=${text}`)
+    searchPlaces(text)
+  }
+
+  const searchPlaces = async (searchText: string, lat?: number, lng?: number) => {
     if (params) {
-      params.searchText = decodeURI(searchText)
-      params.currentLocation = {
-        lat: +lat,
-        lng: +lng
+      console.log(params)
+      params.searchText = searchText
+      if (lat && lng) {
+        params.currentLocation = {lat: lat, lng: lng}
       }
       const res = await searchAPI.searchPlaces(params)
       setSearchPlacesResult(res.data)
     }
   }
   useEffect(() => {
-    let lat = '0'
-    let lng = '0'
-    const session_lat = window.sessionStorage.getItem('lat')
-    const session_lng = window.sessionStorage.getItem('lng')
-    if (session_lat && session_lng) {
-      lat = session_lat
-      lng = session_lng
+    if (load) {
+      let lat = undefined
+      let lng = undefined
+      const session_lat = window.sessionStorage.getItem('lat')
+      const session_lng = window.sessionStorage.getItem('lng')
+      if (!(session_lat && session_lng)) {
+        navigator.geolocation.getCurrentPosition(pos => {
+          lat = pos.coords.latitude
+          lng = pos.coords.longitude
+          setParams({...params, currentLocation: {lat, lng}})
+        })
+      }
+      else {
+        lat = +session_lat
+        lng = +session_lng
+        window.sessionStorage.removeItem('lat')
+        window.sessionStorage.removeItem('lng')
+      }
+      if(location.search.split('=')[1]) {
+        const searh_text = decodeURI(location.search.split('=')[1])
+        searchPlaces(searh_text, lat, lng)
+        setText(searh_text)
+      }
     }
-    if ((lat === '0' && lng === '0')) {
-      navigator.geolocation.getCurrentPosition(pos => {
-        lat = pos.coords.latitude + ""
-        lng = pos.coords.longitude + ""
-        window.sessionStorage.setItem('lat', lat)
-        window.sessionStorage.setItem('lng', lng)
-      })
-    }
-    if(location.search.split('=')[1] && lat && lng) {
-      if (lat !== '0' && lng !== '0') setMeterLoad(true)
-      searchPlaces(location.search.split('=')[1], +lat, +lng)
-    }
+    return () => {setLoad(false)}
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const setItem = (item: SearchPlacesResult_Item) => {
     setSelectItem(item)
     dispatch(set_item(item));
+    if (params && params.currentLocation) {
+      window.sessionStorage.setItem('lat', params.currentLocation.lat + '')
+      window.sessionStorage.setItem('lng', params.currentLocation.lng + '')
+    }
   }
 
   const clearInfo = () => {
@@ -150,21 +169,19 @@ export default function SearchPage({location}: {location: any}) {
   return (
     <>
       <MainHeader>
-        <form>
           <div className="input__search-page">
             <section style={{width: '86%'}}>
-                <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" /> 
+                <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchAction} /> 
             </section>
-            <button style={{fontSize: 'inherit', background: 'none', border: 'none', outline: 'none', lineHeight: '60px', color: '#3491FF', fontWeight: 500}} type="submit">검색</button>
+            <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={searchAction}>검색</span>
           </div>
-        </form>
       </MainHeader>
       {searchPlacesResult.items?.length > 0 && (
         searchPlacesResult.items.map(item => (
           <ItemBox key={item.place.id}>
             <section className="info">
               <p className="search-list__title">{item.place.name}</p>
-              {meter_load && calcMeter(item.distanceMeters?.value)}
+              {calcMeter(item.distanceMeters?.value)}
               <span className="search-list__address">{item.place.address}</span>
               { NotRegister(item) && (
                 <p className="search-list__info">등록된 정보가 없어요</p>
