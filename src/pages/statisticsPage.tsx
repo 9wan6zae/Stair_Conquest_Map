@@ -189,7 +189,7 @@ export default function StatisticsPage({match}: {match: any}) {
                 <img src={`${process.env.PUBLIC_URL}/assets/png/ic_building.png`} alt="타입 아이콘" />
                 <p className="conquest-user">{statistics.eupMyeonDongName}건물 정복왕</p>
                 <p className="user-name">{statistics.mostRegisteredUser?.nickname ? statistics.mostRegisteredUser?.nickname : '익명 비밀요원'}</p>
-                {statistics.mostRegisteredUser?.instagramId && <p className="instagram">인스타그램 <span>@ {statistics.mostRegisteredUser?.instagramId}</span></p>}
+                {statistics.mostRegisteredUser?.instagramId && <p className="instagram">인스타그램 <span>@{statistics.mostRegisteredUser?.instagramId.value}</span></p>}
               </section>
             </section>
             <section className="remain">
