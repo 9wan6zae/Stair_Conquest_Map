@@ -51,4 +51,6 @@ export interface GetAccessibilityResult {
   /** 정보가 아직 채워지지 않았으면 null */
   placeAccessibility: PlaceAccessibility | undefined;
   placeAccessibilityComments: PlaceAccessibilityComment[];
+  /** '이 건물의 다른 점포 등록하기'를 보여줄지 여부. */
+  hasOtherPlacesToRegisterInBuilding: boolean;
 }

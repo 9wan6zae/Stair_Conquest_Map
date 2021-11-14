@@ -31,7 +31,6 @@ const ItemBox = styled.section`
 `
 
 export default function SearchPage({location}: {location: any}) {
-  const login_success = useSelector((state: RootState) => state.login.loginSuccess);
   const dispatch = useDispatch();
   const [text, setText] = useState('')
   const [load, setLoad] = useState(true)
@@ -45,27 +44,9 @@ export default function SearchPage({location}: {location: any}) {
     }
   )
 
-  const [selectItem, setSelectItem] = useState<SearchPlacesResult_Item>(
-    {
-      place: {
-        id: '',
-        name: '',
-        address: ''
-      },
-      building: {
-        id: '',
-        address: ''
-      },
-      hasBuildingAccessibility: false,
-      hasPlaceAccessibility: false,
-      distanceMeters: undefined
-    },
-  );
-
   const [searchPlacesResult, setSearchPlacesResult] = useState<SearchPlacesResult>(
     {items: []}
   );
-  const [open, setOpen] = useState(false);
 
   const onChange = (e: any) => {
     const {value} = e.target
@@ -117,6 +98,23 @@ export default function SearchPage({location}: {location: any}) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const [selectItem, setSelectItem] = useState<SearchPlacesResult_Item>(
+    {
+      place: {
+        id: '',
+        name: '',
+        address: ''
+      },
+      building: {
+        id: '',
+        address: ''
+      },
+      hasBuildingAccessibility: false,
+      hasPlaceAccessibility: false,
+      distanceMeters: undefined
+    },
+  );
+
   const setItem = (item: SearchPlacesResult_Item) => {
     setSelectItem(item)
     dispatch(set_item(item));
@@ -129,6 +127,25 @@ export default function SearchPage({location}: {location: any}) {
   const clearInfo = () => {
     setText('')
   }
+
+  return (
+    <>
+      <MainHeader>
+          <div className="input__search-page">
+            <section style={{width: '86%'}}>
+                <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchAction} /> 
+            </section>
+            <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={searchAction}>검색</span>
+          </div>
+      </MainHeader>
+      <ListPlaces places={searchPlacesResult} selectItem={selectItem} setItem={setItem}  />
+    </>
+  )
+}
+
+export function ListPlaces({places, selectItem, setItem}: {places: SearchPlacesResult, selectItem: SearchPlacesResult_Item, setItem(item: SearchPlacesResult_Item): void}) {
+  const login_success = useSelector((state: RootState) => state.login.loginSuccess);
+  const [open, setOpen] = useState(false);
 
   const NotRegister = (item: SearchPlacesResult_Item): boolean => {
     return !item.hasBuildingAccessibility && !item.hasPlaceAccessibility
@@ -164,19 +181,10 @@ export default function SearchPage({location}: {location: any}) {
       setItem(item)
     }
   }
-
   return (
     <>
-      <MainHeader>
-          <div className="input__search-page">
-            <section style={{width: '86%'}}>
-                <InputBox name="searchText" value={text || ''} onChange={onChange} clearInfo={clearInfo} type="text" placeholder="장소, 주소 검색" onKeyAction={searchAction} /> 
-            </section>
-            <span style={{lineHeight: '60px', color: '#3491FF', fontWeight: 500}} onClick={searchAction}>검색</span>
-          </div>
-      </MainHeader>
-      {searchPlacesResult.items?.length > 0 && (
-        searchPlacesResult.items.map(item => (
+      {places.items?.length > 0 && (
+        places.items.map(item => (
           <ItemBox key={item.place.id}>
             <section className="info">
               <p className="search-list__title">{item.place.name}</p>
@@ -210,7 +218,7 @@ export default function SearchPage({location}: {location: any}) {
           </ItemBox>
         ))
       )}
-      {!searchPlacesResult?.items && (
+      {!places?.items && (
         <section style={{width: '100%', height: '70vh', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
           <img src="./assets/svg/ic_search.svg" alt="search" />
           <p style={{fontSize: '20px', color: '#B5B5C0', marginTop: '16px'}}>검색 결과가 없습니다.</p>
