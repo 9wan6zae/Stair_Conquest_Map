@@ -128,7 +128,7 @@ function SideBarItems () {
       {
         icon: `${process.env.PUBLIC_URL}/assets/svg/account.svg`,
         title: "클럽 회원 등록",
-        to: "https://form.typeform.com/to/jSd2pdfF?typeform-source=admin.typeform.com",
+        to: "https://form.typeform.com/to/rn639sbA",
         link: false
       },
     ]
