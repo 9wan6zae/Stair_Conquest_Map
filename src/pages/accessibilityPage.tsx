@@ -367,6 +367,7 @@ export default function AccessibilityPage({location}: {location: any}) {
     accessibilityAPI.getAccessibility({
       placeId: `${item?.place.id}`
     }).then(res => {
+      console.log(res.data)
       setAccessibility(res.data)
       window.scrollTo(0, 0)
       if (location.state) {
@@ -426,6 +427,11 @@ export default function AccessibilityPage({location}: {location: any}) {
           </CustomBtn>
         </ButtonGroup>}
         <Link to="/" style={{marginTop: '32px'}}><RegisterModalBtn active={true}>확인</RegisterModalBtn></Link>
+        {accessibility?.hasOtherPlacesToRegisterInBuilding && 
+          <Link to={{pathname: "/otherPlaces", state: {buildingId: accessibility.buildingAccessibility?.buildingId}}} style={{padding: '20px'}}>
+            <p className="link" style={{textAlign: 'center'}}>이 건물의 다른 점포 등록하기 <img src={`${process.env.PUBLIC_URL}/assets/svg/arr.svg`} alt="링크" /></p>
+          </Link>
+        }
       </AccessibilityFooter>
     </div>
   )

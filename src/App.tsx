@@ -16,6 +16,7 @@ import RegisterCompletePage from './pages/registerCompletePage';
 import AccessibilityPage from './pages/accessibilityPage';
 import RankingPage from './pages/rankginPage';
 import StatisticsPage from './pages/statisticsPage';
+import ListOtherPlaces from './pages/listOtherPlaces';
 
 import { useDispatch } from 'react-redux';
 import { loginUserAsync } from './modules/login';
@@ -48,6 +49,7 @@ function App() {
             <Route exact={true} path="/comment/:type" component={CommentPage} />
             <Route exact={true} path="/ranking" component={RankingPage} />
             <Route exact={true} path="/ranking/:id" component={StatisticsPage} />
+            <Route exact={true} path="/otherPlaces" component={ListOtherPlaces} />
             {/* Not Found */}
             <Route component={() => <Redirect to="/" />} />
           </Switch>
