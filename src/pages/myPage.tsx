@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import MainHeader from '../components/mainHeader';
 import { GetMyPageViewDataResult } from '../types/MyPage';
 import * as MyPageAPI from '../api/myPage'
+import { Link } from 'react-router-dom';
 
 const AccountSection = styled.section`
   display: flex;
@@ -118,10 +119,26 @@ const ConqureCard = styled.div<CardProps>`
     height: 100%;
     font-size: 120px;
   }
+
+  p.card__link {
+    color: ${props => props.contentColor};
+    position: absolute;
+    right: 19px;
+    bottom: 10px;
+    padding: 12px 0;
+    font-size: 16px;
+  }
  `
 
 export default function MyPage() {
   const [data, setData] = React.useState<GetMyPageViewDataResult>()
+  const ic_level: any = {
+    '1': {ic: '🥚'},
+    '2': {ic: '🐣'},
+    '3': {ic: '⛳️'},
+    '4': {ic: '👑'},
+    'Max': {ic: '🦄'}
+  }
 
   React.useEffect(() => {
     MyPageAPI.getMyPageViewData().then(res => setData(res.data))
@@ -148,7 +165,7 @@ export default function MyPage() {
           <p className="card__title">정복 레벨</p>
           <p className="card__main-content">Lv. {data?.conquerLevelInfo?.level}</p>
           <p className="card__sub-content">{data?.conquerLevelInfo?.description}</p>
-          <p className="icon">🥚</p>
+          {data?.conquerLevelInfo?.level && <p className="icon">{ic_level[data?.conquerLevelInfo?.level].ic}</p>}
         </ConqureCard>
         <ConqureCard titleColor="#fff" contentColor="#fff" backgroundColor="#1D85FF">
           <p className="card__title">정복 순위</p>
@@ -158,7 +175,7 @@ export default function MyPage() {
         <ConqureCard titleColor="#fff" contentColor="#fff" backgroundColor="#FF9D0A">
           <p className="card__title">정복한 계단</p>
           <p className="card__main-content">{data?.placeAccessibilityCount} 개</p>
-          {/* <p className="icon">🥚</p> */}
+          <Link to="/listConqueredPlaces"><p className="card__link">모두 보기 <img style={{color: 'white'}} src={`${process.env.PUBLIC_URL}/assets/svg/arr_white.svg`} alt="link" /></p></Link>
         </ConqureCard>
       </ConqureSection>
     </div>
