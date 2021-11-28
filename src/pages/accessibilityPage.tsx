@@ -123,7 +123,7 @@ const AccessibilityInfo = styled.section`
   section.accessibility__add-comment {
     width: 100%;
     text-align: center;
-    color: #1067CD;
+    color: var(--link);
     font-weight: 500;
     font-size: 16px;
     margin-top: 32px;
@@ -224,7 +224,7 @@ const CommentBlock = styled.section`
   }
 
   p.nickname {
-    color: #1067CD;
+    color: var(--link);
     font-size: 16px;
     font-weight: 500;
   }

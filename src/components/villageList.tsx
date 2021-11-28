@@ -152,7 +152,7 @@ function Village({ village, index }: VillageProps) {
             <ImageBlock village={village} index={index} />
             :
             <TownBlock>
-              <RankingBlock bgColor="#EAEAEF" color="#1067CD" >{index + 1}</RankingBlock>
+              <RankingBlock bgColor="#EAEAEF" color="var(--link)" >{index + 1}</RankingBlock>
               <p className="village_name">{village.village?.name}</p>
               {village.progressPercentage && <p className="process">{`${village.progressPercentage}%`}</p>}
             </TownBlock>

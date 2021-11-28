@@ -83,5 +83,5 @@
 .link {
   font-size: 14px;
   font-weight: 500;
-  color: #1067CD;
+  color: var(--link);
 }

@@ -2,6 +2,8 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import MainHeader from '../components/mainHeader';
+import { GetMyPageViewDataResult } from '../types/MyPage';
+import * as MyPageAPI from '../api/myPage'
 
 const AccountSection = styled.section`
   display: flex;
@@ -16,12 +18,20 @@ const AccountSection = styled.section`
   margin-bottom: 15px;
   border-bottom: 2px solid #D0D0D9;
 
-  span.instagram {
+  p.instagram {
     font-weight: 500;
     font-size: 16px;
     line-height: 100%;
     letter-spacing: -0.005em;
     color: #B5B5C0;
+  }
+
+  span.instagram__id {
+    color: var(--emphasis);
+  }
+
+  span.instagram__link {
+    color: var(--link);
   }
 
   button.edit-profile {
@@ -111,13 +121,24 @@ const ConqureCard = styled.div<CardProps>`
  `
 
 export default function MyPage() {
+  const [data, setData] = React.useState<GetMyPageViewDataResult>()
+
+  React.useEffect(() => {
+    MyPageAPI.getMyPageViewData().then(res => setData(res.data))
+  }, [])
   return (
     <div style={{background: '#F2F2F5'}}>
       <MainHeader />
       <AccountSection>
         <main>
-          <p className="title3">test</p>
-          <p><span className="instagram">인스타그램</span></p>
+          <p className="title3">{data?.user?.nickname}</p>
+          <p className="instagram">
+            <span style={{marginRight: '6px'}}>인스타그램</span>
+            {data?.user?.instagramId?.value
+              ? <span className="instagram__id">{data?.user?.instagramId?.value}</span>
+              : <span className="instagram__link">계정 등록하기</span>
+            }
+          </p>
           <button className="edit-profile">프로필 편집</button>
         </main>
       </AccountSection>
@@ -125,18 +146,18 @@ export default function MyPage() {
         <section className="title"><img src={`${process.env.PUBLIC_URL}/assets/svg/ic_level2.svg`} alt="레벨 아이콘" /> <span className="title">나의 정복활동</span></section>
         <ConqureCard titleColor="#6A6A73" contentColor="#3F3F45" backgroundColor="#EAEAEF">
           <p className="card__title">정복 레벨</p>
-          <p className="card__main-content">Lv. 1</p>
-          <p className="card__sub-content">예비 정복자</p>
+          <p className="card__main-content">Lv. {data?.conquerLevelInfo?.level}</p>
+          <p className="card__sub-content">{data?.conquerLevelInfo?.description}</p>
           <p className="icon">🥚</p>
         </ConqureCard>
         <ConqureCard titleColor="#fff" contentColor="#fff" backgroundColor="#1D85FF">
           <p className="card__title">정복 순위</p>
-          <p className="card__main-content">순위 없음</p>
+          <p className="card__main-content">{data?.conquerRank?.value ? `${data?.conquerRank?.value}위` : '순위 없음'}</p>
           <p className="icon">🏅</p>
         </ConqureCard>
         <ConqureCard titleColor="#fff" contentColor="#fff" backgroundColor="#FF9D0A">
           <p className="card__title">정복한 계단</p>
-          <p className="card__main-content">0 개</p>
+          <p className="card__main-content">{data?.placeAccessibilityCount} 개</p>
           {/* <p className="icon">🥚</p> */}
         </ConqureCard>
       </ConqureSection>
