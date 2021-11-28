@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import MainHeader from '../components/mainHeader';
-import { GetMyPageViewDataResult } from '../types/MyPage';
+import { GetMyPageViewDataResult, GetMyPageViewDataResult_PlaceAccessibilityCountDetailEntry } from '../types/MyPage';
 import * as MyPageAPI from '../api/myPage'
 import { Link } from 'react-router-dom';
 
@@ -52,11 +52,10 @@ const AccountSection = styled.section`
 `
 
 const ConqureSection = styled.section`
-  padding: 30px 20px 0px 20px;
+  padding: 30px 20px 52px 20px;
   box-sizing: border-box;
   width: 100%;
   max-width: var(--maxWidth);
-  height: 320px;
   background: #fff;
 
   section.title {
@@ -130,6 +129,41 @@ const ConqureCard = styled.div<CardProps>`
   }
  `
 
+const PlacesListCard = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+  padding: 28px 32px 0px 32px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 104px;
+  border-radius: 20px;
+  background-color: #EAEAEF;
+
+  div.block-wrapper {
+    margin: 0;
+    width: 100%;
+    max-width: 280px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  div.list-item {
+    display: flex;
+  }
+
+  div.division {
+    width: 0px;
+    height: 44px;
+    border: 1px solid #D0D0D9;
+  }
+ `
+const PlacesListCardWrapper = styled.div `
+  max-width: 213px;
+`
+
 export default function MyPage() {
   const [data, setData] = React.useState<GetMyPageViewDataResult>()
   const ic_level: any = {
@@ -139,6 +173,18 @@ export default function MyPage() {
     '4': {ic: '👑'},
     'Max': {ic: '🦄'}
   }
+
+  // const setPlacesList = (places: GetMyPageViewDataResult_PlaceAccessibilityCountDetailEntry[]) => {
+  //   if (places) {
+  //     const row = []
+  //     let temp = []
+  //     for (let i = 0; i < places.length; i++) {
+  //       if (i % 3 !== 0) {
+  //         temp
+  //       }
+  //     } 
+  //   }
+  // }
 
   React.useEffect(() => {
     MyPageAPI.getMyPageViewData().then(res => setData(res.data))
@@ -177,7 +223,43 @@ export default function MyPage() {
           <p className="card__main-content">{data?.placeAccessibilityCount} 개</p>
           <Link to="/listConqueredPlaces"><p className="card__link">모두 보기 <img style={{color: 'white'}} src={`${process.env.PUBLIC_URL}/assets/svg/arr_white.svg`} alt="link" /></p></Link>
         </ConqureCard>
+        {data?.placeAccessibilityCountDetailEntries && 
+          <PlacesListCard>
+            <div className='block-wrapper'>
+            {data?.placeAccessibilityCountDetailEntries.map((p, i) => (
+              <div className="list-item" key={i}>
+                <PlacesListBlock>
+                  <p className="placename">{p.eupMyeonDongName}</p>
+                  <p className="conquer-number">{p.count}</p>
+                </PlacesListBlock>
+                {(i !== data?.placeAccessibilityCountDetailEntries.length - 1)
+                  && i % 3 !== 2
+                  && <div className="division" />}
+              </div>
+            ))}
+            {[...Array(3 - Math.floor(data?.placeAccessibilityCountDetailEntries.length / 3))].map((p, i) => (
+              <PlacesListBlock key={`blank${i}`} />
+            ))}
+            </div>
+          </PlacesListCard>
+        }
       </ConqureSection>
     </div>
   )
 }
+
+const PlacesListBlock = styled.div`
+  margin-bottom: 24px;
+  width: 71px;
+  height: 48px;
+  p.placename {
+    font-weight: 500;
+    font-size: 16px;
+    color: #6A6A73;
+  }
+  p.conquer-number {
+    font-weight: bold;
+    font-size: 20px;
+    color: var(--emphasis);
+  }
+`
