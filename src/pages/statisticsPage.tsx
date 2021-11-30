@@ -24,7 +24,7 @@ const StatisticsBlock = styled.main`
   }
 
   & > p.link {
-    color: #1067CD;
+    color: var(--link);
     font-weight: 500;
   }
 
@@ -111,7 +111,7 @@ const DetailInfo = styled.section`
       font-weight: 500;
       font-size: 20px;
       line-height: 100%;
-      color: #1067CD;
+      color: var(--link);
     }
 
     p.instagram {

@@ -17,6 +17,9 @@ import AccessibilityPage from './pages/accessibilityPage';
 import RankingPage from './pages/rankginPage';
 import StatisticsPage from './pages/statisticsPage';
 import ListOtherPlaces from './pages/listOtherPlaces';
+import MyPage from './pages/myPage';
+import ListConqueredPlaces from './pages/listConqueredPlaces';
+import UpdateProfile from './pages/updateProfile';
 
 import { useDispatch } from 'react-redux';
 import { loginUserAsync } from './modules/login';
@@ -50,6 +53,9 @@ function App() {
             <Route exact={true} path="/ranking" component={RankingPage} />
             <Route exact={true} path="/ranking/:id" component={StatisticsPage} />
             <Route exact={true} path="/otherPlaces" component={ListOtherPlaces} />
+            <Route exact={true} path="/myPage" component={MyPage} />
+            <Route exact={true} path="/listConqueredPlaces" component={ListConqueredPlaces} />
+            <Route exact={true} path="/updateProfile" component={UpdateProfile} />
             {/* Not Found */}
             <Route component={() => <Redirect to="/" />} />
           </Switch>

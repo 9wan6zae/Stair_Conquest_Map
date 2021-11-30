@@ -21,11 +21,11 @@ const TitleSection = styled.section`
   background: #fff;
 `
 
-const Division = styled.section`
+export const Division = styled.section`
   box-sizing: border-box;
   width: 100%;
   max-width: var(--maxWidth);
-  border: 2px solid #EAEAEF;
+  border: 1px solid #EAEAEF;
 `
 
 const AccessibilityInfo = styled.section`
@@ -123,7 +123,7 @@ const AccessibilityInfo = styled.section`
   section.accessibility__add-comment {
     width: 100%;
     text-align: center;
-    color: #1067CD;
+    color: var(--link);
     font-weight: 500;
     font-size: 16px;
     margin-top: 32px;
@@ -224,7 +224,7 @@ const CommentBlock = styled.section`
   }
 
   p.nickname {
-    color: #1067CD;
+    color: var(--link);
     font-size: 16px;
     font-weight: 500;
   }
@@ -367,7 +367,6 @@ export default function AccessibilityPage({location}: {location: any}) {
     accessibilityAPI.getAccessibility({
       placeId: `${item?.place.id}`
     }).then(res => {
-      console.log(res.data)
       setAccessibility(res.data)
       window.scrollTo(0, 0)
       if (location.state) {
