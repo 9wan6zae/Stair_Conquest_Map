@@ -143,7 +143,6 @@ export default function StatisticsPage({match}: {match: any}) {
   React.useEffect(() => {
     const id = match.params.id
     StatisticsAPI.getVillageStatistics({villageId: id}).then((res) => {
-      console.log(res.data)
       setStatistics(res.data)
     })
   }, [match.params.id])
