@@ -149,7 +149,8 @@ function SideBarItems () {
   React.useEffect(() => {
     if (loginStatus) {
       const tempList = [...list]
-      tempList[0].title = "로그아웃"
+      tempList[0].title = "마이페이지"
+      tempList[0].to = "/myPage"
       setList(tempList)
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -2,7 +2,7 @@ import * as React from 'react';
 import AppHeader from '../components/appHeader';
 import styled from 'styled-components';
 
-const MainBlock = styled.main`
+export const MainBlock = styled.main`
   position: relative;
   
   width: 100%;
