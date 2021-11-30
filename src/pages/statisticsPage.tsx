@@ -183,7 +183,7 @@ export default function StatisticsPage({match}: {match: any}) {
             </section>
             <section className="userInfo">
               <section>
-                <p className="user-count"><b>{statistics.registeredUserCount}명</b>과 함께 정복 중!</p>
+                <p className="user-count"><b>{statistics.registeredUserCount ? statistics.registeredUserCount : 0}명</b>과 함께 정복 중!</p>
               </section>
               <section style={{marginTop: '44px'}}>
                 <img src={`${process.env.PUBLIC_URL}/assets/png/ic_building.png`} alt="타입 아이콘" />
@@ -194,7 +194,7 @@ export default function StatisticsPage({match}: {match: any}) {
             </section>
             <section className="remain">
               <p style={{fontSize: '80px'}}>🎁</p>
-              <p style={{fontSize: '18px', fontWeight: 500}}>다음 색칠까지 건물 {statistics.nextColoringRemainingCount}개 남았어요!</p>
+              <p style={{fontSize: '18px', fontWeight: 500}}>다음 색칠까지 건물 {statistics.nextColoringRemainingCount ? statistics.nextColoringRemainingCount : 0}개 남았어요!</p>
               <p style={{marginTop: '4px', textAlign: 'center', color: '#9797A6', fontSize: '16px', fontWeight: 500}}>계단정보를 등록하고<br/>우리동네 지도를 예쁘게 칠해 보세요 ☺️</p>
             </section>
           </DetailInfo>

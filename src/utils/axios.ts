@@ -22,4 +22,11 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
+instance.interceptors.response.use((response) => response, (error) => {
+  if (error.response.status === 401) {
+    window.localStorage.removeItem("access_token")
+    window.location.href = '/login'
+  }
+});
+
 export default instance;

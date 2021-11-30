@@ -201,13 +201,13 @@ export default function MyPage() {
           <p className="card__main-content">{data?.conquerRank?.value ? `${data?.conquerRank?.value}위` : '순위 없음'}</p>
           <p className="icon">🏅</p>
         </ConqureCard>
-        <Link to="/listConqueredPlaces">
+        {data?.placeAccessibilityCount && <Link to="/listConqueredPlaces">
           <ConqureCard titleColor="#fff" contentColor="#fff" backgroundColor="#FF9D0A">
             <p className="card__title">정복한 계단</p>
             <p className="card__main-content">{data?.placeAccessibilityCount}개</p>
             <p className="card__link">모두 보기 <img style={{color: 'white'}} src={`${process.env.PUBLIC_URL}/assets/svg/arr_white.svg`} alt="link" /></p>
           </ConqureCard>
-        </Link>
+        </Link>}
         {data?.placeAccessibilityCountDetailEntries && 
           <PlacesListCard>
             {data?.placeAccessibilityCountDetailEntries.sort((a, b) => b.count - a.count).map((p, i) => (
