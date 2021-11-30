@@ -89,9 +89,7 @@ export default function SignUpPage({location}: {location: any}) {
         if(temp_instagramId[0] === '@') instagramId = temp_instagramId.substring(1)
         updateParams.instagramId = {value: instagramId}
       }
-      console.log(updateParams)
       const res = await MyPageAPI.updateProfile(updateParams)
-      console.log(res.data)
       if (res.status === 200) {
         setOpen(true)
       }

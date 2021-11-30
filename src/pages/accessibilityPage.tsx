@@ -367,7 +367,6 @@ export default function AccessibilityPage({location}: {location: any}) {
     accessibilityAPI.getAccessibility({
       placeId: `${item?.place.id}`
     }).then(res => {
-      console.log(res.data)
       setAccessibility(res.data)
       window.scrollTo(0, 0)
       if (location.state) {
