@@ -5,6 +5,7 @@ import MainHeader from '../components/mainHeader';
 import { GetMyPageViewDataResult } from '../types/MyPage';
 import * as MyPageAPI from '../api/myPage'
 import { Link } from 'react-router-dom';
+import { Division } from './accessibilityPage';
 
 const AccountSection = styled.section`
   display: flex;
@@ -74,6 +75,30 @@ const ConqureSection = styled.section`
   }
 `
 
+const Footer = styled.footer`
+  padding: 0 20px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--maxWidth);
+  height: 204px;
+  background: #fff;
+
+  button {
+    margin-top: 20px;
+    width: 107px;
+    height: 54px;
+    background: #fff;
+    border-radius: 20px;
+    border: 2px solid #EAEAEF;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 100%;
+    text-align: center;
+    letter-spacing: -0.005em;
+    color: #6A6A73;
+  }
+`
+
 interface CardProps {
   titleColor: string
   contentColor: string
@@ -139,6 +164,11 @@ export default function MyPage() {
     'Max': {ic: '🦄'}
   }
 
+  const logout = () => {
+    window.localStorage.removeItem("access_token")
+    window.location.href = '/'
+  }
+
   React.useEffect(() => {
     MyPageAPI.getMyPageViewData().then(res => setData(res.data))
   }, [])
@@ -192,6 +222,10 @@ export default function MyPage() {
           </PlacesListCard>
         }
       </ConqureSection>
+      <Footer>
+        <Division />
+        <button onClick={logout} className="edit-profile">로그아웃</button>
+      </Footer>
     </div>
   )
 }

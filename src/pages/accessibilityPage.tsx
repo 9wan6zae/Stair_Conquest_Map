@@ -21,11 +21,11 @@ const TitleSection = styled.section`
   background: #fff;
 `
 
-const Division = styled.section`
+export const Division = styled.section`
   box-sizing: border-box;
   width: 100%;
   max-width: var(--maxWidth);
-  border: 2px solid #EAEAEF;
+  border: 1px solid #EAEAEF;
 `
 
 const AccessibilityInfo = styled.section`
