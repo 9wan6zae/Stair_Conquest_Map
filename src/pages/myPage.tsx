@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import MainHeader from '../components/mainHeader';
-import { GetMyPageViewDataResult, GetMyPageViewDataResult_PlaceAccessibilityCountDetailEntry } from '../types/MyPage';
+import { GetMyPageViewDataResult } from '../types/MyPage';
 import * as MyPageAPI from '../api/myPage'
 import { Link } from 'react-router-dom';
 
@@ -160,9 +160,6 @@ const PlacesListCard = styled.div`
     border: 1px solid #D0D0D9;
   }
  `
-const PlacesListCardWrapper = styled.div `
-  max-width: 213px;
-`
 
 export default function MyPage() {
   const [data, setData] = React.useState<GetMyPageViewDataResult>()
@@ -173,18 +170,6 @@ export default function MyPage() {
     '4': {ic: '👑'},
     'Max': {ic: '🦄'}
   }
-
-  // const setPlacesList = (places: GetMyPageViewDataResult_PlaceAccessibilityCountDetailEntry[]) => {
-  //   if (places) {
-  //     const row = []
-  //     let temp = []
-  //     for (let i = 0; i < places.length; i++) {
-  //       if (i % 3 !== 0) {
-  //         temp
-  //       }
-  //     } 
-  //   }
-  // }
 
   React.useEffect(() => {
     MyPageAPI.getMyPageViewData().then(res => setData(res.data))
@@ -198,11 +183,11 @@ export default function MyPage() {
           <p className="instagram">
             <span style={{marginRight: '6px'}}>인스타그램</span>
             {data?.user?.instagramId?.value
-              ? <span className="instagram__id">{data?.user?.instagramId?.value}</span>
-              : <span className="instagram__link">계정 등록하기</span>
+              ? <span className="instagram__id">@{data?.user?.instagramId?.value}</span>
+              : <Link to={{pathname: "updateProfile", state: {user: data?.user}}}><span className="instagram__link">계정 등록하기</span></Link>
             }
           </p>
-          <button className="edit-profile">프로필 편집</button>
+          <Link to={{pathname: "updateProfile", state: {user: data?.user}}}><button className="edit-profile">프로필 편집</button></Link>
         </main>
       </AccountSection>
       <ConqureSection>
@@ -220,7 +205,7 @@ export default function MyPage() {
         </ConqureCard>
         <ConqureCard titleColor="#fff" contentColor="#fff" backgroundColor="#FF9D0A">
           <p className="card__title">정복한 계단</p>
-          <p className="card__main-content">{data?.placeAccessibilityCount} 개</p>
+          <p className="card__main-content">{data?.placeAccessibilityCount}개</p>
           <Link to="/listConqueredPlaces"><p className="card__link">모두 보기 <img style={{color: 'white'}} src={`${process.env.PUBLIC_URL}/assets/svg/arr_white.svg`} alt="link" /></p></Link>
         </ConqureCard>
         {data?.placeAccessibilityCountDetailEntries && 
@@ -230,7 +215,7 @@ export default function MyPage() {
               <div className="list-item" key={i}>
                 <PlacesListBlock>
                   <p className="placename">{p.eupMyeonDongName}</p>
-                  <p className="conquer-number">{p.count}</p>
+                  <p className="conquer-number">{p.count}개</p>
                 </PlacesListBlock>
                 {(i !== data?.placeAccessibilityCountDetailEntries.length - 1)
                   && i % 3 !== 2

@@ -1,4 +1,4 @@
-import { Int32Value, User, Village } from "./Model";
+import { Int32Value, StringValue, User, Village } from "./Model";
 
 export interface GetMyPageViewDataResult_ConquerLevelInfo {
   /** 정복 레벨. 1, 2, 3, 4, Max 등과 같은 값이 들어갈 수 있다. */
@@ -22,4 +22,15 @@ export interface GetMyPageViewDataResult {
   /** 정복한 계단 수. */
   placeAccessibilityCount: number;
   placeAccessibilityCountDetailEntries: GetMyPageViewDataResult_PlaceAccessibilityCountDetailEntry[];
+}
+
+export interface UpdateUserInfoParams {
+  /** 변경되지 않았어도 항상 올려준다. */
+  nickname: string;
+  /** 변경되지 않았어도 항상 올려준다. */
+  instagramId: StringValue | undefined;
+}
+
+export interface UpdateUserInfoResult {
+  user: User | undefined;
 }
