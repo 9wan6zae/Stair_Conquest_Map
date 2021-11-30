@@ -129,38 +129,6 @@ const ConqureCard = styled.div<CardProps>`
   }
  `
 
-const PlacesListCard = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  overflow: hidden;
-  padding: 28px 32px 0px 32px;
-  box-sizing: border-box;
-  width: 100%;
-  min-height: 104px;
-  border-radius: 20px;
-  background-color: #EAEAEF;
-
-  div.block-wrapper {
-    margin: 0;
-    width: 100%;
-    max-width: 280px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-
-  div.list-item {
-    display: flex;
-  }
-
-  div.division {
-    width: 0px;
-    height: 44px;
-    border: 1px solid #D0D0D9;
-  }
- `
-
 export default function MyPage() {
   const [data, setData] = React.useState<GetMyPageViewDataResult>()
   const ic_level: any = {
@@ -210,22 +178,15 @@ export default function MyPage() {
         </ConqureCard>
         {data?.placeAccessibilityCountDetailEntries && 
           <PlacesListCard>
-            <div className='block-wrapper'>
-            {data?.placeAccessibilityCountDetailEntries.map((p, i) => (
+            {data?.placeAccessibilityCountDetailEntries.sort((a, b) => b.count - a.count).map((p, i) => (
               <div className="list-item" key={i}>
+                {i % 3 !== 0 && <div className="division" />}
                 <PlacesListBlock>
                   <p className="placename">{p.eupMyeonDongName}</p>
                   <p className="conquer-number">{p.count}개</p>
                 </PlacesListBlock>
-                {(i !== data?.placeAccessibilityCountDetailEntries.length - 1)
-                  && i % 3 !== 2
-                  && <div className="division" />}
               </div>
             ))}
-            {[...Array(3 - Math.floor(data?.placeAccessibilityCountDetailEntries.length / 3))].map((p, i) => (
-              <PlacesListBlock key={`blank${i}`} />
-            ))}
-            </div>
           </PlacesListCard>
         }
       </ConqureSection>
@@ -233,9 +194,33 @@ export default function MyPage() {
   )
 }
 
+const PlacesListCard = styled.div`
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding: 28px 8px 0px 8px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 104px;
+  border-radius: 20px;
+  background-color: #EAEAEF;
+  
+  div.list-item {
+    display: flex;
+  }
+
+  div.division {
+    margin-top: 4px;
+    width: 0px;
+    height: 44px;
+    border: 1px solid #D0D0D9;
+  }
+ `
+
 const PlacesListBlock = styled.div`
+  padding-left: 20px;
+  box-sizing: border-box;
   margin-bottom: 24px;
-  width: 71px;
   height: 48px;
   p.placename {
     font-weight: 500;
