@@ -181,7 +181,7 @@ export default function MyPage() {
           <p className="instagram">
             <span style={{marginRight: '6px'}}>인스타그램</span>
             {data?.user?.instagramId?.value
-              ? <span className="instagram__id">@{data?.user?.instagramId?.value}</span>
+              ? <a href={`https://www.instagram.com/${data?.user?.instagramId?.value}/`}><span className="instagram__id">@{data?.user?.instagramId?.value}</span></a>
               : <Link to={{pathname: "updateProfile", state: {user: data?.user}}}><span className="instagram__link">계정 등록하기</span></Link>
             }
           </p>
