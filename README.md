@@ -1,46 +1,28 @@
-# Getting Started with Create React App
+## 계단정복지도
+---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### 소개
+---
+휠체어 사용자, 유아차를 쓰는 부모 그리고 노약자와 같은 이동 약자들에게 가고 싶은 장소에 계단이 있는지와 같은 정보는 중요한 정보이지만, 그것을 알 방법이 없습니다.
 
-## Available Scripts
+[계단정복지도](https://www.staircrusher.club)는 이러한 부분을 개선하기 위해 방문하려는 장소나 건물의 계단 개수, 엘리베이터 유무 그리고 경사로 유무 등의 접근성 정보를 모은 후 필요로 하는 사용자들에게 그 정보를 제공해주는 서비스입니다.
 
-In the project directory, you can run:
+`React.js` `redux` `styled-components`
 
-### `yarn start`
+### 주요 기능
+---
+[기능소개영상](https://youtu.be/qjdjculzsBI)   
+- 장소 검색   
+  Geolocation API를 이용해 사용자 위치에서 가장 가까운 순서대로 검색 결과를 보여줍니다.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+- 접근성 정보 입력   
+  모달을 이용해 접근성 정보를 입력합니다.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 접근성 정보 확인   
+  입력된 장소 또는 건물에 대한 접근성 정보를 확인할 수 있습니다.
 
-### `yarn test`
+- 공유용 이미지 저장   
+  html2canvas 라이브러리를 사용해서 서비스에 참여했다는 인증확인할 수 이미지를 저장할 수 있게 했습니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- 동네별 접근성 정보 달성률 확인   
+  SVG를 이용해 동네별 달성률에 따라 색이 칠해지고 가장 많이 채운 사람의 정보를 표시합니다.
