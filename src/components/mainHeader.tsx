@@ -36,8 +36,10 @@ const HeaderBlock = styled.div<HeaderProps>`
     props.change &&
     css`
       background: #fff;
-      color: #000;
       border-bottom: 2px solid #EAEAEF;
+      p {
+        color: #000;
+      }
     `}
 `
 
