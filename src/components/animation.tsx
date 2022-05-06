@@ -6,11 +6,12 @@ const CharacterBlock = styled.section`
   position: absolute;
   z-index: 3;
   bottom: 30px;
+  left: 20px;
   opacity: 0;
   animation-name: move, fadeout;
   animation-delay: 0s, 2s;
   animation-duration: 2s, 0.3s;
-  animation-timing-function: linear, ease-in-out;
+  animation-timing-function: linear, ease-out;
 
   @keyframes move {
     0% {
@@ -48,31 +49,34 @@ const TextBoxBlock = styled.section`
   z-index: 3;
   bottom: 196px;
   left: 200px;
-  opacity: 0;
-  animation-name: fadein, fadeout__textBox;
-  animation-delay: 0s, 2s;
-  animation-duration: 2s, 0.3s;
-  animation-timing-function: ease-in, ease-in-out;
+  opacity: 1;
+  animation-name: notshow, fadein, fadeout;
+  animation-delay: 0s, 1s, 2s;
+  animation-duration: 1s, 0.4s, 0.4s;
+  animation-timing-function: linear, linear, ease-out;
 
   width: 105px;
   height: 80px;
 
-  @keyframes fadein {
+  @keyframes notshow {
     0% {
       opacity: 0;
     }
-    20% {
+    100% {
       opacity: 0;
     }
-    60% {
-      opacity: 1;
+  }
+
+  @keyframes fadein {
+    0% {
+      opacity: 0;
     }
     100% {
       opacity: 1;
     }
   }
 
-  @keyframes fadeout__textBox {
+  @keyframes fadeout {
     from {
       opacity: 1;
     }
